@@ -1,0 +1,8 @@
+# Editors
+.idea
+
+# Java target folder
+target/
+
+# Compiled frondend
+src/main/webapp
