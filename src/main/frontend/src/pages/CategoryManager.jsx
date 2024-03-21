@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import axios from 'axios';
+import {api} from '../api';
 
 export default function CategoryManager() {
   const [categories, setCategories] = useState([]);
@@ -8,7 +8,7 @@ export default function CategoryManager() {
 
   function getCategories() {
     // Fetches list of categories from REST API.
-    axios.get('/api/category')
+    api.get('/category')
     .then(response => {
         // todo handling of errors
         setCategories(response.data);
@@ -18,11 +18,11 @@ export default function CategoryManager() {
   function addCategory(e) {
     // Calls REST API for adding category.
     e.preventDefault();
-    axios.post('/api/category', {name, description})
+    api.post('/category', {name, description})
       .then(response => {
           if (response.status === 200) {
-          setDescription("");
-          setName("");
+          setDescription('');
+          setName('');
           getCategories();
           }
       })
