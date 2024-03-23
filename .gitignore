@@ -1,5 +1,6 @@
 # Editors
 .idea
+.vscode/
 
 # Java target folder
 target/

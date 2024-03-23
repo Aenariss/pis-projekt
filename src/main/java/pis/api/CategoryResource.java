@@ -1,8 +1,17 @@
+/**
+ * PIS Projekt 2024
+ * CategoryResource.java
+ * @author Lukáš Petr <xpetrl06>
+ * @author Vojtech Fiala <xfiala61>
+ */
+
 package pis.api;
 
 import java.util.List;
 
 import pis.data.Category;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -13,6 +22,7 @@ import jakarta.ws.rs.core.Response;
  * REST API resource for categories.
  */
 @Path("/category")
+@PermitAll
 public class CategoryResource {
 	@Inject
 	private CategoryManager categoryManager;
@@ -23,6 +33,17 @@ public class CategoryResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Category> getCategories() {
+    	return categoryManager.findAll();
+    }
+
+    /**
+     * TEST
+     */
+    @GET
+    @Path("/security")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin", "employee"})
+    public List<Category> test() {
     	return categoryManager.findAll();
     }
 

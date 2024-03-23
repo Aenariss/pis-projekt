@@ -1,3 +1,9 @@
+/**
+ * PIS Projekt 2024
+ * Category.java
+ * @author Lukáš Petr <xpetrl06>
+ */
+
 package pis.data;
 
 import jakarta.persistence.*;

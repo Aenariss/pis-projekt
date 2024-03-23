@@ -1,3 +1,10 @@
+/**
+ * PIS Projekt 2024
+ * CategoryManager.java
+ * @author Lukáš Petr <xpetrl06>
+ * @author Vojtech Fiala <xfiala61>
+ */
+
 package pis.service;
 import java.util.List;
 
