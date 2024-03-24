@@ -12,4 +12,4 @@ mvn process-resources # stáhne závislosti frontendu a sestaví ho
 mvn liberty:dev # spustí vývojový server
 ```
 
-Poté je stránka dostupná na adrese <localhost:9080/index.html>.
+Poté je stránka dostupná na adrese <http://localhost:9089/>.

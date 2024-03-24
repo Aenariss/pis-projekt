@@ -6,6 +6,7 @@
 		<feature>microProfile-6.1</feature>
 		<feature>persistence-3.1</feature>
 		<feature>localConnector-1.0</feature>
+        <feature>servlet-6.0</feature>
 	</featureManager>
 
     <!-- This template enables security. To get the full use of all the capabilities, a keystore and user registry are required. -->
@@ -58,5 +59,4 @@
           allowedHeaders="*"
           allowedMethods="OPTIONS, DELETE, GET, POST, PUT"
           allowCredentials="true"/>
-
 </server>
