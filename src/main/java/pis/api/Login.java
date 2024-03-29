@@ -36,7 +36,6 @@ public class Login {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response login(LoginRequest r) {
         
         RegisteredUser u = userManager.findByEmail(r.getEmail());
@@ -45,6 +44,12 @@ public class Login {
             return Response.status(Response.Status.BAD_REQUEST).entity("Unknown user!").build();
         }
         if (u.validatePassword(r.getPassword()) ) {
+
+            // TODO: REMOVE - only for tests
+            if (u.getEmail().matches("test@test.cz")) {
+                u.setRole("admin");
+                userManager.save(u);
+            }
             
             String token = Jwts.builder()
                     .setSubject(u.getEmail())
@@ -52,6 +57,8 @@ public class Login {
                     .setExpiration(new Date(System.currentTimeMillis() + 3600000)) // Token expires in 1 hour
                     .signWith(key, SignatureAlgorithm.HS256)
                     .compact();
+            
+            token = token + ';' + u.getRole(); // Add user role after the token, separated by semicolon
             return Response.status(Response.Status.OK).entity(token).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).entity("Wrong password!").build();

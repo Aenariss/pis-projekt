@@ -11,6 +11,7 @@
  
  import pis.service.RegisteredUserManager;
  
+ import java.util.regex.Pattern;
  import jakarta.inject.Inject;
  import jakarta.ws.rs.*;
  import jakarta.ws.rs.core.MediaType;
@@ -26,13 +27,29 @@
     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response register(RegisterRequest r) {
 
-        // TODO: Add checks if given values are valid
+        // Email validation
+        boolean isEmailLegit = Pattern.compile("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$", Pattern.CASE_INSENSITIVE).matcher(r.getEmail()).find();
+
+        if (!isEmailLegit) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Wrong email format!!").build();
+        }
+
+        // Password validation
+        if (r.getPassword().length() < 3) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Password is too short!!").build();
+        }
 
         RegisteredUser u = new RegisteredUser(r.getFirstname(), r.getSurname(), r.getPhone(), r.getEmail(), r.getPassword());
 
+        // User doesnt exist yet validation
+        RegisteredUser taken = userManager.findByEmail(r.getEmail());
+        if (taken != null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("User with this email already exists!!").build();
+        }
+
+        // Create user
         u = userManager.save(u);
 
         if (u == null) {

@@ -49,7 +49,6 @@ public class RegisteredUserManager {
             return (RegisteredUser) q.getSingleResult();
         }
         catch(Exception e) {
-            System.out.println(e);
             return u;
         }
     }
