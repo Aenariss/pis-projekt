@@ -9,22 +9,31 @@ import Nav from 'react-bootstrap/Nav';
 import UserInfo from "./UserInfo";
 import {Button, Col, Form, InputGroup} from "react-bootstrap";
 import {Cart} from "react-bootstrap-icons";
+import {useContext} from 'react';
+import {AuthContext} from '../../context/AuthContext';
 
 /**
  * Website layout.
  * @component
  */
 export default function Layout() {
-  // TODO add check if employee is logged in - needs role
-  let employeeNavBar = (
-    <Navbar>
-      <Container>
-        <Nav>
-          <Nav.Link as={Link} to="/category-manager">Categories</Nav.Link>
-        </Nav>
-      </Container>
-    </Navbar>
-  );
+  const {user} = useContext(AuthContext);
+  let employeeNavBar = null;
+  if (user?.role === 'admin' || user?.role === 'employee') {
+    employeeNavBar = (
+      <Navbar>
+        <Container>
+          <Nav>
+            {user.role === 'admin' && (
+              <>
+                <Nav.Link as={Link} to="/category-manager">Categories</Nav.Link>
+              </>
+            )}
+          </Nav>
+        </Container>
+      </Navbar>
+    );
+  }
 
 
   return (
@@ -54,7 +63,7 @@ export default function Layout() {
         </Container>
       </Navbar>
       {employeeNavBar}
-      <Container>
+      <Container className="pt-5">
         <Outlet />
       </Container>
     </>

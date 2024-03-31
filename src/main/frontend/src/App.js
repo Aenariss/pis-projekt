@@ -11,6 +11,8 @@ import BooksPage from "./pages/Books";
 import {useContext, useEffect, useState} from "react";
 import {jwtDecode} from "jwt-decode";
 import {Modal} from "react-bootstrap";
+import NotFoundPage from "./pages/NotFound";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 /** Time remaining for JWT expiration in which we should try to renew the JWT token. */
 const RENEW_AT_REMAINING_TIME = 600000; // (10 min)
@@ -22,7 +24,13 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<BooksPage />} />
-            <Route path="category-manager" element={<CategoryManager />} />
+            <Route element={<ProtectedRoute role="employee" />} >
+              {/* TODO routes for employee */}
+            </Route>
+            <Route element={<ProtectedRoute role="admin" />} >
+              <Route path="category-manager" element={<CategoryManager />} />
+            </Route>
+            <Route path="*" element={<NotFoundPage/>} />
           </Route>
         </Routes>
         <AuthVerify />
@@ -66,3 +74,4 @@ function AuthVerify() {
       </Modal>
     );
 }
+
