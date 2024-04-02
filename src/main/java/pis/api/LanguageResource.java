@@ -23,32 +23,34 @@ import jakarta.ws.rs.core.Response;
 @Path("/language")
 @PermitAll
 public class LanguageResource {
-	@Inject
-	private LanguageManager languageManager;
+    @Inject
+    private LanguageManager languageManager;
 
     /**
      * Returns list of all Languages.
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Language> getAuthors() {
-    	return languageManager.findAll();
+    public List<Language> getLanguages() {
+        return languageManager.findAll();
     }
 
     /**
      * Returns Language from id.
+     * 
      * @param id Id of the Language.
      * @return Language with given id.
      */
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Language getAuthor(@PathParam("id") long id) {
+    public Language getLanguage(@PathParam("id") long id) {
         return languageManager.find(id);
     }
 
     /**
      * Adds new language.
+     * 
      * @param language Language to be added.
      * @return Response status.
      */
@@ -69,6 +71,7 @@ public class LanguageResource {
 
     /**
      * Updates a Language.
+     * 
      * @param language Language to be updated.
      * @return Response status
      */
@@ -89,6 +92,7 @@ public class LanguageResource {
 
     /**
      * Deletes a Language by given id.
+     * 
      * @param id Id of the Language to be deleted.
      * @return Response status
      */
@@ -107,6 +111,7 @@ public class LanguageResource {
 
     /**
      * Deletes a Language.
+     * 
      * @param language Language to be deleted.
      * @return Response status
      */

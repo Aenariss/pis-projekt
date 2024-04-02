@@ -5,6 +5,7 @@
  */
 
 package pis.service;
+
 import java.util.List;
 
 import pis.data.Discount;
@@ -31,6 +32,7 @@ public class DiscountManager {
 
     /**
      * Returns Discount if it exists, otherwise null.
+     * 
      * @param id Id of the searched Discount.
      * @return Discount with given id.
      */
@@ -40,6 +42,7 @@ public class DiscountManager {
 
     /**
      * Returns Discount by name if it exists, otherwise null.
+     * 
      * @param name name of the searched Discount.
      * @return Discount
      */
@@ -49,8 +52,7 @@ public class DiscountManager {
             Query q = em.createQuery("SELECT d FROM Discount d WHERE d.discount = :discount");
             q.setParameter("discount", discount);
             return (Discount) q.getSingleResult();
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
             return d;
         }
@@ -58,6 +60,7 @@ public class DiscountManager {
 
     /**
      * Add Discount to db.
+     * 
      * @param d Discount to add.
      * @return Returns inserted Discount.
      */
@@ -68,6 +71,7 @@ public class DiscountManager {
 
     /**
      * Remove Discount from db.
+     * 
      * @param d Discount to remove
      * @return If succeeded or not
      */

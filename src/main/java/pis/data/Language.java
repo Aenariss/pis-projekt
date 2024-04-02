@@ -14,16 +14,17 @@ import jakarta.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "Language")
-@NamedQuery(name="Language.findAll", query="SELECT l FROM Language l")
+@NamedQuery(name = "Language.findAll", query = "SELECT l FROM Language l")
 public class Language {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @NotNull
-	private String language;
+    private String language;
 
-    public Language() {}
+    public Language() {
+    }
 
     public Language(String language) {
         this.language = language;

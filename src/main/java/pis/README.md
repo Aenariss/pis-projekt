@@ -51,6 +51,21 @@
  ```json
 format -> {"query":"query_text"}
 ```
+- `GET /api/productdescription/filter` - get product description by filters
+```json
+{
+"authorIds": [id],
+"languageIds": [id],
+"categoryIds": [id],
+"priceFrom": double,
+"priceTo": double,
+"pagesFrom": int,
+"pagesTo": int,
+"discountFrom": int,
+"discountTo": int
+}
+```
+ <span style="color:green">Values can be removed and will automatically be replaced with some min/max value so that the filtering works only with those set</span>
 - `POST /api/productdescription` - add new product description,
 - `PUT /api/productdescription/{id}` - update product description by id,
 - `PUT /api/productdescription/{id}/author/{authorId}` - add author to product description,

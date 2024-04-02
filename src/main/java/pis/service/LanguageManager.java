@@ -5,6 +5,7 @@
  */
 
 package pis.service;
+
 import java.util.List;
 
 import pis.data.Language;
@@ -31,6 +32,7 @@ public class LanguageManager {
 
     /**
      * Returns Language if it exists, otherwise null.
+     * 
      * @param id Id of the searched Language.
      * @return Language with given id.
      */
@@ -40,6 +42,7 @@ public class LanguageManager {
 
     /**
      * Returns Language by name if it exists, otherwise null.
+     * 
      * @param name name of the searched Language.
      * @return Language
      */
@@ -49,8 +52,7 @@ public class LanguageManager {
             Query q = em.createQuery("SELECT l FROM Language l WHERE l.language = :language");
             q.setParameter("language", language);
             return (Language) q.getSingleResult();
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
             return author;
         }
@@ -58,6 +60,7 @@ public class LanguageManager {
 
     /**
      * Add Language to db.
+     * 
      * @param l Language to add.
      * @return Returns inserted Language.
      */
@@ -68,6 +71,7 @@ public class LanguageManager {
 
     /**
      * Remove Language from db.
+     * 
      * @param l Language to remove
      * @return If succeeded or not
      */

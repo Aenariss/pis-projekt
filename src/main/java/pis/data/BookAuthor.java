@@ -14,17 +14,18 @@ import jakarta.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "BookAuthor")
-@NamedQuery(name="BookAuthor.findAll", query="SELECT a FROM BookAuthor a")
+@NamedQuery(name = "BookAuthor.findAll", query = "SELECT a FROM BookAuthor a")
 public class BookAuthor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @NotNull
-	private String firstName;
+    private String firstName;
     private String lastName;
 
-    public BookAuthor() {}
+    public BookAuthor() {
+    }
 
     public BookAuthor(String firstName, String lastName) {
         this.firstName = firstName;

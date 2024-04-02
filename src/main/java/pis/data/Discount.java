@@ -14,7 +14,7 @@ import jakarta.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "Discount")
-@NamedQuery(name="Discount.findAll", query="SELECT d FROM Discount d")
+@NamedQuery(name = "Discount.findAll", query = "SELECT d FROM Discount d")
 public class Discount {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,7 +23,8 @@ public class Discount {
     @NotNull
     private int discount;
 
-    public Discount() {}
+    public Discount() {
+    }
 
     public Discount(int discount) {
         this.discount = discount;

@@ -23,8 +23,8 @@ import jakarta.ws.rs.core.Response;
 @Path("/discount")
 @PermitAll
 public class DiscountResource {
-	@Inject
-	private DiscountManager discountManager;
+    @Inject
+    private DiscountManager discountManager;
 
     /**
      * Returns list of all Discounts.
@@ -32,11 +32,12 @@ public class DiscountResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Discount> getDiscounts() {
-    	return discountManager.findAll();
+        return discountManager.findAll();
     }
 
     /**
      * Returns Discount from id.
+     * 
      * @param id Id of the Discount.
      * @return Discount with given id.
      */
@@ -49,6 +50,7 @@ public class DiscountResource {
 
     /**
      * Adds new discount.
+     * 
      * @param discount Discount to be added.
      * @return Response status.
      */
@@ -66,6 +68,7 @@ public class DiscountResource {
 
     /**
      * Updates a Discount.
+     * 
      * @param discount Discount to be updated.
      * @return Response status
      */
@@ -86,6 +89,7 @@ public class DiscountResource {
 
     /**
      * Deletes a Discount.
+     * 
      * @param discount Discount to be deleted.
      * @return Response status
      */
@@ -104,6 +108,7 @@ public class DiscountResource {
 
     /**
      * Deletes a Discount by id.
+     * 
      * @param id Id of the Discount to be deleted.
      * @return Response status
      */

@@ -23,8 +23,8 @@ import jakarta.ws.rs.core.Response;
 @Path("/bookauthor")
 @PermitAll
 public class BookAuthorResource {
-	@Inject
-	private BookAuthorManager bookAuthorManager;
+    @Inject
+    private BookAuthorManager bookAuthorManager;
 
     /**
      * Returns list of all BookAuthors.
@@ -32,11 +32,12 @@ public class BookAuthorResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<BookAuthor> getAuthors() {
-    	return bookAuthorManager.findAll();
+        return bookAuthorManager.findAll();
     }
 
     /**
      * Returns BookAuthor from id.
+     * 
      * @param id Id of the BookAuthor.
      * @return BookAuthor with given id.
      */
@@ -49,6 +50,7 @@ public class BookAuthorResource {
 
     /**
      * Adds new book author.
+     * 
      * @param author BookAuthor to be added.
      * @return Response status.
      */
@@ -68,7 +70,8 @@ public class BookAuthorResource {
 
     /**
      * Updates a BookAuthor by given id.
-     * @param id Id of the BookAuthor to be updated.
+     * 
+     * @param id     Id of the BookAuthor to be updated.
      * @param author BookAuthor with updated values.
      * @return Response status.
      */
@@ -89,6 +92,7 @@ public class BookAuthorResource {
 
     /**
      * Deletes a BookAuthor by given id.
+     * 
      * @param id Id of the BookAuthor to be deleted.
      * @return Response status.
      */
@@ -107,6 +111,7 @@ public class BookAuthorResource {
 
     /**
      * Deletes a BookAuthor.
+     * 
      * @param author BookAuthor to be deleted.
      * @return Response status
      */

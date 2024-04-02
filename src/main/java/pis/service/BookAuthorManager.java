@@ -5,6 +5,7 @@
  */
 
 package pis.service;
+
 import java.util.List;
 
 import pis.data.BookAuthor;
@@ -31,6 +32,7 @@ public class BookAuthorManager {
 
     /**
      * Returns BookAuthor if it exists, otherwise null.
+     * 
      * @param id Id of the searched BookAuthor.
      * @return BookAuthor with given id.
      */
@@ -40,6 +42,7 @@ public class BookAuthorManager {
 
     /**
      * Returns BookAuthor by name if it exists, otherwise null.
+     * 
      * @param name name of the searched BookAuthor.
      * @return BookAuthor
      */
@@ -47,10 +50,9 @@ public class BookAuthorManager {
         BookAuthor author = null;
         try {
             Query q = em.createQuery("SELECT a FROM BookAuthor a WHERE a.lastName = :lastName");
-            q.setParameter("lastName", lastName); 
+            q.setParameter("lastName", lastName);
             return (BookAuthor) q.getSingleResult();
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
             return author;
         }
@@ -58,19 +60,20 @@ public class BookAuthorManager {
 
     /**
      * Returns BookAuthor by first and last name if it exists, otherwise null.
+     * 
      * @param firstName first name of the searched BookAuthor.
-     * @param lastName last name of the searched BookAuthor.
+     * @param lastName  last name of the searched BookAuthor.
      * @return BookAuthor
      */
-    public BookAuthor findByName (String firstName, String lastName) {
+    public BookAuthor findByName(String firstName, String lastName) {
         BookAuthor author = null;
         try {
-            Query q = em.createQuery("SELECT a FROM BookAuthor a WHERE a.firstName = :firstName AND a.lastName = :lastName");
+            Query q = em.createQuery(
+                    "SELECT a FROM BookAuthor a WHERE a.firstName = :firstName AND a.lastName = :lastName");
             q.setParameter("firstName", firstName);
             q.setParameter("lastName", lastName);
             return (BookAuthor) q.getSingleResult();
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
             return author;
         }
@@ -78,6 +81,7 @@ public class BookAuthorManager {
 
     /**
      * Add BookAuthor to db.
+     * 
      * @param a BookAuthor to add.
      * @return Returns inserted BookAuthor.
      */
@@ -88,6 +92,7 @@ public class BookAuthorManager {
 
     /**
      * Remove BookAuthor from db.
+     * 
      * @param a BookAuthor to remove
      * @return If succeeded or not
      */
