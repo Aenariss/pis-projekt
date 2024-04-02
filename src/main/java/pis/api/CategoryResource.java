@@ -37,6 +37,18 @@ public class CategoryResource {
     }
 
     /**
+     * Returns category from id.
+     * @param id Id of the category.
+     * @return Category with given id.
+     */
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Category getCategory(@PathParam("id") long id) {
+        return categoryManager.find(id);
+    }
+
+    /**
      * TEST
      */
     @GET
@@ -65,6 +77,45 @@ public class CategoryResource {
             return Response.ok().entity(savedCategory).build();
         }
         return Response.status(Response.Status.CONFLICT).entity("Error: category already exists").build();
+    }
+
+    /**
+     * Updates category.
+     * @param cat Category to be updated.
+     * @return Response status.
+     */
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateCategory(@PathParam("id") long id, Category cat) {
+        Category toUpdate = categoryManager.find(id);
+        if (toUpdate == null) {
+            // Category with given id does not exist, nothing to update
+            return Response.status(Response.Status.BAD_REQUEST).entity("Error: category doesnt exist").build();
+        }
+        toUpdate.setName(cat.getName());
+        toUpdate.setDescription(cat.getDescription());
+        categoryManager.save(toUpdate);
+        return Response.ok().entity("Succesfully updated the category").build();
+    }
+
+    /**
+     * Deletes a category by id
+     * @param id Category id to be removed
+     * @return Response status
+     */
+    @DELETE
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteCategory(@PathParam("id") long id) {
+        Category toDelete = categoryManager.find(id);
+        if (toDelete == null) {
+            // Category with given id does not exist, nothing to remove
+            return Response.status(Response.Status.BAD_REQUEST).entity("Error: category doesnt exist").build();
+        }
+        categoryManager.delete(toDelete);
+        return Response.ok().entity("Succesfully removed the category").build();
     }
 
     /**

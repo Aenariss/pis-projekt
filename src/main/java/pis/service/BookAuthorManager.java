@@ -32,6 +32,7 @@ public class BookAuthorManager {
     /**
      * Returns BookAuthor if it exists, otherwise null.
      * @param id Id of the searched BookAuthor.
+     * @return BookAuthor with given id.
      */
     public BookAuthor find(long id) {
         return em.find(BookAuthor.class, id);
@@ -40,6 +41,7 @@ public class BookAuthorManager {
     /**
      * Returns BookAuthor by name if it exists, otherwise null.
      * @param name name of the searched BookAuthor.
+     * @return BookAuthor
      */
     public BookAuthor findByLastName(String lastName) {
         BookAuthor author = null;
@@ -54,6 +56,12 @@ public class BookAuthorManager {
         }
     }
 
+    /**
+     * Returns BookAuthor by first and last name if it exists, otherwise null.
+     * @param firstName first name of the searched BookAuthor.
+     * @param lastName last name of the searched BookAuthor.
+     * @return BookAuthor
+     */
     public BookAuthor findByName (String firstName, String lastName) {
         BookAuthor author = null;
         try {

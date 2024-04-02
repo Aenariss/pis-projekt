@@ -33,6 +33,7 @@ public class CategoryManager {
     /**
      * Returns category if it exists, otherwise null.
      * @param id Id of the searched category.
+     * @return Category with given id.
      */
     public Category find(long id) {
         return em.find(Category.class, id);
@@ -41,6 +42,7 @@ public class CategoryManager {
     /**
      * Returns category by name if it exists, otherwise null.
      * @param name name of the searched category.
+     * @return Category
      */
     public Category findByName(String name) {
         Category cat = null;

@@ -32,6 +32,7 @@ public class LanguageManager {
     /**
      * Returns Language if it exists, otherwise null.
      * @param id Id of the searched Language.
+     * @return Language with given id.
      */
     public Language find(long id) {
         return em.find(Language.class, id);
@@ -40,6 +41,7 @@ public class LanguageManager {
     /**
      * Returns Language by name if it exists, otherwise null.
      * @param name name of the searched Language.
+     * @return Language
      */
     public Language findLanguage(String language) {
         Language author = null;

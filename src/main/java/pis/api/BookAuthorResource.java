@@ -36,6 +36,18 @@ public class BookAuthorResource {
     }
 
     /**
+     * Returns BookAuthor from id.
+     * @param id Id of the BookAuthor.
+     * @return BookAuthor with given id.
+     */
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public BookAuthor getAuthor(@PathParam("id") long id) {
+        return bookAuthorManager.find(id);
+    }
+
+    /**
      * Adds new book author.
      * @param author BookAuthor to be added.
      * @return Response status.
@@ -48,7 +60,6 @@ public class BookAuthorResource {
             return Response.status(Response.Status.BAD_REQUEST).entity("Book Author needs a valid name!").build();
         }
         if (bookAuthorManager.findByName(author.getFirstName(), author.getLastName()) == null) {
-            // BookAuthor with given name does not exist, create new one
             BookAuthor savedAuthor = bookAuthorManager.save(author);
             return Response.ok().entity(savedAuthor).build();
         }
@@ -68,7 +79,6 @@ public class BookAuthorResource {
     public Response updateBookAuthor(@PathParam("id") long id, BookAuthor author) {
         BookAuthor toUpdate = bookAuthorManager.find(id);
         if (toUpdate == null) {
-            // BookAuthor with given id does not exist
             return Response.status(Response.Status.BAD_REQUEST).entity("Error: Book Author doesnt exist").build();
         }
         toUpdate.setFirstName(author.getFirstName());
@@ -76,7 +86,24 @@ public class BookAuthorResource {
         bookAuthorManager.save(toUpdate);
         return Response.ok().entity(toUpdate).build();
     }
-    
+
+    /**
+     * Deletes a BookAuthor by given id.
+     * @param id Id of the BookAuthor to be deleted.
+     * @return Response status.
+     */
+    @DELETE
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteBookAuthor(@PathParam("id") long id) {
+        BookAuthor toDelete = bookAuthorManager.find(id);
+        if (toDelete == null) {
+            // BookAuthor with given id does not exist
+            return Response.status(Response.Status.BAD_REQUEST).entity("Error: Book Author doesnt exist").build();
+        }
+        bookAuthorManager.delete(toDelete);
+        return Response.ok().entity("Succesfully removed the Book Author").build();
+    }
 
     /**
      * Deletes a BookAuthor.

@@ -36,6 +36,18 @@ public class DiscountResource {
     }
 
     /**
+     * Returns Discount from id.
+     * @param id Id of the Discount.
+     * @return Discount with given id.
+     */
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Discount getDiscount(@PathParam("id") long id) {
+        return discountManager.find(id);
+    }
+
+    /**
      * Adds new discount.
      * @param discount Discount to be added.
      * @return Response status.
@@ -53,6 +65,26 @@ public class DiscountResource {
     }
 
     /**
+     * Updates a Discount.
+     * @param discount Discount to be updated.
+     * @return Response status
+     */
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateDiscount(@PathParam("id") long id, Discount discount) {
+        Discount toUpdate = discountManager.find(id);
+        if (toUpdate == null) {
+            // Discount with given id does not exist
+            return Response.status(Response.Status.BAD_REQUEST).entity("Error: Discount does not exist").build();
+        }
+        toUpdate.setDiscount(discount.getDiscount());
+        discountManager.save(toUpdate);
+        return Response.ok().entity("Succesfully updated the Discount").build();
+    }
+
+    /**
      * Deletes a Discount.
      * @param discount Discount to be deleted.
      * @return Response status
@@ -64,6 +96,24 @@ public class DiscountResource {
         Discount toDelete = discountManager.findDiscount(discount.getDiscount());
         if (toDelete == null) {
             // Discount with given name does not exist
+            return Response.status(Response.Status.BAD_REQUEST).entity("Error: Discount does not exist").build();
+        }
+        discountManager.delete(toDelete);
+        return Response.ok().entity("Succesfully removed the Discount").build();
+    }
+
+    /**
+     * Deletes a Discount by id.
+     * @param id Id of the Discount to be deleted.
+     * @return Response status
+     */
+    @DELETE
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteDiscountById(@PathParam("id") long id) {
+        Discount toDelete = discountManager.find(id);
+        if (toDelete == null) {
+            // Discount with given id does not exist
             return Response.status(Response.Status.BAD_REQUEST).entity("Error: Discount does not exist").build();
         }
         discountManager.delete(toDelete);

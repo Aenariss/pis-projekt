@@ -32,6 +32,7 @@ public class DiscountManager {
     /**
      * Returns Discount if it exists, otherwise null.
      * @param id Id of the searched Discount.
+     * @return Discount with given id.
      */
     public Discount find(long id) {
         return em.find(Discount.class, id);
@@ -40,6 +41,7 @@ public class DiscountManager {
     /**
      * Returns Discount by name if it exists, otherwise null.
      * @param name name of the searched Discount.
+     * @return Discount
      */
     public Discount findDiscount(int discount) {
         Discount d = null;
