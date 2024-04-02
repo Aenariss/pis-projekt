@@ -22,6 +22,7 @@ public class BookAuthor {
 
     @NotNull
     private String firstName;
+    @NotNull
     private String lastName;
 
     public BookAuthor() {

@@ -23,8 +23,10 @@ public class ProductDescription {
 
     @NotNull
     private double price;
+    @NotNull
     private String name;
     private String description;
+    @NotNull
     private String ISBN;
     private int pages;
 
