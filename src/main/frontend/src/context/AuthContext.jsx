@@ -30,10 +30,10 @@ export default function AuthProvider({ children }) {
       .then(response => {
         if (response.status === 200) {
           // Successful log in
-          // Getting JWT token from response.
-          const token = response.data;
+          // Getting JWT token and role from response.
+          const [token, role] = response.data.split(';');
           // Saving user info to context state and local storage.
-          const user = {email, token};
+          const user = {email, token, role};
           setUser(user);
           localStorage.setItem('user', JSON.stringify(user));
           // Calling user callback.
@@ -48,6 +48,24 @@ export default function AuthProvider({ children }) {
   }
 
   /**
+   * Tries to renew JWT token, must be called before the JWT token expires.
+   */
+  function renewToken() {
+    api.post('/renewToken', {email: user.email})
+      .then(response => {
+        if (response.status === 200) {
+          // Getting JWT token and role from response.
+          const [newToken] = response.data.split(';');
+          const userRenewed = {...user, token: newToken};
+          setUser(userRenewed);
+          localStorage.setItem('user', JSON.stringify(userRenewed));
+        }
+      })
+      // Catching errors
+      .catch(() => {});
+  }
+
+  /**
    * Sets that user is logged out.
    */
   function logout() {
@@ -56,7 +74,7 @@ export default function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{user, login, logout}}>
+    <AuthContext.Provider value={{user, login, logout, renewToken}}>
       {children}
     </AuthContext.Provider>
   );
