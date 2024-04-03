@@ -9,10 +9,12 @@ package pis.api;
 import java.util.List;
 
 import pis.data.ProductDescription;
+import pis.data.SearchQuery;
 import pis.data.Category;
 import pis.data.BookAuthor;
 import pis.data.Language;
 import pis.data.Discount;
+import pis.data.FilterQuery;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -127,8 +129,9 @@ public class ProductDescriptionResource {
      * 
      * @param searchQuery Search query.
      * @return List of ProductDescriptions with given search query.
+     * @apiNote uses POST instead of GET because GET can not have body
      */
-    @GET
+    @POST
     @Path("/search")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -136,7 +139,14 @@ public class ProductDescriptionResource {
         return productDescriptionManager.searchProductDescriptions(searchQuery.getQuery());
     }
 
-    @GET
+    /**
+     * Returns filtered results from filter query.
+     * 
+     * @param filterQuery Filter query.
+     * @return List of ProductDescriptions with given filter query.
+     * @apiNote uses POST instead of GET because GET can not have body
+     */
+    @POST
     @Path("/filter")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -159,6 +169,9 @@ public class ProductDescriptionResource {
                     .build();
         }
         if (productDescriptionManager.findProductDescription(productDescription.getName()) == null) {
+            if (productDescription.getImage() == null) {
+                productDescription.setDefaulImage();
+            }
             // ProductDescription with given name does not exist, create new one
             ProductDescription savedProductDescription = productDescriptionManager.save(productDescription);
             return Response.ok().entity(savedProductDescription).build();
@@ -189,6 +202,7 @@ public class ProductDescriptionResource {
         toUpdate.setPrice(productDescription.getPrice());
         toUpdate.setISBN(productDescription.getISBN());
         toUpdate.setPages(productDescription.getPages());
+        toUpdate.setImage(productDescription.getImage());
         productDescriptionManager.save(toUpdate);
         return Response.ok().entity(toUpdate).build();
     }

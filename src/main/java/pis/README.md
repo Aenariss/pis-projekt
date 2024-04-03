@@ -45,13 +45,13 @@
 - `GET /api/productdescription/language/{languageId}` - get product description by language id,
 - `GET /api/productdescription/discount/{discountId}` - get product description by discount id,
 - `GET /api/productdescription/category/{categoryId}` - get product description by category id
-- `GET /api/productdescription/search` - get product description by query
+- `POST /api/productdescription/search` - get product description by query
  <span style="color:green">For now supports querrying text from ProductDescription.{name,description,ISBN}, BookAuthor.{firstname, surname}, Category.{name, description}, Language.language</span>
  <span style="color:red">Add something?</span>
  ```json
 format -> {"query":"query_text"}
 ```
-- `GET /api/productdescription/filter` - get product description by filters
+- `POST /api/productdescription/filter` - get product description by filters
 ```json
 {
 "authorIds": [id],

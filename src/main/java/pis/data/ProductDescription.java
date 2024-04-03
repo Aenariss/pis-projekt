@@ -29,6 +29,7 @@ public class ProductDescription {
     @NotNull
     private String ISBN;
     private int pages;
+    private String image;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
@@ -50,7 +51,7 @@ public class ProductDescription {
     }
 
     public ProductDescription(double price, String name, String description, String ISBN, int pages, BookAuthor author,
-            List<Category> categories, Language language, Discount discount) {
+            List<Category> categories, Language language, Discount discount, String image) {
         this.price = price;
         this.name = name;
         this.description = description;
@@ -60,6 +61,7 @@ public class ProductDescription {
         this.categories = categories;
         this.language = language;
         this.discount = discount;
+        this.image = image;
     }
 
     public double getPrice() {
@@ -144,6 +146,18 @@ public class ProductDescription {
 
     public void setDiscount(Discount discount) {
         this.discount = discount;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void setDefaulImage() {
+        this.image = "https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg";
     }
 
     public long getId() {

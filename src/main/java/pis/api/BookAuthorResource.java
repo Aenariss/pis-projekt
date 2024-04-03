@@ -16,7 +16,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import pis.service.BookAuthorManager;
 import jakarta.ws.rs.core.Response;
-
+import pis.service.ProductDescriptionManager;
+import pis.data.ProductDescription;
 /**
  * REST API resource for working with BookAuthors.
  */
@@ -25,6 +26,9 @@ import jakarta.ws.rs.core.Response;
 public class BookAuthorResource {
     @Inject
     private BookAuthorManager bookAuthorManager;
+
+    @Inject
+    private ProductDescriptionManager productDescriptionManager;
 
     /**
      * Returns list of all BookAuthors.
@@ -105,6 +109,12 @@ public class BookAuthorResource {
             // BookAuthor with given id does not exist
             return Response.status(Response.Status.BAD_REQUEST).entity("Error: Book Author doesnt exist").build();
         }
+        List<ProductDescription> products = productDescriptionManager.findAll();
+        for (ProductDescription product : products) {
+            if (product.getAuthor().getId() == id) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("Error: Book Author is used in a product").build();
+            }
+        }
         bookAuthorManager.delete(toDelete);
         return Response.ok().entity("Succesfully removed the Book Author").build();
     }
@@ -123,6 +133,12 @@ public class BookAuthorResource {
         if (toDelete == null) {
             // BookAuthor with given name does not exist
             return Response.status(Response.Status.BAD_REQUEST).entity("Error: Book Author doesnt exist").build();
+        }
+        List<ProductDescription> products = productDescriptionManager.findAll();
+        for (ProductDescription product : products) {
+            if (product.getAuthor().getId() == toDelete.getId()) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("Error: Book Author is used in a product").build();
+            }
         }
         bookAuthorManager.delete(toDelete);
         return Response.ok().entity("Succesfully removed the Book Author").build();

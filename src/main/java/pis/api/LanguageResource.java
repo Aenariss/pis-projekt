@@ -16,7 +16,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import pis.service.LanguageManager;
 import jakarta.ws.rs.core.Response;
-
+import pis.service.ProductDescriptionManager;
+import pis.data.ProductDescription;
 /**
  * REST API resource for working with Languages.
  */
@@ -25,6 +26,9 @@ import jakarta.ws.rs.core.Response;
 public class LanguageResource {
     @Inject
     private LanguageManager languageManager;
+
+    @Inject
+    private ProductDescriptionManager productDescriptionManager;
 
     /**
      * Returns list of all Languages.
@@ -105,6 +109,11 @@ public class LanguageResource {
             // Language with given id does not exist
             return Response.status(Response.Status.BAD_REQUEST).entity("Error: Language does not exist").build();
         }
+        List<ProductDescription> productDescriptions = productDescriptionManager.findByLanguage(toDelete.getLanguage());
+        if (productDescriptions.size() > 0) {
+            // Language is used in some product descriptions
+            return Response.status(Response.Status.BAD_REQUEST).entity("Error: Language is used in some product descriptions").build();
+        }
         languageManager.delete(toDelete);
         return Response.ok().entity("Succesfully removed the Language").build();
     }
@@ -123,6 +132,11 @@ public class LanguageResource {
         if (toDelete == null) {
             // Language with given name does not exist
             return Response.status(Response.Status.BAD_REQUEST).entity("Error: Language does not exist").build();
+        }
+        List<ProductDescription> productDescriptions = productDescriptionManager.findByLanguage(toDelete.getLanguage());
+        if (productDescriptions.size() > 0) {
+            // Language is used in some product descriptions
+            return Response.status(Response.Status.BAD_REQUEST).entity("Error: Language is used in some product descriptions").build();
         }
         languageManager.delete(toDelete);
         return Response.ok().entity("Succesfully removed the Language").build();

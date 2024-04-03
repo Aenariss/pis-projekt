@@ -16,6 +16,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import pis.service.DiscountManager;
 import jakarta.ws.rs.core.Response;
+import pis.service.ProductDescriptionManager;
+import pis.data.ProductDescription;
 
 /**
  * REST API resource for working with Discounts.
@@ -25,6 +27,9 @@ import jakarta.ws.rs.core.Response;
 public class DiscountResource {
     @Inject
     private DiscountManager discountManager;
+
+    @Inject
+    private ProductDescriptionManager productDescriptionManager;
 
     /**
      * Returns list of all Discounts.
@@ -102,6 +107,13 @@ public class DiscountResource {
             // Discount with given name does not exist
             return Response.status(Response.Status.BAD_REQUEST).entity("Error: Discount does not exist").build();
         }
+        List<ProductDescription> products = productDescriptionManager.findAll();
+        for (ProductDescription product : products) {
+            if (product.getDiscount().getId() == toDelete.getId()) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("Error: Discount is used in products")
+                        .build();
+            }
+        }
         discountManager.delete(toDelete);
         return Response.ok().entity("Succesfully removed the Discount").build();
     }
@@ -120,6 +132,13 @@ public class DiscountResource {
         if (toDelete == null) {
             // Discount with given id does not exist
             return Response.status(Response.Status.BAD_REQUEST).entity("Error: Discount does not exist").build();
+        }
+        List<ProductDescription> products = productDescriptionManager.findAll();
+        for (ProductDescription product : products) {
+            if (product.getDiscount().getId() == toDelete.getId()) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("Error: Discount is used in products")
+                        .build();
+            }
         }
         discountManager.delete(toDelete);
         return Response.ok().entity("Succesfully removed the Discount").build();
