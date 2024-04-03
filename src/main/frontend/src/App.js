@@ -8,6 +8,11 @@ import CategoryManager from './pages/CategoryManager';
 import AuthProvider, {AuthContext} from "./context/AuthContext";
 import Layout from "./pages/Layout";
 import BooksPage from "./pages/Books";
+import EmployeesManager from './pages/EmployeesManager';
+import OrdersManager from './pages/OrdersManager';
+import StorageManager from "./pages/StorageManager";
+import BookAdd from './pages/BookAdd';
+import Overview from "./pages/Overview";
 import {useContext, useEffect, useState} from "react";
 import {jwtDecode} from "jwt-decode";
 import {Modal} from "react-bootstrap";
@@ -25,10 +30,16 @@ export default function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<BooksPage />} />
             <Route element={<ProtectedRoute role="employee" />} >
-              {/* TODO routes for employee */}
+              <Route path="orders-manager" element={<OrdersManager />} />
+              <Route path="storage-manager" element={<StorageManager />} />
             </Route>
             <Route element={<ProtectedRoute role="admin" />} >
               <Route path="category-manager" element={<CategoryManager />} />
+              <Route path="employees-manager" element={<EmployeesManager />} />
+              <Route path="book-add" element={<BookAdd />} />
+              <Route path="overview" element={<Overview />} />
+              <Route path="orders-manager" element={<OrdersManager />} />
+              <Route path="storage-manager" element={<StorageManager />} />
             </Route>
             <Route path="*" element={<NotFoundPage/>} />
           </Route>

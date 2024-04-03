@@ -27,8 +27,20 @@ export default function Layout() {
             {user.role === 'admin' && (
               <>
                 <Nav.Link as={Link} to="/category-manager">Categories</Nav.Link>
+                <Nav.Link as={Link} to="/employees-manager">Employees</Nav.Link>
+                <Nav.Link as={Link} to="/orders-manager">Orders</Nav.Link>
+                <Nav.Link as={Link} to="/storage-manager">Storage</Nav.Link>
+                <Nav.Link as={Link} to="/book-add">Add Book</Nav.Link>
+                <Nav.Link as={Link} to="/overview">Overview</Nav.Link>
               </>
             )}
+            {user.role === 'employee' && (
+              <>
+                <Nav.Link as={Link} to="/orders-manager">Orders</Nav.Link>
+                <Nav.Link as={Link} to="/storage-manager">Storage</Nav.Link>
+              </>
+            )}
+
           </Nav>
         </Container>
       </Navbar>
