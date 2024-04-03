@@ -30,6 +30,11 @@ public class Category {
         this.name = name;
     }
 
+    public Category(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public String getName() {
         return name;
     }

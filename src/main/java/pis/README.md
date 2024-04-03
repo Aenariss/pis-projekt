@@ -84,3 +84,7 @@ format -> ["name1","name2"]
 - `DELETE /api/productdescription/{id}/category/{categoryId}` - delete category with given id from product description,
 - `DELETE /api/productdescription/{id}/categories` - delete categories from product description
 
+### For development purposes
+
+- `GET /api/prefill` - prefills db with data,
+
