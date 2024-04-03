@@ -169,6 +169,9 @@ public class ProductDescriptionResource {
                     .build();
         }
         if (productDescriptionManager.findProductDescription(productDescription.getName()) == null) {
+            if (productDescription.getImage() == null) {
+                productDescription.setDefaulImage();
+            }
             // ProductDescription with given name does not exist, create new one
             ProductDescription savedProductDescription = productDescriptionManager.save(productDescription);
             return Response.ok().entity(savedProductDescription).build();
@@ -199,6 +202,7 @@ public class ProductDescriptionResource {
         toUpdate.setPrice(productDescription.getPrice());
         toUpdate.setISBN(productDescription.getISBN());
         toUpdate.setPages(productDescription.getPages());
+        toUpdate.setImage(productDescription.getImage());
         productDescriptionManager.save(toUpdate);
         return Response.ok().entity(toUpdate).build();
     }
