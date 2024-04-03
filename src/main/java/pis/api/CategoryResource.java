@@ -3,6 +3,7 @@
  * CategoryResource.java
  * @author Lukáš Petr <xpetrl06>
  * @author Vojtech Fiala <xfiala61>
+ * @editor Tomas Ondrusek <xondru18>
  */
 
 package pis.api;
@@ -17,6 +18,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import pis.service.CategoryManager;
 import jakarta.ws.rs.core.Response;
+import pis.service.ProductDescriptionManager;
+import pis.data.ProductDescription;
 
 /**
  * REST API resource for categories.
@@ -24,8 +27,11 @@ import jakarta.ws.rs.core.Response;
 @Path("/category")
 @PermitAll
 public class CategoryResource {
-	@Inject
-	private CategoryManager categoryManager;
+    @Inject
+    private CategoryManager categoryManager;
+
+    @Inject
+    private ProductDescriptionManager productDescriptionManager;
 
     /**
      * Returns list of all categories.
@@ -33,11 +39,12 @@ public class CategoryResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Category> getCategories() {
-    	return categoryManager.findAll();
+        return categoryManager.findAll();
     }
 
     /**
      * Returns category from id.
+     * 
      * @param id Id of the category.
      * @return Category with given id.
      */
@@ -54,13 +61,14 @@ public class CategoryResource {
     @GET
     @Path("/security")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin", "employee"})
+    @RolesAllowed({ "admin", "employee" })
     public List<Category> test() {
-    	return categoryManager.findAll();
+        return categoryManager.findAll();
     }
 
     /**
      * Adds new category.
+     * 
      * @param cat Category which will be added.
      * @return Response status.
      */
@@ -81,6 +89,7 @@ public class CategoryResource {
 
     /**
      * Updates category.
+     * 
      * @param cat Category to be updated.
      * @return Response status.
      */
@@ -102,6 +111,7 @@ public class CategoryResource {
 
     /**
      * Deletes a category by id
+     * 
      * @param id Category id to be removed
      * @return Response status
      */
@@ -114,12 +124,28 @@ public class CategoryResource {
             // Category with given id does not exist, nothing to remove
             return Response.status(Response.Status.BAD_REQUEST).entity("Error: category doesnt exist").build();
         }
+        List<ProductDescription> products = productDescriptionManager.findAll();
+
+        for (ProductDescription pd : products) {
+            // ///////////////////////////////////////////////// error
+            if (pd.getCategories().contains(toDelete)) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("Error: Category is used in a product")
+                        .build();
+            }
+            // ///////////////////OR////////////////////////////// remove category from
+            // product
+            // pd.removeCategory(toDelete); // Assuming there is a method to remove the
+            // category from a product description
+            // productDescriptionManager.save(pd);
+            // /////////////////////////////////////////////////
+        }
         categoryManager.delete(toDelete);
         return Response.ok().entity("Succesfully removed the category").build();
     }
 
     /**
      * Deletes a category by name
+     * 
      * @param cat Category name to be removed
      * @return Response status
      */
@@ -131,6 +157,21 @@ public class CategoryResource {
         if (toDelete == null) {
             // Category with given name does not exist, nothing to remove
             return Response.status(Response.Status.BAD_REQUEST).entity("Error: category doesnt exist").build();
+        }
+        List<ProductDescription> products = productDescriptionManager.findAll();
+
+        for (ProductDescription pd : products) {
+            // ///////////////////////////////////////////////// error
+            if (pd.getCategories().contains(toDelete)) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("Error: Category is used in a product")
+                        .build();
+            }
+            // ///////////////////OR////////////////////////////// remove category from
+            // product
+            // pd.removeCategory(toDelete); // Assuming there is a method to remove the
+            // category from a product description
+            // productDescriptionManager.save(pd);
+            // /////////////////////////////////////////////////
         }
         categoryManager.delete(toDelete);
         return Response.ok().entity("Succesfully removed the category").build();

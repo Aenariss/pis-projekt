@@ -147,18 +147,16 @@ public class ProductDescriptionManager {
      * @return List of ProductDescriptions
      */
     public List<ProductDescription> searchProductDescriptions(String query) {
-        List<ProductDescription> products = null;
-        System.out.println(query);
         try {
             Query q = em.createQuery(
-                    "SELECT p FROM ProductDescription p JOIN p.author a JOIN p.categories c WHERE p.name LIKE :query OR p.description LIKE :query OR p.ISBN LIKE :query OR a.firstName LIKE :query OR a.lastName LIKE :query OR c.name LIKE :query OR c.description LIKE :query OR p.language.language LIKE :query");
+                "SELECT p FROM ProductDescription p LEFT JOIN p.author a LEFT JOIN p.categories c WHERE p.name LIKE :query OR p.description LIKE :query OR p.ISBN LIKE :query OR a.firstName LIKE :query OR a.lastName LIKE :query OR c.name LIKE :query OR c.description LIKE :query OR p.language.language LIKE :query");
             System.out.println(query);
             q.setParameter("query", "%" + query + "%");
 
             return (List<ProductDescription>) q.getResultList();
         } catch (Exception e) {
             System.out.println(e);
-            return products;
+            return List.of();
         }
     }
 
