@@ -183,6 +183,8 @@ public class ProductDescriptionManager {
     public List<ProductDescription> filterProductDescriptions(FilterQuery query) {
 
         List<ProductDescription> products = null;
+        String flag = "";
+
         class FilterQueryData {
             private List<Long> authorIds;
             private List<Long> categoryIds;
@@ -218,18 +220,25 @@ public class ProductDescriptionManager {
             data.priceFrom = query.getPriceFrom();
         }
         if (query.getPriceTo() == null) {
-            data.priceTo = 1000000;
+            data.priceTo = 999999.99;
         } else {
             data.priceTo = query.getPriceTo();
         }
+        if (query.getPagesTo() == 0) {
+            data.pagesTo = 1000000;
+        } else {
+            data.pagesTo = query.getPagesTo();
+        }
+        if (query.getDiscountTo() == 0) {
+            data.discountTo = 100;
+        } else {
+            data.discountTo = query.getDiscountTo();
+        }
 
         data.pagesFrom = query.getPagesFrom();
-        data.pagesTo = query.getPagesTo();
         data.discountFrom = query.getDiscountFrom();
-        data.discountTo = query.getDiscountTo();
 
         data.print(); // TODO remove debug print
-
         if (data.authorIds != null) {
             try {
                 Query q = em.createQuery("SELECT p FROM ProductDescription p JOIN p.author a WHERE a.id IN :authorIds");
@@ -239,10 +248,44 @@ public class ProductDescriptionManager {
                 System.out.println(e);
                 return products;
             }
+            flag = "author";
+        } else if (data.categoryIds != null) {
+            try {
+                Query q = em.createQuery(
+                        "SELECT p FROM ProductDescription p JOIN p.categories c WHERE c.id IN :categoryIds");
+                q.setParameter("categoryIds", data.categoryIds);
+                products = (List<ProductDescription>) q.getResultList();
+            } catch (Exception e) {
+                System.out.println(e);
+                return products;
+            }
+            flag = "category";
+        } else if (data.languageIds != null) {
+            try {
+                Query q = em.createQuery("SELECT p FROM ProductDescription p WHERE p.language.id IN :languageIds");
+                q.setParameter("languageIds", data.languageIds);
+                products = (List<ProductDescription>) q.getResultList();
+            } catch (Exception e) {
+                System.out.println(e);
+                return products;
+            }
+            flag = "language";
+        } else {
+            products = findAll();
         }
-
+        // Filter products by author
+        if (products != null && data.authorIds != null && flag != "author") {
+            products.removeIf(p -> {
+                for (Long id : data.authorIds) {
+                    if (p.getAuthor().getId() == id) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+        }
         // Filter products by category
-        if (products != null && data.categoryIds != null) {
+        if (products != null && data.categoryIds != null && flag != "category") {
             products.removeIf(p -> {
                 for (Category c : p.getCategories()) {
                     if (data.categoryIds.contains(c.getId())) {
@@ -254,25 +297,9 @@ public class ProductDescriptionManager {
         }
 
         // Filter products by language
-        if (products != null && data.languageIds != null) {
-            for (ProductDescription p : products) {
-                boolean found = false;
-                Language l = p.getLanguage();
-                for (Long id : data.languageIds) {
-                    if (l.getId() == id) {
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    if (products != null) {
-                        products.remove(p);
-                    }
-                    if (products.isEmpty()) {
-                        return List.of();
-                    }
-                }
-            }
+        if (products != null && data.languageIds != null && flag != "language") {
+            products.removeIf(p -> p.getLanguage() == null);
+            products.removeIf(p -> !data.languageIds.contains(p.getLanguage().getId()));
         }
         // Filter products by price, pages and discount
         if (products != null) {

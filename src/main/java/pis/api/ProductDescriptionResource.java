@@ -136,6 +136,12 @@ public class ProductDescriptionResource {
         return productDescriptionManager.searchProductDescriptions(searchQuery.getQuery());
     }
 
+    /**
+     * Returns filtered results from filter query.
+     * 
+     * @param filterQuery Filter query.
+     * @return List of ProductDescriptions with given filter query.
+     */
     @GET
     @Path("/filter")
     @Produces(MediaType.APPLICATION_JSON)
