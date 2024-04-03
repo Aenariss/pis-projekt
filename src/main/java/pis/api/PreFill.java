@@ -37,6 +37,7 @@ public class PreFill {
         //      information can be edited, lorem ipsum generator can be used, ... just to fill db
         // Categories
         Category crime = new Category("Crime", "Narratives that centre on criminal acts and especially on the investigation, either by an amateur or a professional detective, of a crime, often a murder.");
+<<<<<<< HEAD
         categoryManager.save(crime);
         Category travelWritings = new Category("Travel writing", "The genre of travel literature or travelogue encompasses outdoor literature, guide books, nature writing, and travel memoirs.");
         categoryManager.save(travelWritings);
@@ -46,10 +47,22 @@ public class PreFill {
         // Languages
         Language english = new Language("English");
         languageManager.save(english);
+=======
+        crime = categoryManager.save(crime);
+        Category travelWritings = new Category("Travel writing", "The genre of travel literature or travelogue encompasses outdoor literature, guide books, nature writing, and travel memoirs.");
+        travelWritings = categoryManager.save(travelWritings);
+        // Authors
+        BookAuthor agathaCristie = new BookAuthor("Agatha", "Christie");
+        agathaCristie = bookAuthorManager.save(agathaCristie);
+        // Languages
+        Language english = new Language("English");
+        english = languageManager.save(english);
+>>>>>>> a930125565bbc42abaca2167aa1da80be458b222
         // Products
         ProductDescription kingfisherHill = new ProductDescription(30, "Killings at Kingfisher Hill: The New Hercule Poirot Mystery",
                 "The world's greatest detective, Hercule Poirot-legendary star of Agatha Christie's Murder on the Orient Express and Death on the Nile-returns to solve a fiendish new mystery.",
                 "9780008264550", 120, agathaCristie, List.of(crime), english, null);
+<<<<<<< HEAD
         productDescriptionManager.save(kingfisherHill);
         ProductDescription earlyCases = new ProductDescription(45, "Poirot's Early Cases",
                 "Captain Hastings recounts 18 of Poirot's early cases from the days before he was famous...",
@@ -59,6 +72,17 @@ public class PreFill {
                 "Unpublished for 90 years, Agatha Christie's extensive and evocative letters and photographs from her year-long round-the-world trip to South Africa, Australia, New ...",
                 "9780007460687", 420, agathaCristie, List.of(travelWritings), english, null);
         productDescriptionManager.save(groundTour);
+=======
+        kingfisherHill = productDescriptionManager.save(kingfisherHill);
+        ProductDescription earlyCases = new ProductDescription(45, "Poirot's Early Cases",
+                "Captain Hastings recounts 18 of Poirot's early cases from the days before he was famous...",
+                "9780008164843", 326, agathaCristie, List.of(crime), english, null);
+        earlyCases = productDescriptionManager.save(earlyCases);
+        ProductDescription groundTour = new ProductDescription(12, " Grand Tour: Letters and Photographs from the British Empire Expedition 1922",
+                "Unpublished for 90 years, Agatha Christie's extensive and evocative letters and photographs from her year-long round-the-world trip to South Africa, Australia, New ...",
+                "9780007460687", 420, agathaCristie, List.of(travelWritings), english, null);
+        groundTour = productDescriptionManager.save(groundTour);
+>>>>>>> a930125565bbc42abaca2167aa1da80be458b222
 
         return Response.status(Response.Status.OK).entity("DB was prefilled").build();
     }
