@@ -18,6 +18,7 @@ import {jwtDecode} from "jwt-decode";
 import {Modal} from "react-bootstrap";
 import NotFoundPage from "./pages/NotFound";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import BookDetailPage from "./pages/BookDetail";
 
 /** Time remaining for JWT expiration in which we should try to renew the JWT token. */
 const RENEW_AT_REMAINING_TIME = 600000; // (10 min)
@@ -29,6 +30,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<BooksPage />} />
+            <Route path="/book/:bookId" element={<BookDetailPage />} />
             <Route element={<ProtectedRoute role="employee" />} >
               <Route path="orders-manager" element={<OrdersManager />} />
               <Route path="storage-manager" element={<StorageManager />} />
