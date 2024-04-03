@@ -9,10 +9,12 @@ package pis.api;
 import java.util.List;
 
 import pis.data.ProductDescription;
+import pis.data.SearchQuery;
 import pis.data.Category;
 import pis.data.BookAuthor;
 import pis.data.Language;
 import pis.data.Discount;
+import pis.data.FilterQuery;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -127,8 +129,9 @@ public class ProductDescriptionResource {
      * 
      * @param searchQuery Search query.
      * @return List of ProductDescriptions with given search query.
+     * @apiNote uses POST instead of GET because GET can not have body
      */
-    @GET
+    @POST
     @Path("/search")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -141,8 +144,9 @@ public class ProductDescriptionResource {
      * 
      * @param filterQuery Filter query.
      * @return List of ProductDescriptions with given filter query.
+     * @apiNote uses POST instead of GET because GET can not have body
      */
-    @GET
+    @POST
     @Path("/filter")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)

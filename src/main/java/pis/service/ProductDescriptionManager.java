@@ -14,8 +14,8 @@ import jakarta.persistence.Query;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import pis.api.FilterQuery;
 import pis.data.Category;
+import pis.data.FilterQuery;
 import pis.data.Language;
 
 /**

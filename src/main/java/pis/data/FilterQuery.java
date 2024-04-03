@@ -4,7 +4,7 @@
  * @author Tomas Ondrusek <xondru18>
  */
 
-package pis.api;
+package pis.data;
 
 import java.util.List;
 

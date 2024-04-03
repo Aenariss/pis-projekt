@@ -4,7 +4,7 @@
  * @author Tomas Ondrusek <xondru18>
  */
 
-package pis.api;
+package pis.data;
 
 /**
  * Data model for search query.
@@ -12,8 +12,11 @@ package pis.api;
 public class SearchQuery {
     private String query;
 
+
     public String getQuery() {
+        // parse querry from json to string and return its value
         return query;
+
     }
 
     public void setQuery(String query) {
