@@ -11,6 +11,7 @@ import {Button, Col, Form, InputGroup} from "react-bootstrap";
 import {Cart} from "react-bootstrap-icons";
 import {useContext} from 'react';
 import {AuthContext} from '../../context/AuthContext';
+import Search from "./Search";
 
 /**
  * Website layout.
@@ -56,12 +57,7 @@ export default function Layout() {
             <Navbar.Brand as={Link} to="/">BookShop</Navbar.Brand>
           </Col>
           <Col md={7}>
-            <Form className="mx-5">
-              <InputGroup>
-                <Form.Control type="text" data-bs-theme="light" placeholder="Search by book name" />
-                <Button onClick={() => alert("Not implemented yet")}>Search</Button>
-              </InputGroup>
-            </Form>
+            <Search />
           </Col>
           <Col md={1}>
             <Button onClick={() => alert("Not implemented yet")}>
