@@ -3,7 +3,7 @@
  * @author Lukas Petr (xpetrl06)
  * @author Martin Balaz
  */
-import {Link, Outlet, useLocation} from 'react-router-dom';
+import {Link, Outlet, useLocation, useNavigate} from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -19,6 +19,7 @@ import Search from "./Search";
  * @component
  */
 export default function Layout() {
+  const navigate = useNavigate();
   const {user} = useContext(AuthContext);
   const location = useLocation();
 
@@ -67,7 +68,7 @@ export default function Layout() {
             <Search />
           </Col>
           <Col md={1}>
-            <Button onClick={() => alert("Not implemented yet")}>
+            <Button onClick={() => navigate('/cart')}>
               <span className="me-2"><Cart size={30}/></span>
               <span>Cart</span>
             </Button>
