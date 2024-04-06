@@ -5,7 +5,7 @@
 import {Alert, Button, Form, Modal} from 'react-bootstrap';
 import {useContext, useState} from "react";
 import {AuthContext} from "../../context/AuthContext";
-import {isEmailValid, isPasswordValid} from "./utils";
+import {isEmailValid, isPasswordValid} from "../../components/UserForm/utils";
 
 /**
  * Component for logging in.

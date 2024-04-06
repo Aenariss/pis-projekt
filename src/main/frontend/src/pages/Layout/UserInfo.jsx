@@ -7,7 +7,6 @@ import {PersonCircle} from "react-bootstrap-icons";
 import {Button, Dropdown, Stack} from "react-bootstrap";
 import React, {useContext, useState} from "react";
 import Login from "./Login";
-import Register from "./Register";
 import {AuthContext} from "../../context/AuthContext";
 import {useNavigate} from "react-router-dom";
 
@@ -66,7 +65,7 @@ export default function UserInfo() {
         </span>
         <span>
           <a className="link-underline-opacity-0 link-underline-opacity-100-hover link-light"
-             role="button" onClick={() => setShow('register')}>
+             role="button" onClick={() => navigate('/register')}>
             Register
           </a>
         </span>
@@ -89,7 +88,6 @@ export default function UserInfo() {
         </Stack>
       </Stack>
       { show === 'login' && <Login onHide={hideHandle}/> }
-      { show === 'register' && <Register onHide={hideHandle}/> }
     </span>
   );
 }
