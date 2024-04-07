@@ -6,24 +6,24 @@
 
  package pis.api;
 
- import pis.data.RegisteredUser;
- import pis.data.RegisterRequest;
- 
- import pis.service.RegisteredUserManager;
- 
- import java.util.regex.Pattern;
- import jakarta.inject.Inject;
- import jakarta.ws.rs.*;
- import jakarta.ws.rs.core.MediaType;
- import jakarta.ws.rs.core.Response;
+import pis.data.RegisteredUser;
+import pis.data.RegisterRequest;
 
- @Path("/register")
- public class Register {
+import pis.service.RegisteredUserManager;
+
+import java.util.regex.Pattern;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+
+@Path("/register")
+public class Register {
  
     @Inject
     private RegisteredUserManager userManager;
     /**
-    * Login
+    * Register
     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -41,7 +41,9 @@
             return Response.status(Response.Status.BAD_REQUEST).entity("Password is too short!!").build();
         }
 
-        RegisteredUser u = new RegisteredUser(r.getFirstname(), r.getSurname(), r.getPhone(), r.getEmail(), r.getPassword());
+        RegisteredUser u = new RegisteredUser(r.getFirstname(), r.getSurname(), r.getPhone(), r.getEmail(), r.getPassword(), r.getState(), r.getTown(), r.getStreet(), r.getStreetNumber(), r.getPostCode());
+
+        // TODO: Validations for address?
 
         // User doesnt exist yet validation
         RegisteredUser taken = userManager.findByEmail(r.getEmail());

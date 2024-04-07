@@ -40,7 +40,7 @@ public class SetRole {
 
         u.setRole("user");
         userManager.save(u);
-        String resp_text = u.getEmail() + "is now an user";
+        String resp_text = u.getEmail() + " is now an user";
         return Response.status(Response.Status.OK).entity(resp_text).build();
     }
 
@@ -61,12 +61,12 @@ public class SetRole {
 
         u.setRole("employee");
         userManager.save(u);
-        String resp_text = u.getEmail() + "is now an employee";
+        String resp_text = u.getEmail() + " is now an employee";
         return Response.status(Response.Status.OK).entity(resp_text).build();
     }
 
     /**
-     * Set the client's role as employee
+     * Set the client's role as adm,in
      */
     @POST
     @Path("/admin")
@@ -82,7 +82,28 @@ public class SetRole {
 
         u.setRole("admin");
         userManager.save(u);
-        String resp_text = u.getEmail() + "is now an admin";
+        String resp_text = u.getEmail() + " is now an admin";
         return Response.status(Response.Status.OK).entity(resp_text).build();
     }
+
+    /**
+     * Set the test@test.cz user's role to admin
+     */
+    @POST
+    @Path("/testUser")
+    public Response testAdmin() {
+        
+        RegisteredUser u = userManager.findByEmail("test@test.cz");
+
+        if (u == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("test user not registered!").build();
+        }
+
+        u.setRole("admin");
+        userManager.save(u);
+        String resp_text = u.getEmail() + " is now an admin";
+        return Response.status(Response.Status.OK).entity(resp_text).build();
+    }
+
+
 }
