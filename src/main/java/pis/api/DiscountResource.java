@@ -62,6 +62,7 @@ public class DiscountResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin"})
     public Response addDiscount(Discount discount) {
         if (discountManager.findDiscount(discount.getDiscount()) == null) {
             // Discount with given name does not exist, create new one
@@ -81,6 +82,7 @@ public class DiscountResource {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin"})
     public Response updateDiscount(@PathParam("id") long id, Discount discount) {
         Discount toUpdate = discountManager.find(id);
         if (toUpdate == null) {
@@ -101,6 +103,7 @@ public class DiscountResource {
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin"})
     public Response deleteDiscount(Discount discount) {
         Discount toDelete = discountManager.findDiscount(discount.getDiscount());
         if (toDelete == null) {
@@ -127,6 +130,7 @@ public class DiscountResource {
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin"})
     public Response deleteDiscountById(@PathParam("id") long id) {
         Discount toDelete = discountManager.find(id);
         if (toDelete == null) {

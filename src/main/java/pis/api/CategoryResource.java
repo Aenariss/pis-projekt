@@ -56,17 +56,6 @@ public class CategoryResource {
     }
 
     /**
-     * TEST
-     */
-    @GET
-    @Path("/security")
-    @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({ "admin", "employee" })
-    public List<Category> test() {
-        return categoryManager.findAll();
-    }
-
-    /**
      * Adds new category.
      * 
      * @param cat Category which will be added.
@@ -75,6 +64,7 @@ public class CategoryResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin"})
     public Response addCategory(Category cat) {
         if (cat.getName().length() < 2) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Categry needs a valid name!").build();
@@ -97,6 +87,7 @@ public class CategoryResource {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin"})
     public Response updateCategory(@PathParam("id") long id, Category cat) {
         Category toUpdate = categoryManager.find(id);
         if (toUpdate == null) {
@@ -118,6 +109,7 @@ public class CategoryResource {
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin"})
     public Response deleteCategory(@PathParam("id") long id) {
         Category toDelete = categoryManager.find(id);
         if (toDelete == null) {
@@ -152,6 +144,7 @@ public class CategoryResource {
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin"})
     public Response deleteCategory(Category cat) {
         Category toDelete = categoryManager.findByName(cat.getName());
         if (toDelete == null) {
