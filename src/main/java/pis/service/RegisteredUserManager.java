@@ -49,9 +49,96 @@ public class RegisteredUserManager {
             return (RegisteredUser) q.getSingleResult();
         }
         catch(Exception e) {
+            System.out.println(e);
             return u;
         }
     }
+
+    /**
+     * Returns list of all users who are also employees.
+     */
+    @SuppressWarnings("unchecked")
+    public List<RegisteredUser> findEmployees() {
+        List<RegisteredUser> employees = null;
+        try {
+            Query q = em.createQuery("SELECT u FROM RegisteredUser u WHERE (u.role = 'employee' OR u.role = 'admin')");
+            return (List<RegisteredUser>) q.getResultList();
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            return employees;
+        } 
+    }
+
+    /**
+     * Returns list of all employees who match the given name.
+     */
+    @SuppressWarnings("unchecked")
+    public List<RegisteredUser> getEmployeeQuery(String name) {
+        List<RegisteredUser> employees = null;
+        try {
+            Query q = em.createQuery("SELECT u FROM RegisteredUser u WHERE (u.role = 'employee' OR u.role = 'admin') AND u.surname LIKE :name");
+            q.setParameter("name", '%' + name + '%');
+            return (List<RegisteredUser>) q.getResultList();
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            return employees;
+        } 
+        
+    }
+
+    /**
+     * Returns list of all employees who match the given email.
+     */
+    @SuppressWarnings("unchecked")
+    public List<RegisteredUser> getEmployeeByEmailQuery(String email) {
+        List<RegisteredUser> employees = null;
+        try {
+            Query q = em.createQuery("SELECT u FROM RegisteredUser u WHERE (u.role = 'employee' OR u.role = 'admin') AND u.email LIKE :email");
+            q.setParameter("email", '%' + email + '%');
+            return (List<RegisteredUser>) q.getResultList();
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            return employees;
+        } 
+    }
+
+    /**
+     * Returns list of all users who match the given name.
+     */
+    @SuppressWarnings("unchecked")
+    public List<RegisteredUser> getUserQuery(String name) {
+        List<RegisteredUser> users = null;
+        try {
+            Query q = em.createQuery("SELECT u FROM RegisteredUser u WHERE u.surname LIKE :name");
+            q.setParameter("name", '%' + name + '%');
+            return (List<RegisteredUser>) q.getResultList();
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            return users;
+        } 
+    }
+
+    /**
+     * Returns list of all users who match the given email.
+     */
+    @SuppressWarnings("unchecked")
+    public List<RegisteredUser> getUserByEmailQuery(String email) {
+        List<RegisteredUser> users = null;
+        try {
+            Query q = em.createQuery("SELECT u FROM RegisteredUser u WHERE u.email LIKE :email");
+            q.setParameter("name", '%' + email + '%');
+            return (List<RegisteredUser>) q.getResultList();
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            return users;
+        } 
+    }
+
 
     /**
      * Add user to users.

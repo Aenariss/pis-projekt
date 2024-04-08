@@ -90,10 +90,10 @@ public class SetRole {
      * Set the test@test.cz user's role to admin
      */
     @POST
-    @Path("/testUser")
-    public Response testAdmin() {
+    @Path("/testUserAdmin/{email}")
+    public Response testAdmin(@PathParam("email") String email) {
         
-        RegisteredUser u = userManager.findByEmail("test@test.cz");
+        RegisteredUser u = userManager.findByEmail(email);
 
         if (u == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("test user not registered!").build();

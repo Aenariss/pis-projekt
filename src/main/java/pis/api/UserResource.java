@@ -49,8 +49,92 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(address).build();
     }
 
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/address")
+    @RolesAllowed({"admin", "user", "employee"})
+    public Response setAddress(JsonObject json) {
 
-    @POST
+        String state;
+        String town;
+        String street;
+        Integer streetNumber;
+        String postCode; 
+
+        try {
+            state = json.getString("state");
+            town = json.getString("town");
+            street = json.getString("street");
+            streetNumber = Integer.valueOf(json.getString("streetNumber"));
+            postCode = json.getString("postCode");
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid request body!").build(); 
+        }
+
+        RegisteredUser u = userManager.findByEmail(securityContext.getUserPrincipal().getName());
+
+        if (u == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("You are not logged in! How could this happen!").build();
+        }
+
+        Address address = u.getAddress();
+        address.setPostCode(postCode);
+        address.setState(state);
+        address.setStreet(street);
+        address.setStreetNumber(streetNumber);
+        address.setTown(town);
+
+        u.setAddress(address);
+        userManager.save(u);
+
+        return Response.status(Response.Status.OK).entity(u).build();
+    }
+
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/address/{email}")
+    @RolesAllowed({"admin"})
+    public Response setAddress(@PathParam("email") String email, JsonObject json) {
+
+        String state;
+        String town;
+        String street;
+        Integer streetNumber;
+        String postCode; 
+
+        try {
+            state = json.getString("state");
+            town = json.getString("town");
+            street = json.getString("street");
+            streetNumber = Integer.valueOf(json.getString("streetNumber"));
+            postCode = json.getString("postCode");
+        }
+        catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid request body!").build(); 
+        }
+
+        RegisteredUser u = userManager.findByEmail(email);
+
+        if (u == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("User not found!").build();
+        }
+
+        Address address = u.getAddress();
+        address.setPostCode(postCode);
+        address.setState(state);
+        address.setStreet(street);
+        address.setStreetNumber(streetNumber);
+        address.setTown(town);
+
+        u.setAddress(address);
+        userManager.save(u);
+
+        return Response.status(Response.Status.OK).entity(u).build();
+    }
+
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/address/state")
@@ -78,7 +162,7 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(u).build();
     }
 
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/address/{email}/state")
@@ -106,7 +190,7 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(u).build();
     }
 
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/address/town")
@@ -134,7 +218,7 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(u).build();
     }
 
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/address/{email}/town")
@@ -161,7 +245,7 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(u).build();
     }
 
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/address/street")
@@ -189,7 +273,7 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(u).build();
     }
 
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/address/{email}/street")
@@ -216,7 +300,7 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(u).build();
     }
 
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/address/streetNumber")
@@ -244,7 +328,7 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(u).build();
     }
 
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/address/{email}/streetNumber")
@@ -271,7 +355,7 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(u).build();
     }
 
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/address/postCode")
@@ -299,7 +383,7 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(u).build();
     }
 
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/address/{email}/postCode")
@@ -344,7 +428,7 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(firstname).build();
     }
 
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/firstname")
@@ -370,7 +454,7 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(u).build();
     }
 
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/firstname/{email}")
@@ -397,7 +481,7 @@ public class UserResource {
     }
     
 
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/surname")
@@ -423,7 +507,7 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(u).build();
     }
 
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/surname/{email}")
@@ -484,7 +568,7 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(phone).build();
     }
 
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/phone")
@@ -510,7 +594,7 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(u).build();
     }
 
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/phone/{email}")
@@ -553,7 +637,7 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(email).build();
     }
 
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/password")
@@ -583,7 +667,7 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(u).build();
     }
 
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/password/{email}")
