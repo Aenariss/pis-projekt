@@ -8,7 +8,7 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import UserInfo from "./UserInfo";
-import {Button, Col, Form, InputGroup} from "react-bootstrap";
+import {Button, Col} from "react-bootstrap";
 import {Cart} from "react-bootstrap-icons";
 import {useContext} from 'react';
 import {AuthContext} from '../../context/AuthContext';

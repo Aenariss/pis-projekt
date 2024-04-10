@@ -3,7 +3,7 @@
  * @author Martin Balaz
  */
 
-import React, {useState} from 'react';
+import React from 'react';
 import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
 import '../../styles.css';
 import {api} from "../../api";
