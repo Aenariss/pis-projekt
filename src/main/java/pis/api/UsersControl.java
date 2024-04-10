@@ -60,7 +60,7 @@ public class UsersControl {
     }
 
     /**
-     * Returns a list of all employees whose surname contains text
+     * Returns a list of all users whose surname contains text
      */
     @GET
     @Path("/getUsersByName/{name}")

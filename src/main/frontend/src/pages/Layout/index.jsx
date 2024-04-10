@@ -1,8 +1,9 @@
 /**
  * Website layout (header).
  * @author Lukas Petr (xpetrl06)
+ * @author Martin Balaz
  */
-import {Link, Outlet} from 'react-router-dom';
+import {Link, Outlet, useLocation} from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -19,6 +20,12 @@ import Search from "./Search";
  */
 export default function Layout() {
   const {user} = useContext(AuthContext);
+  const location = useLocation();
+
+  const isActive = (path) => {
+    return location.pathname === path;
+  }
+
   let employeeNavBar = null;
   if (user?.role === 'admin' || user?.role === 'employee') {
     employeeNavBar = (
@@ -27,18 +34,18 @@ export default function Layout() {
           <Nav>
             {user.role === 'admin' && (
               <>
-                <Nav.Link as={Link} to="/category-manager">Categories</Nav.Link>
-                <Nav.Link as={Link} to="/employees-manager">Employees</Nav.Link>
-                <Nav.Link as={Link} to="/orders-manager">Orders</Nav.Link>
-                <Nav.Link as={Link} to="/storage-manager">Storage</Nav.Link>
-                <Nav.Link as={Link} to="/book-add">Add Book</Nav.Link>
-                <Nav.Link as={Link} to="/overview">Overview</Nav.Link>
+                <Nav.Link as={Link} to="/category-manager" className={isActive("/category-manager") ? "active" : ""}>Categories</Nav.Link>
+                <Nav.Link as={Link} to="/employees-manager" className={isActive("/employees-manager") ? "active" : ""}>Employees</Nav.Link>
+                <Nav.Link as={Link} to="/orders-manager" className={isActive("/orders-manager") ? "active" : ""}>Orders</Nav.Link>
+                <Nav.Link as={Link} to="/storage-manager" className={isActive("/storage-manager") ? "active" : ""}>Storage</Nav.Link>
+                <Nav.Link as={Link} to="/book-add" className={isActive("/book-add") ? "active" : ""}>Add book</Nav.Link>
+                <Nav.Link as={Link} to="/overview" className={isActive("/overview") ? "active" : ""}>Overview</Nav.Link>
               </>
             )}
             {user.role === 'employee' && (
               <>
-                <Nav.Link as={Link} to="/orders-manager">Orders</Nav.Link>
-                <Nav.Link as={Link} to="/storage-manager">Storage</Nav.Link>
+                <Nav.Link as={Link} to="/orders-manager" className={isActive("/orders-manager") ? "active" : ""}>Orders</Nav.Link>
+                <Nav.Link as={Link} to="/storage-manager" className={isActive("/storage-manager") ? "active" : ""}>Storage</Nav.Link>
               </>
             )}
 

@@ -130,7 +130,7 @@ public class RegisteredUserManager {
         List<RegisteredUser> users = null;
         try {
             Query q = em.createQuery("SELECT u FROM RegisteredUser u WHERE u.email LIKE :email");
-            q.setParameter("name", '%' + email + '%');
+            q.setParameter("email", '%' + email + '%');
             return (List<RegisteredUser>) q.getResultList();
         }
         catch (Exception e) {
