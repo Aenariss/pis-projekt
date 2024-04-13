@@ -1,6 +1,6 @@
 /**
  * PIS Projekt 2024
- * LoginRequest.java
+ * ProfileRequest.java
  * @author Vojtech Fiala <xfiala61>
  */
 

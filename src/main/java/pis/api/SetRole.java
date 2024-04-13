@@ -23,6 +23,23 @@ public class SetRole {
     @Inject
 	private RegisteredUserManager userManager;
 
+    private Response setRoleBody(RoleRequest r, String role) {
+        if (!r.valid()) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid user!").build();
+        }
+        
+        RegisteredUser u = userManager.findByEmail(r.getEmail());
+
+        if (u == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Unknown user!").build();
+        }
+
+        u.setRole(role);
+        userManager.save(u);
+        String resp_text = u.getEmail() + " is now a " + role;
+        return Response.status(Response.Status.OK).entity(resp_text).build();
+    }
+
     /**
      * Set the client's role as regular user
      */
@@ -31,17 +48,8 @@ public class SetRole {
     @RolesAllowed({"admin"})
     @Consumes(MediaType.APPLICATION_JSON)
     public Response setUser(RoleRequest r) {
-        
-        RegisteredUser u = userManager.findByEmail(r.getEmail());
 
-        if (u == null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Unknown user!").build();
-        }
-
-        u.setRole("user");
-        userManager.save(u);
-        String resp_text = u.getEmail() + " is now an user";
-        return Response.status(Response.Status.OK).entity(resp_text).build();
+        return this.setRoleBody(r, "user");
     }
 
     /**
@@ -52,17 +60,8 @@ public class SetRole {
     @RolesAllowed({"admin"})
     @Consumes(MediaType.APPLICATION_JSON)
     public Response setEmployee(RoleRequest r) {
-        
-        RegisteredUser u = userManager.findByEmail(r.getEmail());
 
-        if (u == null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Unknown user!").build();
-        }
-
-        u.setRole("employee");
-        userManager.save(u);
-        String resp_text = u.getEmail() + " is now an employee";
-        return Response.status(Response.Status.OK).entity(resp_text).build();
+        return this.setRoleBody(r, "employee");
     }
 
     /**
@@ -73,17 +72,8 @@ public class SetRole {
     @RolesAllowed({"admin"})
     @Consumes(MediaType.APPLICATION_JSON)
     public Response setAdmin(RoleRequest r) {
-        
-        RegisteredUser u = userManager.findByEmail(r.getEmail());
 
-        if (u == null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Unknown user!").build();
-        }
-
-        u.setRole("admin");
-        userManager.save(u);
-        String resp_text = u.getEmail() + " is now an admin";
-        return Response.status(Response.Status.OK).entity(resp_text).build();
+        return this.setRoleBody(r, "admin");
     }
 
     /**
