@@ -7,8 +7,8 @@ import {PersonCircle} from "react-bootstrap-icons";
 import {Button, Dropdown, Stack} from "react-bootstrap";
 import React, {useContext, useState} from "react";
 import Login from "./Login";
-import Register from "./Register";
 import {AuthContext} from "../../context/AuthContext";
+import {useNavigate} from "react-router-dom";
 
 /**
  * DropDown toggle component for showing possible account actions for user.
@@ -27,6 +27,7 @@ const UserDropDownToggle = React.forwardRef(({ children, onClick, disabled }, re
  * @component
  */
 export default function UserInfo() {
+  const navigate = useNavigate();
   // For showing login/register modals, possible values: null, login, register
   const [show, setShow] = useState(null);
   const {user, logout} = useContext(AuthContext);
@@ -64,7 +65,7 @@ export default function UserInfo() {
         </span>
         <span>
           <a className="link-underline-opacity-0 link-underline-opacity-100-hover link-light"
-             role="button" onClick={() => setShow('register')}>
+             role="button" onClick={() => navigate('/register')}>
             Register
           </a>
         </span>
@@ -78,8 +79,8 @@ export default function UserInfo() {
         <Dropdown data-bs-theme="light">
           <Dropdown.Toggle as={UserDropDownToggle} disabled={! user}/>
           <Dropdown.Menu>
-            {/* TODO profile handling */}
-            <Dropdown.Item >Profile</Dropdown.Item>
+            <Dropdown.Item onClick={() => navigate('/profile')}>Profile</Dropdown.Item>
+            <Dropdown.Item onClick={() => navigate('/my-orders')}>My orders</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
         <Stack direction="vertical">
@@ -87,7 +88,6 @@ export default function UserInfo() {
         </Stack>
       </Stack>
       { show === 'login' && <Login onHide={hideHandle}/> }
-      { show === 'register' && <Register onHide={hideHandle}/> }
     </span>
   );
 }

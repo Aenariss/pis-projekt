@@ -1,0 +1,14 @@
+.form-control.long-search-bar {
+    width: 250px;
+    margin-left: 7px;
+}
+
+.nav-link.active {
+    background-color: #0d6efd;
+    color: white !important;
+}
+
+.nav-link:not(.active):hover {
+    background-color: #d5d9da;
+    color: black !important;
+}

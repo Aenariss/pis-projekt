@@ -61,6 +61,7 @@ public class BookAuthorResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin"})
     public Response addBookAuthor(BookAuthor author) {
         if (author.getLastName().length() < 2) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Book Author needs a valid name!").build();
@@ -83,6 +84,7 @@ public class BookAuthorResource {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin"})
     public Response updateBookAuthor(@PathParam("id") long id, BookAuthor author) {
         BookAuthor toUpdate = bookAuthorManager.find(id);
         if (toUpdate == null) {
@@ -103,6 +105,7 @@ public class BookAuthorResource {
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin"})
     public Response deleteBookAuthor(@PathParam("id") long id) {
         BookAuthor toDelete = bookAuthorManager.find(id);
         if (toDelete == null) {
@@ -128,6 +131,7 @@ public class BookAuthorResource {
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin"})
     public Response deleteBookAuthor(BookAuthor author) {
         BookAuthor toDelete = bookAuthorManager.findByName(author.getFirstName(), author.getLastName());
         if (toDelete == null) {

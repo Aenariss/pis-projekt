@@ -6,7 +6,7 @@
 
 package pis.data;
 
-public class RoleRequest {
+public class RoleRequest extends Request {
     private String email;
 
     public RoleRequest(String email) {

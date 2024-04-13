@@ -4,18 +4,13 @@
  * @author Vojtech Fiala <xfiala61>
  */
 
-package pis.data;
+ package pis.data;
 
-import jakarta.json.bind.annotation.JsonbProperty;
-
-public class LoginRequest {
-
-    @JsonbProperty("email")
+public class LoginRequest extends Request {
+ 
     private String email;
-
-    @JsonbProperty("password")
     private String password;
-
+    
     public LoginRequest(String email, String password) {
         this.email = email;
         this.password= password;
@@ -34,7 +29,5 @@ public class LoginRequest {
     }
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    
+    } 
 }

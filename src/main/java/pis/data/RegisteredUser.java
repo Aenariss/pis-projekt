@@ -6,7 +6,6 @@
 
 package pis.data;
 
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -35,15 +34,19 @@ public class RegisteredUser {
     @NotNull
     private String role;
 
+    @Embedded
+    private Address address;
+
     public RegisteredUser() {}
 
-    public RegisteredUser(String firstname, String surname, String phone, String email, String password) {
+    public RegisteredUser(String firstname, String surname, String phone, String email, String password, String state, String town, String street, String streetNumber, String postCode) {
         this.firstname = firstname;
         this.surname = surname;
         this.phone = phone;
         this.email = email;
         this.passwordHash = DigestUtils.sha512Hex(password); // create hash from plaintext
         this.role = "user"; // default role
+        this.address = new Address(state, town, street, streetNumber, postCode);
     }
 
 
@@ -99,17 +102,14 @@ public class RegisteredUser {
         return role;
     }
 
-    @RolesAllowed("admin")
     public void setRole(String role) {
         this.role = role;
     }
 
-    @RolesAllowed({"admin", "employee"})
     public void makeEmployee() {
         this.role = "employee";
     }
 
-    @RolesAllowed("admin")
     public void makeAdmin()  {
         this.role = "admin";
     }
@@ -126,9 +126,16 @@ public class RegisteredUser {
         return savedHash.equals(givenHash); 
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     /*
      * TODO:
      * add Orders (another class reference)
-     * add Address
      */
 }

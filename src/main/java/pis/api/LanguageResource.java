@@ -61,6 +61,7 @@ public class LanguageResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin"})
     public Response addLanguage(Language language) {
         if (language.getLanguage().length() < 2) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Language needs a valid name!").build();
@@ -83,6 +84,7 @@ public class LanguageResource {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin"})
     public Response updateLanguage(@PathParam("id") long id, Language language) {
         Language toUpdate = languageManager.find(id);
         if (toUpdate == null) {
@@ -103,6 +105,7 @@ public class LanguageResource {
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin"})
     public Response deleteLanguage(@PathParam("id") long id) {
         Language toDelete = languageManager.find(id);
         if (toDelete == null) {
@@ -127,6 +130,7 @@ public class LanguageResource {
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin"})
     public Response deleteLanguage(Language language) {
         Language toDelete = languageManager.findLanguage(language.getLanguage());
         if (toDelete == null) {

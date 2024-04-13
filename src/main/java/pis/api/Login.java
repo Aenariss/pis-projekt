@@ -6,8 +6,8 @@
 
 package pis.api;
 
-import pis.data.RegisteredUser;
 import pis.data.LoginRequest;
+import pis.data.RegisteredUser;
 
 import pis.service.RegisteredUserManager;
 
@@ -37,19 +37,18 @@ public class Login {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response login(LoginRequest r) {
+
+        if (!r.valid()) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid request!").build();
+        }
         
         RegisteredUser u = userManager.findByEmail(r.getEmail());
 
         if (u == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Unknown user!").build();
         }
-        if (u.validatePassword(r.getPassword()) ) {
 
-            // TODO: REMOVE - only for tests
-            if (u.getEmail().matches("test@test.cz")) {
-                u.setRole("admin");
-                userManager.save(u);
-            }
+        if (u.validatePassword(r.getPassword()) ) {
             
             String token = Jwts.builder()
                     .setSubject(u.getEmail())
