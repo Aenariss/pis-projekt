@@ -9,7 +9,7 @@ package pis.data;
 import jakarta.persistence.*;
 
 @Embeddable
-public class Address {
+public class Address extends Request { // Not exactly a request body, but may be used as such
 
     private String state;
     private String town;
