@@ -12,11 +12,7 @@ import pis.data.RegisteredUser;
 import pis.service.RegisteredUserManager;
 
 import java.util.regex.Pattern;
-
 import org.apache.commons.codec.digest.DigestUtils;
-
-//import java.util.regex.Pattern;
-
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.json.JsonObject;

@@ -7,7 +7,6 @@
 package pis.api;
 
 import pis.data.RegisteredUser;
-import pis.data.LoginRequest;
 
 import pis.service.RegisteredUserManager;
 
@@ -15,6 +14,7 @@ import java.security.Key;
 import java.util.Date;
 
 import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -36,14 +36,27 @@ public class Login {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response login(LoginRequest r) {
+    public Response login(JsonObject json) {
+
+        String password; String email;
+
+        try {
+            email = json.getString("email");
+            password = json.getString("password");
+            
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid request!").build(); 
+        }
         
-        RegisteredUser u = userManager.findByEmail(r.getEmail());
+        RegisteredUser u = userManager.findByEmail(email);
 
         if (u == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Unknown user!").build();
         }
-        if (u.validatePassword(r.getPassword()) ) {
+
+        if (u.validatePassword(password) ) {
             
             String token = Jwts.builder()
                     .setSubject(u.getEmail())
