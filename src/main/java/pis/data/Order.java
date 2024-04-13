@@ -42,8 +42,8 @@ public class Order {
     }
 
     public Order(OrderStatus status, OrderUserInfo orderUserInfo, String deliveryState, String deliveryTown,
-            String deliveryStreet, Integer deliveryStreetNumber, String deliveryPostCode, String userState,
-            String userTown, String userStreet, Integer userStreetNumber, String userPostCode) {
+            String deliveryStreet, String deliveryStreetNumber, String deliveryPostCode, String userState,
+            String userTown, String userStreet, String userStreetNumber, String userPostCode) {
         this();
         this.status = status;
         this.orderUserInfo = orderUserInfo;

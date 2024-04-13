@@ -190,20 +190,20 @@ public class PreFill {
         OrderStatus canceled = OrderStatus.CANCELED;
         OrderStatus returned = OrderStatus.RETURNED;
 
-        Order order1 = new Order(delivered, user1, "Slovakia", "Bratislava", "Komenskeho", 32, "03601",
-                "Slovakia", "Bratislava", "Komenskeho", 32, "03601");
+        Order order1 = new Order(delivered, user1, "Slovakia", "Bratislava", "Komenskeho", "32", "03601",
+                "Slovakia", "Bratislava", "Komenskeho", "32", "03601");
         order1 = orderManager.save(order1);
-        Order order2 = new Order(confirmed, user2, "Slovakia", "Bratislava", "Dlha", 56, "02348", "Slovakia",
-                "Bratislava", "Dlha", 56, "02348");
+        Order order2 = new Order(confirmed, user2, "Slovakia", "Bratislava", "Dlha", "56", "02348", "Slovakia",
+                "Bratislava", "Dlha", "56", "02348");
         order2 = orderManager.save(order2);
-        Order order3 = new Order(inProgress, user3, "Czech Republic", "Praha", "Karlova", 4, "23456",
-                "Czech Republic", "Brno", "Kolejni", 2, "67843");
+        Order order3 = new Order(inProgress, user3, "Czech Republic", "Praha", "Karlova", "4", "23456",
+                "Czech Republic", "Brno", "Kolejni", "2", "67843");
         order3 = orderManager.save(order3);
-        Order order4 = new Order(shipped, user4, "Czech Republic", "Praha", "Palackeho", 3, "234345",
-                "Czech Republic", "Brno", "Bozetechova", 2, "63012");
+        Order order4 = new Order(shipped, user4, "Czech Republic", "Praha", "Palackeho", "3", "234345",
+                "Czech Republic", "Brno", "Bozetechova", "2", "63012");
         order4 = orderManager.save(order4);
-        Order order5 = new Order(inProgress, user1, "Slovakia", "Bratislava", "Zilinska", 65, "76907",
-                "Slovakia", "Kosice", "Kosicka", 342, "12345");
+        Order order5 = new Order(inProgress, user1, "Slovakia", "Bratislava", "Zilinska", "65", "76907",
+                "Slovakia", "Kosice", "Kosicka", "342", "12345");
         order5 = orderManager.save(order5);
 
         return Response.status(Response.Status.OK).entity("DB was prefilled").build();
