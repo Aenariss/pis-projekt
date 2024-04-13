@@ -18,6 +18,7 @@ import pis.data.Order;
 import pis.data.OrderStatus;
 import pis.data.OrderUserInfo;
 import pis.data.ProductDescription;
+import pis.data.RegisteredUser;
 import pis.service.BookAuthorManager;
 import pis.service.CategoryManager;
 import pis.service.DiscountManager;
@@ -25,11 +26,15 @@ import pis.service.LanguageManager;
 import pis.service.OrderManager;
 import pis.service.OrderUserInfoManager;
 import pis.service.ProductDescriptionManager;
+import pis.service.RegisteredUserManager;
 
 import java.util.List;
 
 @Path("/prefill")
 public class PreFill {
+    @Inject
+    RegisteredUserManager registeredUserManager;
+
     @Inject
     CategoryManager categoryManager;
     @Inject
@@ -50,6 +55,11 @@ public class PreFill {
 
     @GET
     public Response prefillDB() {
+        RegisteredUser admin = new RegisteredUser("Admin", "Admin","","admin@admin.cz","admin",
+                                                   "", "","","","");
+        admin.makeAdmin();
+        registeredUserManager.save(admin);
+
         // Note some source for filling the DB: wordery.com, wikipedia, the things does
         // not have to exists,
         // information can be edited, lorem ipsum generator can be used, ... just to
