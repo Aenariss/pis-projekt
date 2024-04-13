@@ -44,12 +44,6 @@ public class Login {
             return Response.status(Response.Status.BAD_REQUEST).entity("Unknown user!").build();
         }
         if (u.validatePassword(r.getPassword()) ) {
-
-            // TODO: REMOVE - only for tests
-            if (u.getEmail().matches("test@test.cz")) {
-                u.setRole("admin");
-                userManager.save(u);
-            }
             
             String token = Jwts.builder()
                     .setSubject(u.getEmail())

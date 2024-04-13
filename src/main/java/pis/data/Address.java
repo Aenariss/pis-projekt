@@ -14,13 +14,13 @@ public class Address {
     private String state;
     private String town;
     private String street;
-    private Integer streetNumber;
+    private String streetNumber;
     private String postCode;
 
 
     public Address() {}
 
-    public Address(String state, String town, String street, Integer streetNumber, String postCode) {
+    public Address(String state, String town, String street, String streetNumber, String postCode) {
         this.state = state;
         this.town = town;
         this.street = street;
@@ -59,12 +59,12 @@ public class Address {
     }
 
 
-    public Integer getStreetNumber() {
+    public String getStreetNumber() {
         return streetNumber;
     }
 
 
-    public void setStreetNumber(Integer streetNumber) {
+    public void setStreetNumber(String streetNumber) {
         this.streetNumber = streetNumber;
     }
 

@@ -39,7 +39,7 @@ public class RegisteredUser {
 
     public RegisteredUser() {}
 
-    public RegisteredUser(String firstname, String surname, String phone, String email, String password, String state, String town, String street, Integer streetNumber, String postCode) {
+    public RegisteredUser(String firstname, String surname, String phone, String email, String password, String state, String town, String street, String streetNumber, String postCode) {
         this.firstname = firstname;
         this.surname = surname;
         this.phone = phone;

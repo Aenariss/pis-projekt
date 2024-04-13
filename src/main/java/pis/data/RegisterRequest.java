@@ -18,11 +18,11 @@ public class RegisterRequest {
     private String state;
     private String town;
     private String street;
-    private Integer streetNumber;
+    private String streetNumber;
     private String postCode;
 
 
-    public RegisterRequest(String firstname, String surname, String phone, String email, String password, String state, String town, String street, Integer streetNumber, String postCode) {
+    public RegisterRequest(String firstname, String surname, String phone, String email, String password, String state, String town, String street, String streetNumber, String postCode) {
         this.firstname = firstname;
         this.surname = surname;
         this.phone = phone;
@@ -61,11 +61,11 @@ public class RegisterRequest {
         this.street = street;
     }
 
-    public Integer getStreetNumber() {
+    public String getStreetNumber() {
         return streetNumber;
     }
 
-    public void setStreetNumber(Integer streetNumber) {
+    public void setStreetNumber(String streetNumber) {
         this.streetNumber = streetNumber;
     }
 
