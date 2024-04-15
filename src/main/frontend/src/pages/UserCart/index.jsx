@@ -8,12 +8,14 @@ import { CartContext } from "../../context/CartContext";
 import { Button, Image, Table } from "react-bootstrap";
 import { api } from "../../api";
 import { X } from "react-bootstrap-icons";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Cart page component.
  * @component
  */
 export default function UserCartPage() {
+  const navigate = useNavigate();
   const {
     items,
     getAmountForId,
@@ -88,7 +90,11 @@ export default function UserCartPage() {
       </Table>
       <div className='d-flex'>
         <span className='display-6'>Total price: {totalPrice.toFixed(2)} $</span>
-        <Button className='ms-auto px-5' size='lg'>Continue to order</Button>
+        <Button className='ms-auto px-5'
+                size='lg'
+                onClick={() => navigate('/finish-order')}>
+          Continue to order
+        </Button>
       </div>
     </>
   );
