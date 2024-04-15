@@ -3,7 +3,7 @@
  * @author Lukas Petr <xpetrl06>
  */
 
-import {Button, Col, Form, Row, Stack} from 'react-bootstrap';
+import {Accordion, Button, Col, Form, Row, Stack} from 'react-bootstrap';
 import ChangePassword from './ChangePassword';
 import {useMemo, useState} from 'react';
 import { isEmailValid } from './utils';
@@ -96,85 +96,103 @@ export default function UserForm({
   return (
     <>
       <Form className='w-50' onSubmit={handleSubmit}>
-        <Stack gap={4}>
-          <h2>{title}</h2>
-          <h3>Basic information</h3>
-          <Row>
-            <Form.Group as={Col}>
-                <Form.Label htmlFor='email'>Email address:</Form.Label>
-                <Form.Control id='email'
-                              type='text'
-                              value={email}
-                              required
-                              placeholder="example@google.com"
-                              disabled={type !== 'register'}
-                              isInvalid={invalidEmail} isValid={!invalidEmail}
-                              onChange={e => handleEmailChange(e.target.value)}/>
-                <Form.Control.Feedback type="invalid">Email must be in form 'x@y.z'!</Form.Control.Feedback>
-                <Form.Control.Feedback type="valid">&nbsp;</Form.Control.Feedback>
-            </Form.Group>
-          </Row>
-          {type === 'register' && (
-            <Row>
-              <Password password1={password1}
-                        password2={password2}
-                        onPassword1Change={setPassword1}
-                        onPassword2Change={setPassword2}
-                        onInvalidPassword={setInvalidPassword}
-                        passwordTitle='Password:'
-                        repeatPasswordTitle='Repeat password:'/>
-            </Row>
-          )}
-          <Row>
-            <Form.Group as={Col}>
-              <Form.Label htmlFor='firstname'>First name:</Form.Label>
-              <Form.Control id='firstname'
-                            type='text'
-                            value={firstname}
-                            maxLength={20}
-                            onChange={(e) => setFirstname(e.target.value)}/>
-            </Form.Group>
-            <Form.Group as={Col}>
-              <Form.Label htmlFor='surname'>Last name:</Form.Label>
-              <Form.Control id='surname'
-                            type='text'
-                            value={surname}
-                            maxLength={20}
-                            onChange={(e) => setSurname(e.target.value)}/>
-            </Form.Group>
-          </Row>
-          <Row>
-            <Form.Group as={Col}>
-              <Form.Label htmlFor='phone'>Phone number:</Form.Label>
-              <Form.Control id='phone'
-                            type='text'
-                            value={phone}
-                            placeholder="+420123456789"
-                            onChange={e => setPhone(e.target.value)} />
-            </Form.Group>
-          </Row>
+        <h2>{title}</h2>
+        <Accordion defaultActiveKey={['0']} alwaysOpen>
+          <Accordion.Item eventKey='0'>
+            <Accordion.Header>
+              <h3>Basic information</h3>
+            </Accordion.Header>
+            <Accordion.Body>
+              <Stack gap={4}>
+                <Row>
+                  <Form.Group as={Col}>
+                      <Form.Label htmlFor='email'>Email address:</Form.Label>
+                      <Form.Control id='email'
+                                    type='text'
+                                    value={email}
+                                    required
+                                    placeholder="example@google.com"
+                                    disabled={type !== 'register'}
+                                    isInvalid={invalidEmail} isValid={!invalidEmail}
+                                    onChange={e => handleEmailChange(e.target.value)}/>
+                      <Form.Control.Feedback type="invalid">Email must be in form 'x@y.z'!</Form.Control.Feedback>
+                      <Form.Control.Feedback type="valid">&nbsp;</Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
+                {type === 'register' && (
+                  <Row>
+                    <Password password1={password1}
+                              password2={password2}
+                              onPassword1Change={setPassword1}
+                              onPassword2Change={setPassword2}
+                              onInvalidPassword={setInvalidPassword}
+                              passwordTitle='Password:'
+                              repeatPasswordTitle='Repeat password:'/>
+                  </Row>
+                )}
+                <Row>
+                  <Form.Group as={Col}>
+                    <Form.Label htmlFor='firstname'>First name:</Form.Label>
+                    <Form.Control id='firstname'
+                                  type='text'
+                                  value={firstname}
+                                  maxLength={20}
+                                  onChange={(e) => setFirstname(e.target.value)}/>
+                  </Form.Group>
+                  <Form.Group as={Col}>
+                    <Form.Label htmlFor='surname'>Last name:</Form.Label>
+                    <Form.Control id='surname'
+                                  type='text'
+                                  value={surname}
+                                  maxLength={20}
+                                  onChange={(e) => setSurname(e.target.value)}/>
+                  </Form.Group>
+                </Row>
+                <Row>
+                  <Form.Group as={Col}>
+                    <Form.Label htmlFor='phone'>Phone number:</Form.Label>
+                    <Form.Control id='phone'
+                                  type='text'
+                                  value={phone}
+                                  placeholder="+420123456789"
+                                  onChange={e => setPhone(e.target.value)} />
+                  </Form.Group>
+                </Row>
 
-          {type === 'profile' && (
-            <ChangePassword />
-          )}
-          <h3>Address</h3>
-          <Address state={state}
-                   town={town}
-                   postcode={postCode}
-                   street={street}
-                   streetNumber={streetNumber}
-                   onStateChange={setState}
-                   onTownChange={setTown}
-                   onPostcodeChange={setPostCode}
-                   onStreetChange={setStreet}
-                   onStreetNumberChange={setStreetNumber}/>
+                {type === 'profile' && (
+                  <ChangePassword />
+                )}
+              </Stack>
+            </Accordion.Body>
+          </Accordion.Item>
+          <Accordion.Item eventKey='1'>
+            <Accordion.Header>
+              <h3>Address</h3>
+            </Accordion.Header>
+            <Accordion.Body>
+              <Stack gap={4}>
+                <Address state={state}
+                        town={town}
+                        postcode={postCode}
+                        street={street}
+                        streetNumber={streetNumber}
+                        onStateChange={setState}
+                        onTownChange={setTown}
+                        onPostcodeChange={setPostCode}
+                        onStreetChange={setStreet}
+                        onStreetNumberChange={setStreetNumber}/>
+              </Stack>
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
+        <Row className='p-3'>
           <Button type='submit' disabled={disableSubmit}>
             {type !== 'register'
               ? 'Save'
               : 'Register'
             }
           </Button>
-        </Stack>
+        </Row>
       </Form>
     </>
   );
