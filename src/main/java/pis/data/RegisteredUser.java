@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import pis.api.dto.*;
 
 import org.apache.commons.codec.digest.DigestUtils;
 

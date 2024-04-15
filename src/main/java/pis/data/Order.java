@@ -10,6 +10,8 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import pis.api.dto.*;
+
 
 /**
  * Data model for an order.
@@ -40,7 +42,7 @@ public class Order {
     private UserAddress userAddress;
 
     @OneToMany
-    @JoinColumn(name="order_id")
+    @JoinColumn(name = "order_id")
     private List<OrderItem> orderItems = new ArrayList<>();
 
     public Order() {
@@ -117,5 +119,4 @@ public class Order {
     public void addOrderItem(OrderItem orderItem) {
         this.getOrderItems().add(orderItem);
     }
-
 }

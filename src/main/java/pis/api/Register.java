@@ -4,9 +4,9 @@
  * @author Vojtech Fiala <xfiala61>
  */
 
- package pis.api;
+package pis.api;
 
-import pis.data.RegisterRequest;
+import pis.api.dto.RegisterRequest;
 import pis.data.RegisteredUser;
 
 import pis.service.RegisteredUserManager;
@@ -19,12 +19,13 @@ import jakarta.ws.rs.core.Response;
 
 @Path("/register")
 public class Register {
- 
+
     @Inject
     private RegisteredUserManager userManager;
+
     /**
-    * Register
-    */
+     * Register
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response register(RegisterRequest r) {
@@ -34,7 +35,8 @@ public class Register {
         }
 
         // Email validation
-        boolean isEmailLegit = Pattern.compile("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$", Pattern.CASE_INSENSITIVE).matcher(r.getEmail()).find();
+        boolean isEmailLegit = Pattern.compile("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$", Pattern.CASE_INSENSITIVE)
+                .matcher(r.getEmail()).find();
 
         if (!isEmailLegit) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Wrong email format!!").build();
@@ -46,7 +48,7 @@ public class Register {
         }
 
         RegisteredUser u = new RegisteredUser(r.getFirstname(), r.getSurname(), r.getPhone(), r.getEmail(),
-        r.getPassword(), r.getState(), r.getTown(), r.getStreet(), r.getStreetNumber(), r.getPostCode());
+                r.getPassword(), r.getState(), r.getTown(), r.getStreet(), r.getStreetNumber(), r.getPostCode());
 
         // TODO: Validations for address?
 
@@ -64,6 +66,5 @@ public class Register {
         }
 
         return Response.status(Response.Status.OK).entity("Registered!").build();
-     }
- }
- 
+    }
+}

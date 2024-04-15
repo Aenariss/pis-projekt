@@ -163,7 +163,7 @@ public class ProductDescriptionResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin"})
+    @RolesAllowed({ "admin" })
     public Response addProductDescription(ProductDescription productDescription) {
         if (productDescription.getName().length() < 2) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Product Description needs a valid name!")
@@ -191,7 +191,7 @@ public class ProductDescriptionResource {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin"})
+    @RolesAllowed({ "admin" })
     public Response updateProductDescription(@PathParam("id") long id, ProductDescription productDescription) {
         ProductDescription toUpdate = productDescriptionManager.find(id);
         if (toUpdate == null) {
@@ -219,7 +219,7 @@ public class ProductDescriptionResource {
     @PUT
     @Path("/{id}/author/{author_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin"})
+    @RolesAllowed({ "admin" })
     public Response addAuthorToProductDescription(@PathParam("id") long id, @PathParam("author_id") long author_id) {
         ProductDescription productDescription = productDescriptionManager.find(id);
         if (productDescription == null) {
@@ -247,7 +247,7 @@ public class ProductDescriptionResource {
     @PUT
     @Path("/{id}/language/{language_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin"})
+    @RolesAllowed({ "admin" })
     public Response addLanguageToProductDescription(@PathParam("id") long id,
             @PathParam("language_id") long language_id) {
         ProductDescription productDescription = productDescriptionManager.find(id);
@@ -276,7 +276,7 @@ public class ProductDescriptionResource {
     @PUT
     @Path("/{id}/discount/{discount_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin"})
+    @RolesAllowed({ "admin" })
     public Response addDiscountToProductDescription(@PathParam("id") long id,
             @PathParam("discount_id") long discount_id) {
         ProductDescription productDescription = productDescriptionManager.find(id);
@@ -305,7 +305,7 @@ public class ProductDescriptionResource {
     @PUT
     @Path("/{id}/category/{category_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin"})
+    @RolesAllowed({ "admin" })
     public Response addCategoryToProductDescription(@PathParam("id") long id,
             @PathParam("category_id") long category_id) {
         ProductDescription productDescription = productDescriptionManager.find(id);
@@ -338,7 +338,7 @@ public class ProductDescriptionResource {
     @Path("/{id}/categories")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin"})
+    @RolesAllowed({ "admin" })
     public Response addCategoriesToProductDescription(@PathParam("id") long id, List<String> categories) {
         ProductDescription productDescription = productDescriptionManager.find(id);
         if (productDescription == null) {
@@ -373,7 +373,7 @@ public class ProductDescriptionResource {
     @DELETE
     @Path("/{id}/category/{category_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin"})
+    @RolesAllowed({ "admin" })
     public Response deleteCategoryFromProductDescription(@PathParam("id") long id,
             @PathParam("category_id") long category_id) {
         ProductDescription productDescription = productDescriptionManager.find(id);
@@ -405,7 +405,7 @@ public class ProductDescriptionResource {
     @DELETE
     @Path("/{id}/categories")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin"})
+    @RolesAllowed({ "admin" })
     public Response deleteCategoriesFromProductDescription(@PathParam("id") long id) {
         ProductDescription productDescription = productDescriptionManager.find(id);
         if (productDescription == null) {
@@ -427,7 +427,7 @@ public class ProductDescriptionResource {
     @DELETE
     @Path("/{id}/author")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin"})
+    @RolesAllowed({ "admin" })
     public Response deleteAuthorFromProductDescription(@PathParam("id") long id) {
         ProductDescription productDescription = productDescriptionManager.find(id);
         if (productDescription == null) {
@@ -449,7 +449,7 @@ public class ProductDescriptionResource {
     @DELETE
     @Path("/{id}/language")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin"})
+    @RolesAllowed({ "admin" })
     public Response deleteLanguageFromProductDescription(@PathParam("id") long id) {
         ProductDescription productDescription = productDescriptionManager.find(id);
         if (productDescription == null) {
@@ -471,7 +471,7 @@ public class ProductDescriptionResource {
     @DELETE
     @Path("/{id}/discount")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin"})
+    @RolesAllowed({ "admin" })
     public Response deleteDiscountFromProductDescription(@PathParam("id") long id) {
         ProductDescription productDescription = productDescriptionManager.find(id);
         if (productDescription == null) {
@@ -493,7 +493,7 @@ public class ProductDescriptionResource {
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin"})
+    @RolesAllowed({ "admin" })
     public Response deleteProductDescription(@PathParam("id") long id) {
         ProductDescription toDelete = productDescriptionManager.find(id);
         if (toDelete == null) {
@@ -514,7 +514,7 @@ public class ProductDescriptionResource {
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin"})
+    @RolesAllowed({ "admin" })
     public Response deleteProductDescription(ProductDescription productDescription) {
         ProductDescription toDelete = productDescriptionManager.findProductDescription(productDescription.getName());
         if (toDelete == null) {

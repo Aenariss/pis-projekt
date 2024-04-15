@@ -4,8 +4,7 @@
  * @author Vojtech Fiala <xfiala61>
  */
 
-
-package pis.data;
+package pis.api.dto;
 
 public class ProfileRequest extends Request {
 
@@ -30,7 +29,8 @@ public class ProfileRequest extends Request {
         this.surname = surname;
     }
 
-    public ProfileRequest() {}
+    public ProfileRequest() {
+    }
 
     public Address getAddress() {
         return address;
@@ -72,5 +72,4 @@ public class ProfileRequest extends Request {
         this.surname = surname;
     }
 
-    
 }

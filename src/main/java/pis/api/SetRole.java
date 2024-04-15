@@ -4,11 +4,11 @@
  * @author Vojtech Fiala <xfiala61>
  */
 
- package pis.api;
+package pis.api;
 
 import pis.data.RegisteredUser;
-import pis.data.RoleRequest;
- 
+import pis.api.dto.RoleRequest;
+
 import pis.service.RegisteredUserManager;
 
 import jakarta.annotation.security.RolesAllowed;
