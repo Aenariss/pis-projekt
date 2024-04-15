@@ -7,6 +7,7 @@ import NavbarComponent from "./NavbarComponent";
 import {useEffect, useState} from "react";
 import {api} from "../../api";
 import {Table, Form, Button} from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Page for managing employees
@@ -14,6 +15,7 @@ import {Table, Form, Button} from "react-bootstrap";
  * @constructor - ManageEmployees
  */
 export default function ManageEmployees() {
+    const navigate = useNavigate();
     const [users, setUsers] = useState([]);
     const [activeLink, setActiveLink] = useState(localStorage.getItem('activeLink') || '#employees');
     const [searchQuery, setSearchQuery] = useState('');
@@ -76,7 +78,7 @@ export default function ManageEmployees() {
      */
     const handleEditClick = (user) => {
         // Handle the edit click here
-        console.log(`Editing user: ${user.email}`);
+        navigate(`/user/${user.id}`);
     };
 
     return (

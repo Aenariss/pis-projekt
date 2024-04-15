@@ -13,10 +13,13 @@ import Password from './Password';
 /**
  @param props.title Title of the form.
  * User profile page component.
- * @param props.type Type of the form, one of 'register', 'profile'.
+ * @param props.type Type of the form, one of 'register', 'profile', 'edit'.
+ * Register is for registering new users, profile is for showing profile of logged user,
+ * edit is for admin to edit info about another users.
  * @param props.title Title of the form.
  * @param props.defaultValues Values which will be shown by default.
  * @param {Function} props.onSubmit Function which will be called with filled data on form submit.
+ * @param {number} props.userId For edit type, id of user which is being edited.
  * @component
  */
 export default function UserForm({
@@ -34,6 +37,7 @@ export default function UserForm({
     postCode: '',
   },
   onSubmit,
+  userId,
 }) {
   // User info
   const [firstname, setFirstname] = useState(defaultValues.firstname);
@@ -112,7 +116,7 @@ export default function UserForm({
                                     value={email}
                                     required
                                     placeholder="example@google.com"
-                                    disabled={type !== 'register'}
+                                    disabled={type === 'profile'}
                                     isInvalid={invalidEmail} isValid={!invalidEmail}
                                     onChange={e => handleEmailChange(e.target.value)}/>
                       <Form.Control.Feedback type="invalid">Email must be in form 'x@y.z'!</Form.Control.Feedback>
@@ -159,8 +163,8 @@ export default function UserForm({
                   </Form.Group>
                 </Row>
 
-                {type === 'profile' && (
-                  <ChangePassword />
+                {type !== 'create' && (
+                  <ChangePassword userId={userId}/>
                 )}
               </Stack>
             </Accordion.Body>

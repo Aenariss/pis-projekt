@@ -10,14 +10,19 @@ import { MessageContext } from '../../context/MessageContext';
 
 /**
  * Button with modal window for changing passwords.
+ * @param {String} props.userId If changing password of another user - id of the user.
  * @component
  */
-export default function ChangePassword() {
+export default function ChangePassword({userId}) {
   const [showModal, setShowModal] = useState(false);
   const {setMessage} = useContext(MessageContext);
+
   function handleSubmit(password) {
     setShowModal(false);
-    api.put('/user/password', {password})
+    const url = userId
+      ? `/user/password/${userId}`
+      : `/user/password`;
+    api.put(url, {password})
       .then(() => {
         setMessage({text: 'Password has been successfully changed', variant: 'success'});
       })

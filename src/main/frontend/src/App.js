@@ -24,6 +24,7 @@ import Register from './pages/Register';
 import Providers from './context/Providers';
 import { AuthContext } from './context/AuthContext';
 import FinishOrder from './pages/FinishOrder';
+import EditUser from './pages/EditUser';
 
 /** Time remaining for JWT expiration in which we should try to renew the JWT token. */
 const RENEW_AT_REMAINING_TIME = 600000; // (10 min)
@@ -53,6 +54,7 @@ export default function App() {
               <Route path="overview" element={<Overview />} />
               <Route path="orders-manager" element={<OrdersManager />} />
               <Route path="storage-manager" element={<StorageManager />} />
+              <Route path="user/:userId" element={<EditUser />} />
             </Route>
             <Route path="*" element={<NotFoundPage/>} />
           </Route>

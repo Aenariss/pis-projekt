@@ -48,11 +48,11 @@ public class UserResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{email}")
+    @Path("/{id}")
     @RolesAllowed({"admin"})
-    public Response getProfile(@PathParam("email") String email) {
+    public Response getProfile(@PathParam("id") long id) {
 
-        RegisteredUser u = userManager.findByEmail(email);
+        RegisteredUser u = userManager.find(id);
 
         if (u == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("User not found!").build();
@@ -113,14 +113,14 @@ public class UserResource {
     }
 
     @PUT
-    @Path("/{email}")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed({"admin"})
-    public Response setProfile(@PathParam("email") String email, ProfileRequest r) {
+    public Response setProfile(@PathParam("id") long userId, ProfileRequest r) {
 
 
-        RegisteredUser u = userManager.findByEmail(email);
+        RegisteredUser u = userManager.find(userId);
 
         if (u == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("User not found!").build();
@@ -161,15 +161,15 @@ public class UserResource {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/password/{email}")
+    @Path("/password/{id}")
     @RolesAllowed({"admin"})
-    public Response setPassword(@PathParam("email") String email, PasswordChangeRequest r) {
+    public Response setPassword(@PathParam("id") long userId, PasswordChangeRequest r) {
         
         if (!r.valid()) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid request!!").build();
         }
 
-        RegisteredUser u = userManager.findByEmail(email);
+        RegisteredUser u = userManager.find(userId);
 
         if (u == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("User not found!").build();
