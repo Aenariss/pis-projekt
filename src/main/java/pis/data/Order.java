@@ -8,6 +8,7 @@ package pis.data;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Data model for an order.
@@ -37,19 +38,25 @@ public class Order {
     @Embedded
     private UserAddress userAddress;
 
+    @OneToMany
+    @JoinTable(name = "OrderItem", joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn(name = "orderItem_id"))
+    private List<OrderItem> orderItems;
+
     public Order() {
         this.creationDate = LocalDateTime.now();
     }
 
     public Order(OrderStatus status, OrderUserInfo orderUserInfo, String deliveryState, String deliveryTown,
             String deliveryStreet, String deliveryStreetNumber, String deliveryPostCode, String userState,
-            String userTown, String userStreet, String userStreetNumber, String userPostCode) {
+            String userTown, String userStreet, String userStreetNumber, String userPostCode,
+            List<OrderItem> orderItems) {
         this();
         this.status = status;
         this.orderUserInfo = orderUserInfo;
         this.deliveryAddress = new Address(deliveryState, deliveryTown, deliveryStreet, deliveryStreetNumber,
                 deliveryPostCode);
         this.userAddress = new UserAddress(userState, userTown, userStreet, userStreetNumber, userPostCode);
+        this.orderItems = orderItems;
     }
 
     public long getId() {
@@ -98,6 +105,18 @@ public class Order {
 
     public void setUserAddress(UserAddress userAddress) {
         this.userAddress = userAddress;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void addOrderItem(OrderItem orderItem) {
+        this.orderItems.add(orderItem);
     }
 
 }
