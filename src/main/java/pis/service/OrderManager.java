@@ -77,6 +77,7 @@ public class OrderManager {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public List<Order> findByOrderUserInfo(String firstname, String surname, String phone, String email) {
         List<Order> orders = null;
         try {
@@ -93,6 +94,7 @@ public class OrderManager {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public List<Order> findByOrderUserId(long id) {
         List<Order> orders = null;
         try {

@@ -40,6 +40,7 @@ public class OrderResource {
      * Returns list of all Orders.
      */
     @GET
+    @RolesAllowed("admin")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Order> getOrders() {
         return orderManager.findAll();
@@ -67,7 +68,6 @@ public class OrderResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({ "admin" })
     public Response addOrder(Order order) {
         // check if order already exists
         Order o = orderManager.find(order.getId());
@@ -89,7 +89,7 @@ public class OrderResource {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({ "admin" })
+    @RolesAllowed({ "admin", "employee" })
     public Response updateOrder(@PathParam("id") long id, Order order) {
         Order o = orderManager.find(id);
         if (o == null) {

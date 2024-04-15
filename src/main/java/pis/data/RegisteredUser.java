@@ -8,6 +8,10 @@ package pis.data;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
@@ -36,6 +40,10 @@ public class RegisteredUser {
 
     @Embedded
     private Address address;
+
+    @OneToMany
+    @JoinColumn(name="user_id")
+    private List<OrderItem> orders = new ArrayList<>();
 
     public RegisteredUser() {}
 
@@ -134,8 +142,17 @@ public class RegisteredUser {
         this.address = address;
     }
 
-    /*
-     * TODO:
-     * add Orders (another class reference)
-     */
+    public List<OrderItem> getOrders() {
+        return orders;
+    }
+
+    public void addOrder(OrderItem order) {
+        this.orders.add(order);
+    }
+
+    public void setOrders(List<OrderItem> orders) {
+        this.orders = orders;
+    }
+
+    
 }
