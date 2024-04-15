@@ -168,7 +168,7 @@ public class PreFill {
         greatExpectations = productDescriptionManager.save(greatExpectations);
         ProductDescription loremIpsum = new ProductDescription(25, "Lorem Ipsum",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                "9780141439563", 400, null, List.of(), null, null, null);
+                "9780141439563", 400, null, List.of(), english, null, null);
         loremIpsum.setDefaulImage();
         loremIpsum = productDescriptionManager.save(loremIpsum);
 
