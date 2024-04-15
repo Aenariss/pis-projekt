@@ -6,8 +6,18 @@ import {useState} from "react";
 import {Button, Card} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {Cart} from "react-bootstrap-icons";
+import Price from "./Price";
 
-export default function Book({id, name, author, price, image}) {
+/**
+ * Component for showing information about book in book listing.
+ * @param props.id Book id
+ * @param props.name Name of book
+ * @param props.author Author information
+ * @param props.price Price
+ * @param props.discount Discount in percentage.
+ * @component 
+ */
+export default function Book({id, name, author, price, image, discount}) {
   const navigate = useNavigate();
   // Variable for temporary changing look of add to cart button when user adds item to cart.
   const [added, setAdded] = useState(false);
@@ -39,7 +49,7 @@ export default function Book({id, name, author, price, image}) {
                 {author?.firstName} {author?.lastName}
             </Card.Subtitle>
             <Card.Text className="fs-5 mt-2 text-end">
-              {price} $
+              <Price price={price} discount={discount} />
             </Card.Text>
             <Button onClick={addToCart} disabled={added} className="w-100">
               {added

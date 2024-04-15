@@ -4,7 +4,16 @@
  */
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {Button, ButtonGroup, Col, Image, Row, Spinner, Table} from "react-bootstrap";
+import {
+  Badge,
+  Button,
+  ButtonGroup,
+  Col,
+  Image,
+  Row,
+  Spinner,
+  Table
+} from "react-bootstrap";
 import {Dash, Plus} from "react-bootstrap-icons";
 import Container from "react-bootstrap/Container";
 import {api} from "../../api";
@@ -85,7 +94,7 @@ export default function BookDetailPage() {
           </Col>
           <Col md={4} className="text-center">
             <Image src={product?.image} width="55%" className="my-2"/>
-            <p className="display-6 mt-2">{product.price} $</p>
+            <Price price={product.price} discount={product?.discount?.discount} />
             <ButtonGroup>
               <Button variant="primary" onClick={amountDecrement} disabled={inCart === 0}><Dash size={30}/></Button>
               <span className="px-3 d-inline-flex align-items-center border border-primary ">{inCart}</span>
@@ -95,5 +104,39 @@ export default function BookDetailPage() {
         </Row>
       </Container>
     </>
+  );
+}
+
+/**
+ * Component for showing price of product.
+ * @param {number} props.price Original price.
+ * @param {number} props.discount Number of percentage down.
+ * @component
+ */
+function Price({price, discount}) {
+  if (discount) {
+    let newPrice = price * ((100 - discount) / 100);
+    return (
+      <div>
+        <del className='me-auto'>
+          Original price: {price.toFixed(2)} $
+        </del>
+        <div style={{fontSize: '25px'}}>
+          <Badge bg='danger'>
+            - {discount} %
+          </Badge>
+        </div>
+        <div className="display-6 text-danger pt-2 pb-3">
+          <b>
+            {newPrice.toFixed(2)} $
+          </b>
+        </div>
+      </div>
+    );
+  }
+  return(
+    <div>
+      <p className="display-6 mt-2">{price.toFixed(2)} $</p>
+    </div>
   );
 }
