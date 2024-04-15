@@ -22,10 +22,6 @@ export default function Layout() {
   const {user} = useContext(AuthContext);
   const location = useLocation();
 
-  const isActive = (path) => {
-    return location.pathname === path;
-  }
-
   let employeeNavBar = null;
   if (user?.role === 'admin' || user?.role === 'employee') {
     employeeNavBar = (
@@ -34,21 +30,26 @@ export default function Layout() {
           <Nav>
             {user.role === 'admin' && (
               <>
-                <Nav.Link as={Link} to="/category-manager" className={isActive("/category-manager") ? "active" : ""}>Categories</Nav.Link>
-                <Nav.Link as={Link} to="/employees-manager" className={isActive("/employees-manager") ? "active" : ""}>Employees</Nav.Link>
-                <Nav.Link as={Link} to="/orders-manager" className={isActive("/orders-manager") ? "active" : ""}>Orders</Nav.Link>
-                <Nav.Link as={Link} to="/storage-manager" className={isActive("/storage-manager") ? "active" : ""}>Storage</Nav.Link>
-                <Nav.Link as={Link} to="/book-add" className={isActive("/book-add") ? "active" : ""}>Add book</Nav.Link>
-                <Nav.Link as={Link} to="/overview" className={isActive("/overview") ? "active" : ""}>Overview</Nav.Link>
+                <Nav.Link as={Link} to="/category-manager"
+                          active={location.pathname === "/category-manager"}>Categories</Nav.Link>
+                <Nav.Link as={Link} to="/employees-manager"
+                          active={location.pathname === "/employees-manager"}>Employees</Nav.Link>
+                <Nav.Link as={Link} to="/orders-manager"
+                          active={location.pathname === "/orders-manager"}>Orders</Nav.Link>
+                <Nav.Link as={Link} to="/storage-manager"
+                          active={location.pathname === "/storage-manager"}>Storage</Nav.Link>
+                <Nav.Link as={Link} to="/overview"
+                          active={location.pathname === "/overview"}>Overview</Nav.Link>
               </>
             )}
             {user.role === 'employee' && (
               <>
-                <Nav.Link as={Link} to="/orders-manager" className={isActive("/orders-manager") ? "active" : ""}>Orders</Nav.Link>
-                <Nav.Link as={Link} to="/storage-manager" className={isActive("/storage-manager") ? "active" : ""}>Storage</Nav.Link>
+                <Nav.Link as={Link} to="/orders-manager"
+                          active={location.pathname === "/orders-manager"}>Orders</Nav.Link>
+                <Nav.Link as={Link} to="/storage-manager"
+                          active={location.pathname === "/storage-manager"}>Storage</Nav.Link>
               </>
             )}
-
           </Nav>
         </Container>
       </Navbar>
@@ -64,7 +65,7 @@ export default function Layout() {
             <Navbar.Brand as={Link} to="/">BookShop</Navbar.Brand>
           </Col>
           <Col md={7}>
-            <Search />
+            <Search/>
           </Col>
           <Col md={1}>
             <Button onClick={() => alert("Not implemented yet")}>
@@ -79,7 +80,7 @@ export default function Layout() {
       </Navbar>
       {employeeNavBar}
       <Container className="pt-5">
-        <Outlet />
+        <Outlet/>
       </Container>
     </>
   );

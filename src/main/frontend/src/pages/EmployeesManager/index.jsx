@@ -8,15 +8,23 @@ import {useEffect, useState} from "react";
 import {api} from "../../api";
 import {Table, Form, Button} from "react-bootstrap";
 
-
+/**
+ * Page for managing employees
+ * @returns {JSX.Element} - page for managing employees
+ * @constructor - ManageEmployees
+ */
 export default function ManageEmployees() {
     const [users, setUsers] = useState([]);
     const [activeLink, setActiveLink] = useState(localStorage.getItem('activeLink') || '#employees');
     const [searchQuery, setSearchQuery] = useState('');
 
+    /**
+     * Function for handling the table change depending on the active link and search query.
+     */
     useEffect(() => {
         let data = localStorage.getItem('users'); // Handle refreshing the page
         if (data) {
+            // If the data is in the local storage, set the users to the data
             setUsers(JSON.parse(data));
         } else {
             if (searchQuery !== '') {
@@ -32,12 +40,17 @@ export default function ManageEmployees() {
                         }
                     });
             } else if (activeLink === '#users') {
-                // Set users to an empty array
+                // Set users to an empty array (hide all users)
                 setUsers([]);
             }
         }
     }, [activeLink, searchQuery]);
 
+    /**
+     * Function for handling the role change using the REST API.
+     * @param email - email of the user
+     * @param newRole - new role of the user
+     */
     const handleRoleChange = (email, newRole) => {
         // Change role of the user and update the state
         api.post(`/setRole/${newRole}`, { email })
@@ -57,6 +70,10 @@ export default function ManageEmployees() {
             });
     };
 
+    /**
+     * Function for handling the edit click.
+     * @param user - user to edit
+     */
     const handleEditClick = (user) => {
         // Handle the edit click here
         console.log(`Editing user: ${user.email}`);
@@ -64,7 +81,6 @@ export default function ManageEmployees() {
 
     return (
         <div>
-            <h2>Manage employees Page</h2>
             <NavbarComponent activeLink={activeLink} setActiveLink={setActiveLink} setSearchQuery={setSearchQuery} />
             <div>
                 <br />
