@@ -5,9 +5,10 @@
 
 import {Button, Col, Form, Row, Stack} from 'react-bootstrap';
 import ChangePassword from './ChangePassword';
-import {useState} from 'react';
-import { isEmailValid, isPasswordValid } from './utils';
+import {useMemo, useState} from 'react';
+import { isEmailValid } from './utils';
 import Address from './Adress';
+import Password from './Password';
 
 /**
  @param props.title Title of the form.
@@ -48,10 +49,26 @@ export default function UserForm({
   const [streetNumber, setStreetNumber] = useState(defaultValues.streetNumber);
   const [postCode, setPostCode] = useState(defaultValues.postCode);
   // Checking info validity
-  const [invalidEmail, setInvalidEmail] = useState(true);
-  const [invalidPassword1, setInvalidPassword1] = useState(true);
+  const [invalidEmail, setInvalidEmail] = useState(type === 'register' ? true : false);
+  const [invalidPassword, setInvalidPassword] = useState(type === 'register' ? true : false);
 
-  const disableSubmit = invalidEmail || invalidPassword1 || password1 !== password2;
+  const somethingChanged = useMemo(() => (
+       defaultValues.firstname !== firstname
+    || defaultValues.surname !== surname
+    || defaultValues.email !== email
+    || defaultValues.phone !== phone
+    || defaultValues.state !== state
+    || defaultValues.town !== town
+    || defaultValues.street !== street
+    || defaultValues.streetNumber !== streetNumber
+    || defaultValues.postCode !== postCode
+  ), [defaultValues, firstname, surname, email, phone, state, town, street, streetNumber, postCode]);
+  const disableSubmit = (
+       invalidEmail
+    || (type === 'register' && invalidPassword)
+    // if not register form disable also button if nothing changed
+    || (type !== 'register' && !somethingChanged)
+  );
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -76,15 +93,8 @@ export default function UserForm({
     setInvalidEmail(! isEmailValid(newEmail));
   }
 
-  function handlePassword1Change(e) {
-    const newPassword1 = e.target.value;
-    setPassword1(newPassword1);
-    setInvalidPassword1(! isPasswordValid(newPassword1));
-  }
-
   return (
     <>
-      <ChangePassword ></ChangePassword>
       <Form className='w-50' onSubmit={handleSubmit}>
         <Stack gap={4}>
           <h2>{title}</h2>
@@ -97,27 +107,22 @@ export default function UserForm({
                               value={email}
                               required
                               placeholder="example@google.com"
-                              isInvalid={email === '' && invalidEmail} isValid={!invalidEmail}
+                              disabled={type !== 'register'}
+                              isInvalid={invalidEmail} isValid={!invalidEmail}
                               onChange={e => handleEmailChange(e.target.value)}/>
                 <Form.Control.Feedback type="invalid">Email must be in form 'x@y.z'!</Form.Control.Feedback>
+                <Form.Control.Feedback type="valid">&nbsp;</Form.Control.Feedback>
             </Form.Group>
           </Row>
           {type === 'register' && (
             <Row>
-              <Form.Group controlId="register-password1" as={Col}>
-                <Form.Label>Password:</Form.Label>
-                <Form.Control type="password" required value={password1}
-                              onChange={handlePassword1Change}
-                              isInvalid={password1 === '' && invalidPassword1} isValid={!invalidPassword1}/>
-                <Form.Control.Feedback type="invalid">Password must contain at least 3 symbols.</Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group controlId="register-password2" as={Col}>
-                <Form.Label>Repeat password:</Form.Label>
-                <Form.Control type="password" required value={password2}
-                              onChange={(e) => setPassword2(e.target.value)}
-                              isInvalid={password1 !== password2} isValid={!invalidPassword1 && password1 === password2}/>
-                <Form.Control.Feedback type="invalid">Passwords do not match.</Form.Control.Feedback>
-              </Form.Group>
+              <Password password1={password1}
+                        password2={password2}
+                        onPassword1Change={setPassword1}
+                        onPassword2Change={setPassword2}
+                        onInvalidPassword={setInvalidPassword}
+                        passwordTitle='Password:'
+                        repeatPasswordTitle='Repeat password:'/>
             </Row>
           )}
           <Row>
@@ -150,7 +155,7 @@ export default function UserForm({
           </Row>
 
           {type === 'profile' && (
-            <Button type='button' size='sm' variant='outline-primary'>Change password</Button>
+            <ChangePassword />
           )}
           <h3>Address</h3>
           <Address state={state}
@@ -163,7 +168,12 @@ export default function UserForm({
                    onPostcodeChange={setPostCode}
                    onStreetChange={setStreet}
                    onStreetNumberChange={setStreetNumber}/>
-          <Button type='submit' disabled={disableSubmit}>Register</Button>
+          <Button type='submit' disabled={disableSubmit}>
+            {type !== 'register'
+              ? 'Save'
+              : 'Register'
+            }
+          </Button>
         </Stack>
       </Form>
     </>

@@ -22,6 +22,7 @@ import UserProfilePage from "./pages/UserProfile";
 import UserCartPage from "./pages/UserCart";
 import UserOrdersPage from "./pages/UserOrders";
 import Register from './pages/Register';
+import MessageProvider from './context/MessageContext';
 
 /** Time remaining for JWT expiration in which we should try to renew the JWT token. */
 const RENEW_AT_REMAINING_TIME = 600000; // (10 min)
@@ -29,33 +30,35 @@ const RENEW_AT_REMAINING_TIME = 600000; // (10 min)
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<BooksPage />} />
-            <Route path="/book/:bookId" element={<BookDetailPage />} />
-            <Route path="/cart" element={<UserCartPage />}></Route>
-            <Route path="/register" element={<Register />}></Route>
-            <Route element={<ProtectedRoute role="user" />} >
-              <Route path="/profile" element={<UserProfilePage />}></Route>
-              <Route path="/my-orders" element={<UserOrdersPage />}></Route>
+      <MessageProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<BooksPage />} />
+              <Route path="/book/:bookId" element={<BookDetailPage />} />
+              <Route path="/cart" element={<UserCartPage />}></Route>
+              <Route path="/register" element={<Register />}></Route>
+              <Route element={<ProtectedRoute role="user" />} >
+                <Route path="/profile" element={<UserProfilePage />}></Route>
+                <Route path="/my-orders" element={<UserOrdersPage />}></Route>
+              </Route>
+              <Route element={<ProtectedRoute role="employee" />} >
+                <Route path="orders-manager" element={<OrdersManager />} />
+                <Route path="storage-manager" element={<StorageManager />} />
+              </Route>
+              <Route element={<ProtectedRoute role="admin" />} >
+                <Route path="category-manager" element={<CategoryManager />} />
+                <Route path="employees-manager" element={<EmployeesManager />} />
+                <Route path="overview" element={<Overview />} />
+                <Route path="orders-manager" element={<OrdersManager />} />
+                <Route path="storage-manager" element={<StorageManager />} />
+              </Route>
+              <Route path="*" element={<NotFoundPage/>} />
             </Route>
-            <Route element={<ProtectedRoute role="employee" />} >
-              <Route path="orders-manager" element={<OrdersManager />} />
-              <Route path="storage-manager" element={<StorageManager />} />
-            </Route>
-            <Route element={<ProtectedRoute role="admin" />} >
-              <Route path="category-manager" element={<CategoryManager />} />
-              <Route path="employees-manager" element={<EmployeesManager />} />
-              <Route path="overview" element={<Overview />} />
-              <Route path="orders-manager" element={<OrdersManager />} />
-              <Route path="storage-manager" element={<StorageManager />} />
-            </Route>
-            <Route path="*" element={<NotFoundPage/>} />
-          </Route>
-        </Routes>
-        <AuthVerify />
-      </BrowserRouter>
+          </Routes>
+          <AuthVerify />
+        </BrowserRouter>
+      </MessageProvider>
     </AuthProvider>
   );
 }

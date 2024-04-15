@@ -13,6 +13,7 @@ import {Cart} from "react-bootstrap-icons";
 import {useContext} from 'react';
 import {AuthContext} from '../../context/AuthContext';
 import Search from "./Search";
+import Message from './Message';
 
 /**
  * Website layout.
@@ -81,6 +82,7 @@ export default function Layout() {
       </Navbar>
       {employeeNavBar}
       <Container className="pt-5">
+        <Message />
         <Outlet/>
       </Container>
     </>
