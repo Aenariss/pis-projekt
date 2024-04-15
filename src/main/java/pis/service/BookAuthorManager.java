@@ -43,7 +43,7 @@ public class BookAuthorManager {
     /**
      * Returns BookAuthor by name if it exists, otherwise null.
      * 
-     * @param name name of the searched BookAuthor.
+     * @param lastName name of the searched BookAuthor.
      * @return BookAuthor
      */
     public BookAuthor findByLastName(String lastName) {

@@ -8,8 +8,21 @@ import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
 import '../../styles.css';
 import {api} from "../../api";
 
+/**
+ * Component for Navbar of Employee Manager
+ * @param activeLink - active link (which page is currently displayed - Employees or Users)
+ * @param setActiveLink - function for setting the active link
+ * @param setSearchQuery - function for setting the search query
+ * @returns {Element} - Navbar of Employee Manager
+ * @constructor - NavbarComponent
+ */
 export default function NavbarComponent({ activeLink, setActiveLink, setSearchQuery }) {
 
+    /**
+     * Function for handling the search using the REST API.
+     * Call the appropriate endpoint based on the active link
+     * and update the search query state.
+     */
     const handleSearchClick = () => {
         // Get the value of the search bar
         const searchInput = document.querySelector('.long-search-bar').value;
@@ -44,6 +57,7 @@ export default function NavbarComponent({ activeLink, setActiveLink, setSearchQu
                             localStorage.setItem('users', JSON.stringify(response.data)); // Handle refreshing the page
                         }
                     });
+            // If the search bar is empty, hide all users
             } else if (activeLink === '#users') {
                 setSearchQuery([]);
                 localStorage.removeItem('users'); // Handle refreshing the page
@@ -66,7 +80,7 @@ export default function NavbarComponent({ activeLink, setActiveLink, setSearchQu
                             localStorage.removeItem('searchQuery'); // Handle refreshing the page
                             document.querySelector('.long-search-bar').value = ''; // Reset the search bar
                         }}
-                        className={activeLink === '#employees' ? 'active' : ''}
+                        active={activeLink === '#employees'}
                     >
                         Employee Manager
                     </Nav.Link>
@@ -81,7 +95,7 @@ export default function NavbarComponent({ activeLink, setActiveLink, setSearchQu
                             document.querySelector('.long-search-bar').value = ''; // Reset the search bar
                             document.querySelector('.long-search-bar').focus(); // Focus on search bar
                         }}
-                        className={activeLink === '#users' ? 'active' : ''}
+                        active={activeLink === '#users'}
                     >
                         User Manager
                     </Nav.Link>

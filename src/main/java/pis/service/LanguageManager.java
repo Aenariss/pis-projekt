@@ -43,7 +43,7 @@ public class LanguageManager {
     /**
      * Returns Language by name if it exists, otherwise null.
      * 
-     * @param name name of the searched Language.
+     * @param language name of the searched Language.
      * @return Language
      */
     public Language findLanguage(String language) {

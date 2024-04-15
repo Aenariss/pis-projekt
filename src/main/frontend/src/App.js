@@ -11,7 +11,6 @@ import BooksPage from "./pages/Books";
 import EmployeesManager from './pages/EmployeesManager';
 import OrdersManager from './pages/OrdersManager';
 import StorageManager from "./pages/StorageManager";
-import BookAdd from './pages/BookAdd';
 import Overview from "./pages/Overview";
 import {useContext, useEffect, useState} from "react";
 import {jwtDecode} from "jwt-decode";
@@ -48,7 +47,6 @@ export default function App() {
             <Route element={<ProtectedRoute role="admin" />} >
               <Route path="category-manager" element={<CategoryManager />} />
               <Route path="employees-manager" element={<EmployeesManager />} />
-              <Route path="book-add" element={<BookAdd />} />
               <Route path="overview" element={<Overview />} />
               <Route path="orders-manager" element={<OrdersManager />} />
               <Route path="storage-manager" element={<StorageManager />} />

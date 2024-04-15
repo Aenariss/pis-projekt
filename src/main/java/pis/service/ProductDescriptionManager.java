@@ -316,7 +316,7 @@ public class ProductDescriptionManager {
     /**
      * Add BookAuthor to db.
      * 
-     * @param a BookAuthor to add.
+     * @param d BookAuthor to add.
      * @return Returns inserted BookAuthor.
      */
     @Transactional
@@ -327,7 +327,7 @@ public class ProductDescriptionManager {
     /**
      * Remove BookAuthor from db.
      * 
-     * @param a BookAuthor to remove
+     * @param d BookAuthor to remove
      * @return If succeeded or not
      */
     @Transactional

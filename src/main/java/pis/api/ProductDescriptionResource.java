@@ -2,6 +2,7 @@
  * PIS Projekt 2024
  * ProductDescriptionResource.java
  * @author Tomas Ondrusek <xondru18>
+ * @author Martin Balaz
  */
 
 package pis.api;
@@ -58,7 +59,7 @@ public class ProductDescriptionResource {
     /**
      * Returns ProductDescription from id.
      * 
-     * @param id Id of the ProductDescription.
+     * @param id ID of the ProductDescription.
      * @return ProductDescription with given id.
      */
     @GET
@@ -71,7 +72,7 @@ public class ProductDescriptionResource {
     /**
      * Returns ProductDescriptions by author.
      * 
-     * @param author_id Id of the author.
+     * @param author_id ID of the author.
      * @return List of ProductDescriptions with given author.
      */
     @GET
@@ -89,7 +90,7 @@ public class ProductDescriptionResource {
     /**
      * Returns ProductDescriptions by category.
      * 
-     * @param category_id Id of the category.
+     * @param category_id ID of the category.
      * @return List of ProductDescriptions with given category.
      */
     @GET
@@ -107,7 +108,7 @@ public class ProductDescriptionResource {
     /**
      * Returns ProductDescriptions by language.
      * 
-     * @param language_id Id of the language.
+     * @param language_id ID of the language.
      * @return List of ProductDescriptions with given language.
      */
     @GET
@@ -181,9 +182,9 @@ public class ProductDescriptionResource {
     }
 
     /**
-     * Updates a ProductDescription.
+     * Updates an entire ProductDescription.
      * 
-     * @param id                 Id of the ProductDescription to be updated.
+     * @param id                 ID of the ProductDescription to be updated.
      * @param productDescription ProductDescription with updated values.
      * @return Response status.
      */
@@ -199,6 +200,42 @@ public class ProductDescriptionResource {
             return Response.status(Response.Status.BAD_REQUEST).entity("Error: Product Description doesnt exist")
                     .build();
         }
+
+        // Update author
+        if (productDescription.getAuthor() != null) {
+            BookAuthor author = bookAuthorManager.find(productDescription.getAuthor().getId());
+            if (author != null) {
+                // Update the author with new values
+                author.setFirstName(productDescription.getAuthor().getFirstName());
+                author.setLastName(productDescription.getAuthor().getLastName());
+
+                // Save the updated author
+                bookAuthorManager.save(author);
+
+                // Set the updated author to toUpdate
+                toUpdate.setAuthor(author);
+            }
+        }
+
+        // Update language
+        if (productDescription.getLanguage() != null) {
+            Language language = languageManager.find(productDescription.getLanguage().getId());
+            if (language != null) {
+                toUpdate.setLanguage(language);
+            }
+        }
+
+        // Update categories
+        if (productDescription.getCategories() != null) {
+            toUpdate.clearCategories(); // Clear the existing categories
+            for (Category category : productDescription.getCategories()) {
+                Category categoryToUpdate = categoryManager.find(category.getId());
+                if (categoryToUpdate != null) {
+                    toUpdate.addCategory(categoryToUpdate);
+                }
+            }
+        }
+
         toUpdate.setName(productDescription.getName());
         toUpdate.setDescription(productDescription.getDescription());
         toUpdate.setPrice(productDescription.getPrice());
@@ -212,8 +249,8 @@ public class ProductDescriptionResource {
     /**
      * Add author to product description.
      * 
-     * @param id        Id of the ProductDescription to be updated.
-     * @param author_id Id of the author to be added.
+     * @param id        ID of the ProductDescription to be updated.
+     * @param author_id ID of the author to be added.
      * @return Response status.
      */
     @PUT
@@ -240,8 +277,8 @@ public class ProductDescriptionResource {
     /**
      * Add language to product description.
      * 
-     * @param id          Id of the ProductDescription to be updated.
-     * @param language_id Id of the language to be added.
+     * @param id          ID of the ProductDescription to be updated.
+     * @param language_id ID of the language to be added.
      * @return Response status.
      */
     @PUT
@@ -269,11 +306,11 @@ public class ProductDescriptionResource {
     /**
      * Add discount to product description.
      * 
-     * @param id          Id of the ProductDescription to be updated.
-     * @param discount_id Id of the discount to be added.
+     * @param id          ID of the ProductDescription to be updated.
+     * @param discount_id ID of the discount to be added.
      * @return Response status.
      */
-    @PUT
+    /*@PUT
     @Path("/{id}/discount/{discount_id}")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"admin"})
@@ -293,13 +330,44 @@ public class ProductDescriptionResource {
         productDescription.setDiscount(discount);
         productDescriptionManager.save(productDescription);
         return Response.ok().entity(productDescription).build();
+    }*/ // TODO DELETE? - I think this is not needed, instead we can add discount by value (function below)
+
+    /**
+     * Add discount to product description by discount name.
+     *
+     * @param id ID of the ProductDescription to be updated.
+     * @param discount Discount to be added.
+     * @return Response status.
+     */
+    @PUT
+    @Path("/{id}/discount/{discount_value}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin"})
+    public Response addDiscountToProductDescription(@PathParam("id") long id,
+                                                    @PathParam("discount_value") int discount) {
+        ProductDescription productDescription = productDescriptionManager.find(id);
+        if (productDescription == null) {
+            // ProductDescription with given id does not exist
+            return Response.status(Response.Status.BAD_REQUEST).entity("Error: Product Description doesnt exist")
+                    .build();
+        }
+        Discount discountToAdd = discountManager.findDiscount(discount);
+        if (discountToAdd == null) {
+            // Discount with given discount does not exist, create a new one
+            discountToAdd = new Discount();
+            discountToAdd.setDiscount(discount);
+            discountManager.save(discountToAdd);
+        }
+        productDescription.setDiscount(discountToAdd);
+        productDescriptionManager.save(productDescription);
+        return Response.ok().entity(productDescription).build();
     }
 
     /**
      * Add category to product description.
      * 
-     * @param id          Id of the ProductDescription to be updated.
-     * @param category_id Id of the category to be added.
+     * @param id          ID of the ProductDescription to be updated.
+     * @param category_id ID of the category to be added.
      * @return Response status.
      */
     @PUT
@@ -331,7 +399,7 @@ public class ProductDescriptionResource {
     /**
      * Add categories to product description.
      * 
-     * @param id Id of the ProductDescription to be updated.
+     * @param id ID of the ProductDescription to be updated.
      * @return Response status.
      */
     @PUT
@@ -366,8 +434,8 @@ public class ProductDescriptionResource {
     /**
      * Deletes a category from product description.
      * 
-     * @param id          Id of the ProductDescription to be updated.
-     * @param category_id Id of the category to be removed.
+     * @param id          ID of the ProductDescription to be updated.
+     * @param category_id ID of the category to be removed.
      * @return Response status.
      */
     @DELETE
@@ -399,7 +467,7 @@ public class ProductDescriptionResource {
     /**
      * Deletes categories from product description.
      * 
-     * @param id Id of the ProductDescription to be updated.
+     * @param id ID of the ProductDescription to be updated.
      * @return Response status.
      */
     @DELETE
@@ -421,7 +489,7 @@ public class ProductDescriptionResource {
     /**
      * Deletes author from product description.
      * 
-     * @param id Id of the ProductDescription to be updated.
+     * @param id ID of the ProductDescription to be updated.
      * @return Response status.
      */
     @DELETE
@@ -443,7 +511,7 @@ public class ProductDescriptionResource {
     /**
      * Deletes language from product description.
      * 
-     * @param id Id of the ProductDescription to be updated.
+     * @param id ID of the ProductDescription to be updated.
      * @return Response status.
      */
     @DELETE
@@ -465,7 +533,7 @@ public class ProductDescriptionResource {
     /**
      * Deletes discount from product description.
      * 
-     * @param id Id of the ProductDescription to be updated.
+     * @param id ID of the ProductDescription to be updated.
      * @return Response status.
      */
     @DELETE
@@ -487,7 +555,7 @@ public class ProductDescriptionResource {
     /**
      * Deletes a ProductDescription from id.
      * 
-     * @param id Id of the ProductDescription to be deleted.
+     * @param id ID of the ProductDescription to be deleted.
      * @return Response status.
      */
     @DELETE
@@ -502,7 +570,7 @@ public class ProductDescriptionResource {
                     .build();
         }
         productDescriptionManager.delete(toDelete);
-        return Response.ok().entity("Succesfully removed the Product Description").build();
+        return Response.ok().entity("Successfully removed the Product Description").build();
     }
 
     /**
@@ -523,6 +591,6 @@ public class ProductDescriptionResource {
                     .build();
         }
         productDescriptionManager.delete(toDelete);
-        return Response.ok().entity("Succesfully removed the Product Description").build();
+        return Response.ok().entity("Successfully removed the Product Description").build();
     }
 }
