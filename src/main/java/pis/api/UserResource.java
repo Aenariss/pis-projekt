@@ -42,7 +42,6 @@ public class UserResource {
                     .build();
         }
 
-        u.setPasswordHash(""); // Only local overwrite cuz I don't persist the change
         return Response.status(Response.Status.OK).entity(u).build();
     }
 
@@ -58,7 +57,6 @@ public class UserResource {
             return Response.status(Response.Status.BAD_REQUEST).entity("User not found!").build();
         }
 
-        u.setPasswordHash(""); // Only local overwrite cuz I don't persist the change
         return Response.status(Response.Status.OK).entity(u).build();
     }
 
@@ -93,7 +91,6 @@ public class UserResource {
 
         userManager.save(u);
 
-        u.setPasswordHash(""); // Only local overwrite cuz I don't persist the change
         return Response.status(Response.Status.OK).entity(u).build();
     }
 
@@ -137,7 +134,6 @@ public class UserResource {
     @RolesAllowed({ "admin", "user", "employee" })
     public Response setPassword(PasswordChangeRequest r) {
 
-        System.out.println("aaa");
         if (!r.valid()) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid request!!").build();
         }
@@ -148,6 +144,10 @@ public class UserResource {
             return Response.status(Response.Status.BAD_REQUEST).entity("You are not logged in! How could this happen!")
                     .build();
         }
+        
+        if (!DigestUtils.sha512Hex(r.getOld_password()).equals(u.getPasswordHash())) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid current password!").build();
+        }
 
         if (r.getPassword().length() < 3) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Password is too short!!").build();
@@ -156,7 +156,6 @@ public class UserResource {
         u.setPasswordHash(DigestUtils.sha512Hex(r.getPassword()));
         userManager.save(u);
 
-        u.setPasswordHash("");
         return Response.status(Response.Status.OK).entity(u).build();
     }
 
@@ -184,7 +183,6 @@ public class UserResource {
         u.setPasswordHash(DigestUtils.sha512Hex(r.getPassword()));
         userManager.save(u);
 
-        u.setPasswordHash("");
         return Response.status(Response.Status.OK).entity(u).build();
     }
 }
