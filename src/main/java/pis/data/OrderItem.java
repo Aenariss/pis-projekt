@@ -21,7 +21,7 @@ public class OrderItem {
     private Integer quantity;
 
     @OneToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "productDescription_id")
     private ProductDescription productDescription;
 
     public OrderItem() {

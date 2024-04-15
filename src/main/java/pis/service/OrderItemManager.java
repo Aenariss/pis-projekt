@@ -24,37 +24,12 @@ public class OrderItemManager {
     @PersistenceContext
     private EntityManager em;
 
-    /**
-     * Returns list of all OrderItem.
-     */
-    public List<OrderItem> findAll() {
-        return em.createNamedQuery("OrderItem.findAll", OrderItem.class).getResultList();
-    }
-
     public OrderItem find(long id) {
         return em.find(OrderItem.class, id);
-    }
-
-    public OrderItem findByProductDescriptionId(long productDescriptionId) {
-        OrderItem orderItem = null;
-        try {
-            Query q = em.createQuery("SELECT o FROM OrderItem o WHERE o.productDescription.id = :productDescriptionId");
-            q.setParameter("productDescriptionId", productDescriptionId);
-            return (OrderItem) q.getSingleResult();
-        } catch (Exception e) {
-            System.out.println(e);
-            return orderItem;
-        }
     }
 
     @Transactional
     public OrderItem save(OrderItem orderItem) {
         return em.merge(orderItem);
-    }
-
-    @Transactional
-    public void delete(OrderItem orderItem) {
-        OrderItem new_orderItem = em.merge(orderItem);
-        em.remove(new_orderItem);
     }
 }
