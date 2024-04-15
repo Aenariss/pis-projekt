@@ -37,15 +37,15 @@ export default function App() {
             <Route path="/book/:bookId" element={<BookDetailPage />} />
             <Route path="/cart" element={<UserCartPage />}></Route>
             <Route path="/register" element={<Register />}></Route>
-            <Route element={<ProtectedRoute role="user" />} >
+            <Route element={<ProtectedRoute roles={["user", "employee"]} />} >
               <Route path="/profile" element={<UserProfilePage />}></Route>
               <Route path="/my-orders" element={<UserOrdersPage />}></Route>
             </Route>
-            <Route element={<ProtectedRoute role="employee" />} >
+            <Route element={<ProtectedRoute roles={["employee"]} />} >
               <Route path="orders-manager" element={<OrdersManager />} />
               <Route path="storage-manager" element={<StorageManager />} />
             </Route>
-            <Route element={<ProtectedRoute role="admin" />} >
+            <Route element={<ProtectedRoute roles={["admin"]} />} >
               <Route path="category-manager" element={<CategoryManager />} />
               <Route path="employees-manager" element={<EmployeesManager />} />
               <Route path="overview" element={<Overview />} />
