@@ -210,33 +210,40 @@ public class PreFill {
                 OrderStatus canceled = OrderStatus.CANCELED;
                 OrderStatus returned = OrderStatus.RETURNED;
 
-                OrderItem orderItem1 = new OrderItem(2, kingfisherHill);
-                orderItem1 = orderItemManager.save(orderItem1);
-                OrderItem orderItem2 = new OrderItem(1, earlyCases);
-                orderItem2 = orderItemManager.save(orderItem2);
-                OrderItem orderItem3 = new OrderItem(1, groundTour);
-                orderItem3 = orderItemManager.save(orderItem3);
-                OrderItem orderItem4 = new OrderItem(1, harryPotter);
-                orderItem4 = orderItemManager.save(orderItem4);
-                OrderItem orderItem5 = new OrderItem(1, harryPotter2);
-                orderItem5 = orderItemManager.save(orderItem5);
-                OrderItem orderItem6 = new OrderItem(1, treeBodyProblem);
-                orderItem6 = orderItemManager.save(orderItem6);
-
                 Order order1 = new Order(delivered, user1, "Slovakia", "Bratislava", "Komenskeho", "32", "03601",
-                                "Slovakia", "Bratislava", "Komenskeho", "32", "03601", List.of(orderItem1, orderItem2));
-                order1 = orderManager.save(order1);
+                                "Slovakia", "Bratislava", "Komenskeho", "32", "03601");
                 Order order2 = new Order(confirmed, user2, "Slovakia", "Bratislava", "Dlha", "56", "02348", "Slovakia",
-                                "Bratislava", "Dlha", "56", "02348", List.of(orderItem3));
-                order2 = orderManager.save(order2);
+                                "Bratislava", "Dlha", "56", "02348");
                 Order order3 = new Order(inProgress, user3, "Czech Republic", "Praha", "Karlova", "4", "23456",
-                                "Czech Republic", "Brno", "Kolejni", "2", "67843", List.of(orderItem4));
-                order3 = orderManager.save(order3);
+                                "Czech Republic", "Brno", "Kolejni", "2", "67843");
                 Order order4 = new Order(shipped, user4, "Czech Republic", "Praha", "Palackeho", "3", "234345",
-                                "Czech Republic", "Brno", "Bozetechova", "2", "63012", List.of(orderItem5));
-                order4 = orderManager.save(order4);
+                                "Czech Republic", "Brno", "Bozetechova", "2", "63012");
                 Order order5 = new Order(inProgress, user1, "Slovakia", "Bratislava", "Zilinska", "65", "76907",
-                                "Slovakia", "Kosice", "Kosicka", "342", "12345", List.of(orderItem6));
+                                "Slovakia", "Kosice", "Kosicka", "342", "12345");
+
+                OrderItem orderItem1 = new OrderItem(2, kingfisherHill);
+
+                order1.addOrderItem(orderItem1);
+                OrderItem orderItem2 = new OrderItem(1, earlyCases);
+
+                order2.addOrderItem(orderItem2);
+                OrderItem orderItem3 = new OrderItem(1, groundTour);
+
+                order3.addOrderItem(orderItem3);
+                OrderItem orderItem4 = new OrderItem(1, harryPotter);
+
+                order4.addOrderItem(orderItem4);
+                OrderItem orderItem5 = new OrderItem(1, harryPotter2);
+
+                order5.addOrderItem(orderItem5);
+                OrderItem orderItem6 = new OrderItem(1, treeBodyProblem);
+
+                order5.addOrderItem(orderItem6);
+                
+                order1 = orderManager.save(order1);
+                order2 = orderManager.save(order2);
+                order3 = orderManager.save(order3);
+                order4 = orderManager.save(order4);
                 order5 = orderManager.save(order5);
 
                 return Response.status(Response.Status.OK).entity("DB was prefilled").build();
