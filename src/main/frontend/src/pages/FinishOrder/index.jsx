@@ -10,9 +10,11 @@ import { api } from '../../api';
 import ContactInfo from './ContactInfo';
 import AddressInfo from './AddressInfo';
 import { CartContext } from '../../context/CartContext';
+import { MessageContext } from '../../context/MessageContext';
 
 export default function FinishOrder() {
-  const {items} = useContext(CartContext);
+  const {items, clearCart} = useContext(CartContext);
+  const {setMessage} = useContext(MessageContext);
   const {user} = useContext(AuthContext);
   const [orderInfo, setOrderInfo] = useState(null);
   // Steps 0 - contact info, 1 address, 2 order is finished
@@ -65,8 +67,22 @@ export default function FinishOrder() {
     setStep(1);
   }
   function handleAddressSubmit(userAddress, deliveryAddress) {
-    setOrderInfo((orderInfo) => ({...orderInfo, userAddress, deliveryAddress}));
-    setStep(2);
+    const order = {
+      items: orderInfo.items,
+      userAddress,
+      deliveryAddress,
+      orderUserInfo: orderInfo.userInfo,
+    }
+    api.post('/order/create', order)
+      .then((response) => {
+        // successful order
+        clearCart();
+        setStep(2);
+      })
+      .catch((error) => {
+        setMessage({variant: 'danger', text: error?.response?.data })
+      })
+
     // todo call api
   }
 
@@ -97,7 +113,6 @@ export default function FinishOrder() {
           </div>
 
         );
-        console.log(orderInfo);
         break;
       default: content = null;
     }
