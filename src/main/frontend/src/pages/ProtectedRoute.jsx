@@ -13,9 +13,9 @@ import {Alert} from 'react-bootstrap';
  * @param role Role which can visit the website.
  * @component
  */
-export default function ProtectedRoute({role}) {
+export default function ProtectedRoute({roles}) {
   const {user} = useContext(AuthContext);
-  if (user?.role === role || user?.role === 'admin') {
+  if (roles.includes(user?.role) || user?.role === 'admin') {
     // Show the site only if the user has specified role or if it is admin.
     return <Outlet />;
   }

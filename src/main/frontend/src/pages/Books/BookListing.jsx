@@ -26,7 +26,12 @@ export default function BookListing({products}) {
       <Row md={5} >
         {productsCleaned.map(book =>
           <Col key={book.id} className="p-2">
-            <Book id={book.id} name={book.name} author={book.author} price={book.price} image={book.image}/>
+            <Book id={book.id}
+                  name={book.name}
+                  author={book.author}
+                  price={book.price}
+                  image={book.image}
+                  discount={book?.discount?.discount}/>
           </Col>
         )}
       </Row>
