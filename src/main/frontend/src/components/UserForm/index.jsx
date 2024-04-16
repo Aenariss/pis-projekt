@@ -3,12 +3,14 @@
  * @author Lukas Petr <xpetrl06>
  */
 
-import {Accordion, Button, Col, Form, Row, Stack} from 'react-bootstrap';
+import {Accordion, Button, Form, Row, Stack} from 'react-bootstrap';
 import ChangePassword from './ChangePassword';
 import {useMemo, useState} from 'react';
-import { isEmailValid } from './utils';
 import Address from './Adress';
 import Password from './Password';
+import Email from './Email';
+import Name from './Name';
+import Phone from './Phone';
 
 /**
  @param props.title Title of the form.
@@ -91,12 +93,6 @@ export default function UserForm({
     onSubmit(data);
   }
 
-
-  function handleEmailChange(newEmail) {
-    setEmail(newEmail);
-    setInvalidEmail(! isEmailValid(newEmail));
-  }
-
   return (
     <>
       <Form className='w-50' onSubmit={handleSubmit}>
@@ -109,19 +105,11 @@ export default function UserForm({
             <Accordion.Body>
               <Stack gap={4}>
                 <Row>
-                  <Form.Group as={Col}>
-                      <Form.Label htmlFor='email'>Email address:</Form.Label>
-                      <Form.Control id='email'
-                                    type='text'
-                                    value={email}
-                                    required
-                                    placeholder="example@google.com"
-                                    disabled={type === 'profile'}
-                                    isInvalid={invalidEmail} isValid={!invalidEmail}
-                                    onChange={e => handleEmailChange(e.target.value)}/>
-                      <Form.Control.Feedback type="invalid">Email must be in form 'x@y.z'!</Form.Control.Feedback>
-                      <Form.Control.Feedback type="valid">&nbsp;</Form.Control.Feedback>
-                  </Form.Group>
+                  <Email email={email}
+                         onChange={setEmail}
+                         invalid={invalidEmail}
+                         onInvalid={setInvalidEmail}
+                         disabled={type === 'profile'}/>
                 </Row>
                 {type === 'register' && (
                   <Row>
@@ -135,34 +123,15 @@ export default function UserForm({
                   </Row>
                 )}
                 <Row>
-                  <Form.Group as={Col}>
-                    <Form.Label htmlFor='firstname'>First name:</Form.Label>
-                    <Form.Control id='firstname'
-                                  type='text'
-                                  value={firstname}
-                                  maxLength={20}
-                                  onChange={(e) => setFirstname(e.target.value)}/>
-                  </Form.Group>
-                  <Form.Group as={Col}>
-                    <Form.Label htmlFor='surname'>Last name:</Form.Label>
-                    <Form.Control id='surname'
-                                  type='text'
-                                  value={surname}
-                                  maxLength={20}
-                                  onChange={(e) => setSurname(e.target.value)}/>
-                  </Form.Group>
+                  <Name firstname={firstname}
+                        surname={surname}
+                        onFirstnameChange={setFirstname}
+                        onSurnameChange={setSurname}/>
                 </Row>
                 <Row>
-                  <Form.Group as={Col}>
-                    <Form.Label htmlFor='phone'>Phone number:</Form.Label>
-                    <Form.Control id='phone'
-                                  type='text'
-                                  value={phone}
-                                  placeholder="+420123456789"
-                                  onChange={e => setPhone(e.target.value)} />
-                  </Form.Group>
+                  <Phone phone={phone}
+                         onChange={setPhone} />
                 </Row>
-
                 {type !== 'create' && (
                   <ChangePassword userId={userId}/>
                 )}
