@@ -35,30 +35,6 @@ public class OrderUserInfoManager {
         return em.find(OrderUserInfo.class, id);
     }
 
-    public OrderUserInfo findBySurname(String surname) {
-        OrderUserInfo orderUserInfo = null;
-        try {
-            Query q = em.createQuery("SELECT o FROM OrderUserInfo o WHERE o.surname = :surname");
-            q.setParameter("surname", surname);
-            return (OrderUserInfo) q.getSingleResult();
-        } catch (Exception e) {
-            System.out.println(e);
-            return orderUserInfo;
-        }
-    }
-
-    public OrderUserInfo findByFirstname(String firstname) {
-        OrderUserInfo orderUserInfo = null;
-        try {
-            Query q = em.createQuery("SELECT o FROM OrderUserInfo o WHERE o.firstname = :firstname");
-            q.setParameter("firstname", firstname);
-            return (OrderUserInfo) q.getSingleResult();
-        } catch (Exception e) {
-            System.out.println(e);
-            return orderUserInfo;
-        }
-    }
-
     public OrderUserInfo findByName(String firstname, String surname) {
         OrderUserInfo orderUserInfo = null;
         try {

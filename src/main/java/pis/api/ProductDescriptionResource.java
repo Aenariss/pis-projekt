@@ -593,4 +593,23 @@ public class ProductDescriptionResource {
         productDescriptionManager.delete(toDelete);
         return Response.ok().entity("Successfully removed the Product Description").build();
     }
+
+    /**
+     * Update quantity of ProductItem
+     */
+    @PUT
+    @Path("/{id}/{amount}")
+    @RolesAllowed({ "admin", "employee" })
+    public Response updateProductItemQuantity(@PathParam("id") long id, @PathParam("amount") int amount) {
+        ProductDescription productDescription = productDescriptionManager.find(id);
+        if (productDescription == null) {
+            // ProductDescription with given id does not exist
+            return Response.status(Response.Status.BAD_REQUEST).entity("Error: Product Description doesnt exist")
+                    .build();
+        }
+        productDescription.setAvailableQuantity(amount);
+        productDescriptionManager.save(productDescription);
+        return Response.ok().entity("Succesfully updated quantity of given Product Description ID").build();
+    }
+
 }

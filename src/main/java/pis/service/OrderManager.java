@@ -47,15 +47,16 @@ public class OrderManager {
      * @param o OrderState of the searched Order.
      * @return Order
      */
-    public Order findByState(OrderStatus o) {
-        Order order = null;
+    @SuppressWarnings("unchecked")
+    public List<Order> findByState(OrderStatus o) {
+        List<Order> orders = null;
         try {
             Query q = em.createQuery("SELECT o FROM Order o WHERE o.state = :state");
             q.setParameter("state", o);
-            return (Order) q.getSingleResult();
+            return (List<Order>) q.getResultList();
         } catch (Exception e) {
             System.out.println(e);
-            return order;
+            return orders;
         }
     }
 
@@ -78,64 +79,12 @@ public class OrderManager {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Order> findByOrderUserInfo(String firstname, String surname, String phone, String email) {
+    public List<Order> findByEmail(String email) {
         List<Order> orders = null;
         try {
             Query q = em.createQuery(
-                    "SELECT o FROM Order o WHERE o.orderUserInfo.firstname = :firstname AND o.orderUserInfo.surname = :surname AND o.orderUserInfo.phone = :phone AND o.orderUserInfo.email = :email");
-            q.setParameter("firstname", firstname);
-            q.setParameter("surname", surname);
-            q.setParameter("phone", phone);
+                    "SELECT o FROM Order o WHERE o.orderUserInfo.email = :email");
             q.setParameter("email", email);
-            return (List<Order>) q.getResultList();
-        } catch (Exception e) {
-            System.out.println(e);
-            return orders;
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<Order> findByOrderUserId(long id) {
-        List<Order> orders = null;
-        try {
-            Query q = em.createQuery("SELECT o FROM Order o WHERE o.orderUserInfo.id = :id");
-            q.setParameter("id", id);
-            return (List<Order>) q.getResultList();
-        } catch (Exception e) {
-            System.out.println(e);
-            return orders;
-        }
-    }
-
-    public List<Order> findByUserAddress(String state, String town, String street, Integer streetNumber,
-            String postCode) {
-        List<Order> orders = null;
-        try {
-            Query q = em.createQuery(
-                    "SELECT o FROM Order o WHERE o.userAddress.state = :state AND o.userAddress.town = :town AND o.userAddress.street = :street AND o.userAddress.streetNumber = :streetNumber AND o.userAddress.postCode = :postCode");
-            q.setParameter("state", state);
-            q.setParameter("town", town);
-            q.setParameter("street", street);
-            q.setParameter("streetNumber", streetNumber);
-            q.setParameter("postCode", postCode);
-            return (List<Order>) q.getResultList();
-        } catch (Exception e) {
-            System.out.println(e);
-            return orders;
-        }
-    }
-
-    public List<Order> findByDeliveryAddress(String state, String town, String street, Integer streetNumber,
-            String postCode) {
-        List<Order> orders = null;
-        try {
-            Query q = em.createQuery(
-                    "SELECT o FROM Order o WHERE o.deliveryAddress.state = :state AND o.deliveryAddress.town = :town AND o.deliveryAddress.street = :street AND o.deliveryAddress.streetNumber = :streetNumber AND o.deliveryAddress.postCode = :postCode");
-            q.setParameter("state", state);
-            q.setParameter("town", town);
-            q.setParameter("street", street);
-            q.setParameter("streetNumber", streetNumber);
-            q.setParameter("postCode", postCode);
             return (List<Order>) q.getResultList();
         } catch (Exception e) {
             System.out.println(e);
@@ -154,26 +103,4 @@ public class OrderManager {
         return em.merge(o);
     }
 
-    /**
-     * Remove Order from db.
-     * 
-     * @param o Order to remove
-     * @return If succeeded or not
-     */
-    @Transactional
-    public void delete(Order o) {
-        Order new_o = em.merge(o);
-        em.remove(new_o);
-    }
-
-    /**
-     * Delete all Orders.
-     * 
-     * @return If succeeded or not
-     */
-    @Transactional
-    public void deleteAll() {
-        Query q = em.createQuery("DELETE FROM Order");
-        q.executeUpdate();
-    }
 }

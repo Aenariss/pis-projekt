@@ -70,38 +70,4 @@ public class OrderUserInfoResource {
                 .build();
     }
 
-    @DELETE
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteOrderUserInfo(@PathParam("id") long id) {
-        OrderUserInfo orderUserInfoFound = orderUserInfoManager.find(id);
-        if (orderUserInfoFound != null) {
-            orderUserInfoManager.delete(orderUserInfoFound);
-            return Response.ok().entity("Succesfully removed the Order User Info").build();
-        }
-        return Response.status(Response.Status.BAD_REQUEST).entity("Error: Order user info with given ID doesnt exist")
-                .build();
-    }
-
-    /*
-     * @DELETE
-     * 
-     * @Consumes(MediaType.APPLICATION_JSON)
-     * 
-     * @Produces(MediaType.APPLICATION_JSON)
-     * public Response deleteOrderUserInfo(OrderUserInfo orderUserInfo) {
-     * OrderUserInfo orderUserInfoFound =
-     * orderUserInfoManager.findByName(orderUserInfo.getFirstname(),
-     * orderUserInfo.getSurname());
-     * if (orderUserInfoFound != null) {
-     * orderUserInfoManager.delete(orderUserInfoFound);
-     * return
-     * Response.ok().entity("Succesfully removed the Order User Info").build();
-     * }
-     * return Response.status(Response.Status.BAD_REQUEST)
-     * .entity("Error: Order user info with given data doesnt exist")
-     * .build();
-     * }
-     */
-
 }
