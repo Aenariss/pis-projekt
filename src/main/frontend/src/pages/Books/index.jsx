@@ -24,6 +24,8 @@ export default function BooksPage() {
     const query = searchParams.get('query');
     // Or filtering books?
     const categoryIds = searchParams.getAll('categoryIds');
+    const authorIds = searchParams.getAll('authorIds');
+    const languageIds = searchParams.getAll('languageIds');
     if (query && query !== '') {
       // User is searching for book.
       api.post('/productdescription/search', {query})
@@ -32,9 +34,14 @@ export default function BooksPage() {
             setProducts(response.data);
           }
         })
-    } else if (categoryIds.length > 0) {
+    } else if (categoryIds.length > 0 || languageIds.length > 0 || authorIds.length > 0) {
+      let body = {};
+      if (categoryIds.length > 0) body.categoryIds = categoryIds;
+      if (authorIds.length > 0) body.authorIds = authorIds;
+      if (languageIds.length > 0) body.languageIds = languageIds;
+
       // User is filtering by category
-      api.post('/productdescription/filter', {categoryIds})
+      api.post('/productdescription/filter', body)
         .then(response => {
           if (response.status === 200) {
             setProducts(response.data);

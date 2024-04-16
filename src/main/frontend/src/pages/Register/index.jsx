@@ -6,20 +6,25 @@ import { useContext, useState } from "react";
 import { api } from "../../api";
 import UserForm from "../../components/UserForm";
 import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
   const {login} = useContext(AuthContext);
+  const {user} = useContext(AuthContext);
+
+  // If user is logged in then redirect him.
+  if (user) {
+    return <Navigate to='/' replace/>;
+  }
 
   /**
    * Tries to register the user.
    * If the registration is successful hides the windows, else show error message.
    */
     function handleRegister(data) {
-      data.streetNumber = 0;
       api.post('/register', data)
         .then(response => {
           if (response.status === 200) {

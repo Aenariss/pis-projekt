@@ -1,57 +1,88 @@
-import {useEffect, useState} from 'react';
+/**
+ * Page, where admin can manage categories.
+ * @author Martin Balaz
+ */
+
+import {useState, useEffect} from 'react';
 import {api} from '../../api';
+import {Button, Modal, Form} from "react-bootstrap";
+import Navbar from "react-bootstrap/Navbar";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import CategoryList from './CategoryListing';
+import CategoryForm from "./CategoryForm";
 
+/**
+ * Component for the Category Manager page.
+ * @returns {JSX.Element} - Category Manager page
+ * @constructor - CategoryManager
+ */
 export default function CategoryManager() {
-  const [categories, setCategories] = useState([]);
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [categories, setCategories] = useState([]);
+    const [categoryToEdit, setCategoryToEdit] = useState(null);
 
-  function getCategories() {
-    // Fetches list of categories from REST API.
-    api.get('/category')
-    .then(response => {
-        // todo handling of errors
-        setCategories(response.data);
-    })
-    .catch(error => console.log(error));
-  }
-  function addCategory(e) {
-    // Calls REST API for adding category.
-    e.preventDefault();
-    api.post('/category', {name, description})
-      .then(response => {
-          if (response.status === 200) {
-          setDescription('');
-          setName('');
-          getCategories();
-          }
-      })
-      .catch(error => console.log(error));
-  }
+    /**
+     * Function for getting all categories using the REST API.
+     */
+    function getCategories() {
+        // Fetches list of categories from REST API.
+        api.get('/category')
+            .then(response => {
+                response.data.sort((a, b) => a.name.localeCompare(b.name)); // Categories are in sorted order
+                setCategories(response.data);
+            })
+            .catch(error => console.log(error));
+    }
 
-  // On load of page fetch list of categories.
-  useEffect(() => {
-    getCategories();
-  }, []);
+    /**
+     * Function for opening pop-up for editing category.
+     * @param category - category to edit
+     */
+    function editCategory(category) {
+        setCategoryToEdit(category);
+        setShowModal(true);
+    }
 
-  return (
-    <div>
-      <h2>Categories</h2>
-      <div>
-      {
-        categories.map(category => (<div key={category.id}>{category.name}: {category.description}</div>))
-      }
-      </div>
-      <h2>Add new category</h2>
-      <form onSubmit={addCategory}>
-        <label>Category name: </label>
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)}></input>
-        <br/>
-        <label>Description: </label>
-        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)}></input>
-        <br/>
-        <input type="submit" value="Add category"/>
-      </form>
-    </div>
-  );
+    /**
+     * Function for deleting category using the REST API.
+     * @param id - id of the category to delete
+     */
+    function deleteCategory(id) {
+        api.delete(`/category/${id}`)
+            .then(response => {
+                if (response.status === 200) {
+                    getCategories(); // Update table of categories
+                }
+            })
+            .catch(error => {
+                alert(error.response.data) // Display error message
+            });
+    }
+
+    /**
+     * On page load, get all categories.
+     */
+    useEffect(() => {
+        getCategories();
+    }, []);
+
+    return (
+        <div>
+            <Navbar bg="light" variant="light">
+                <Container>
+                    <Navbar.Brand>Category Manager</Navbar.Brand>
+                    <Nav className="justify-content-end" style={{ width: "100%" }}>
+                        <Button variant="success" onClick={ () => {
+                            setCategoryToEdit(null); // Reset the categoryToEdit state
+                            setShowModal(true);
+                        }}>Add Category</Button>
+                    </Nav>
+                </Container>
+            </Navbar>
+            <br/>
+            <CategoryList categories={categories} deleteCategory={deleteCategory} editCategory={editCategory} />
+            <CategoryForm showModal={showModal} setShowModal={setShowModal} categoryToEdit={categoryToEdit} getCategories={getCategories} categories={categories} />
+        </div>
+    );
 }

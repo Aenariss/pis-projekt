@@ -1,5 +1,5 @@
 /**
- * User profile page.
+ * Page for showing details about customers/employees and editing them.
  * @author Lukas Petr <xpetrl06>
  */
 
@@ -7,19 +7,21 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { api } from "../../api";
 import UserForm from "../../components/UserForm";
 import { MessageContext } from "../../context/MessageContext";
+import { useParams } from "react-router-dom";
 
 
 /**
- * User profile page component.
+ * Page for showing details about customers/employees and editing them.
  * @component
  */
-export default function UserProfilePage() {
+export default function EditUser() {
+  const {userId} = useParams();
   const [userInfo, setUserInfo] = useState(null);
   // Message to be shown to user, format {variant, text}
   const {setMessage} = useContext(MessageContext);
 
   const getUser = useCallback(() => {
-    api.get('user')
+    api.get(`user/${userId}`)
     .then((response) => {
       const data = response.data;
       const info = {
@@ -36,9 +38,9 @@ export default function UserProfilePage() {
       setUserInfo(info);
     })
     .catch(() => {
-      setMessage({variant: 'danger', text: 'The profile loading was unsuccessful!'})
+      setMessage({variant: 'danger', text: 'Error: The profile of the user was not possible to load!'})
     })
-  }, [setMessage]);
+  }, [setMessage, userId]);
 
   useEffect(() => {
     getUser()
@@ -58,17 +60,17 @@ export default function UserProfilePage() {
         postCode: info.postCode,
       },
     }
-    api.put('user', data)
+    api.put(`user/${userId}`, data)
       .then(() => {
         // success
         // reload user
-        setMessage({variant: 'success', text: 'Your changes were saved.'})
+        setMessage({variant: 'success', text: 'Changes were saved.'})
         getUser();
       })
       .catch(() => {
         setMessage({variant: 'danger', text: 'Error: the information were not saved!'})
       })
-  }, [getUser, setMessage]);
+  }, [getUser, setMessage, userId]);
 
   if (userInfo === null) {
     // loading
@@ -78,8 +80,9 @@ export default function UserProfilePage() {
   return (
     <>
       <UserForm defaultValues={userInfo}
-                title='Your profile'
-                type='profile'
+                title={`User ${userInfo.firstname} ${userInfo.surname}`}
+                type='edit'
+                userId={userId}
                 onSubmit={handleSubmit}/>
     </>
   );

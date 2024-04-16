@@ -3,19 +3,23 @@
  * @author Lukas Petr <xpetrl06>
  */
 
-import {Button, Col, Form, Row, Stack} from 'react-bootstrap';
+import {Accordion, Button, Col, Form, Row, Stack} from 'react-bootstrap';
 import ChangePassword from './ChangePassword';
-import {useState} from 'react';
-import { isEmailValid, isPasswordValid } from './utils';
+import {useMemo, useState} from 'react';
+import { isEmailValid } from './utils';
 import Address from './Adress';
+import Password from './Password';
 
 /**
  @param props.title Title of the form.
  * User profile page component.
- * @param props.type Type of the form, one of 'register', 'profile'.
+ * @param props.type Type of the form, one of 'register', 'profile', 'edit'.
+ * Register is for registering new users, profile is for showing profile of logged user,
+ * edit is for admin to edit info about another users.
  * @param props.title Title of the form.
  * @param props.defaultValues Values which will be shown by default.
  * @param {Function} props.onSubmit Function which will be called with filled data on form submit.
+ * @param {number} props.userId For edit type, id of user which is being edited.
  * @component
  */
 export default function UserForm({
@@ -33,6 +37,7 @@ export default function UserForm({
     postCode: '',
   },
   onSubmit,
+  userId,
 }) {
   // User info
   const [firstname, setFirstname] = useState(defaultValues.firstname);
@@ -48,10 +53,26 @@ export default function UserForm({
   const [streetNumber, setStreetNumber] = useState(defaultValues.streetNumber);
   const [postCode, setPostCode] = useState(defaultValues.postCode);
   // Checking info validity
-  const [invalidEmail, setInvalidEmail] = useState(true);
-  const [invalidPassword1, setInvalidPassword1] = useState(true);
+  const [invalidEmail, setInvalidEmail] = useState(type === 'register' ? true : false);
+  const [invalidPassword, setInvalidPassword] = useState(type === 'register' ? true : false);
 
-  const disableSubmit = invalidEmail || invalidPassword1 || password1 !== password2;
+  const somethingChanged = useMemo(() => (
+       defaultValues.firstname !== firstname
+    || defaultValues.surname !== surname
+    || defaultValues.email !== email
+    || defaultValues.phone !== phone
+    || defaultValues.state !== state
+    || defaultValues.town !== town
+    || defaultValues.street !== street
+    || defaultValues.streetNumber !== streetNumber
+    || defaultValues.postCode !== postCode
+  ), [defaultValues, firstname, surname, email, phone, state, town, street, streetNumber, postCode]);
+  const disableSubmit = (
+       invalidEmail
+    || (type === 'register' && invalidPassword)
+    // if not register form disable also button if nothing changed
+    || (type !== 'register' && !somethingChanged)
+  );
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -76,95 +97,106 @@ export default function UserForm({
     setInvalidEmail(! isEmailValid(newEmail));
   }
 
-  function handlePassword1Change(e) {
-    const newPassword1 = e.target.value;
-    setPassword1(newPassword1);
-    setInvalidPassword1(! isPasswordValid(newPassword1));
-  }
-
   return (
     <>
-      <ChangePassword ></ChangePassword>
       <Form className='w-50' onSubmit={handleSubmit}>
-        <Stack gap={4}>
-          <h2>{title}</h2>
-          <h3>Basic information</h3>
-          <Row>
-            <Form.Group as={Col}>
-                <Form.Label htmlFor='email'>Email address:</Form.Label>
-                <Form.Control id='email'
-                              type='text'
-                              value={email}
-                              required
-                              placeholder="example@google.com"
-                              isInvalid={email === '' && invalidEmail} isValid={!invalidEmail}
-                              onChange={e => handleEmailChange(e.target.value)}/>
-                <Form.Control.Feedback type="invalid">Email must be in form 'x@y.z'!</Form.Control.Feedback>
-            </Form.Group>
-          </Row>
-          {type === 'register' && (
-            <Row>
-              <Form.Group controlId="register-password1" as={Col}>
-                <Form.Label>Password:</Form.Label>
-                <Form.Control type="password" required value={password1}
-                              onChange={handlePassword1Change}
-                              isInvalid={password1 === '' && invalidPassword1} isValid={!invalidPassword1}/>
-                <Form.Control.Feedback type="invalid">Password must contain at least 3 symbols.</Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group controlId="register-password2" as={Col}>
-                <Form.Label>Repeat password:</Form.Label>
-                <Form.Control type="password" required value={password2}
-                              onChange={(e) => setPassword2(e.target.value)}
-                              isInvalid={password1 !== password2} isValid={!invalidPassword1 && password1 === password2}/>
-                <Form.Control.Feedback type="invalid">Passwords do not match.</Form.Control.Feedback>
-              </Form.Group>
-            </Row>
-          )}
-          <Row>
-            <Form.Group as={Col}>
-              <Form.Label htmlFor='firstname'>First name:</Form.Label>
-              <Form.Control id='firstname'
-                            type='text'
-                            value={firstname}
-                            maxLength={20}
-                            onChange={(e) => setFirstname(e.target.value)}/>
-            </Form.Group>
-            <Form.Group as={Col}>
-              <Form.Label htmlFor='surname'>Last name:</Form.Label>
-              <Form.Control id='surname'
-                            type='text'
-                            value={surname}
-                            maxLength={20}
-                            onChange={(e) => setSurname(e.target.value)}/>
-            </Form.Group>
-          </Row>
-          <Row>
-            <Form.Group as={Col}>
-              <Form.Label htmlFor='phone'>Phone number:</Form.Label>
-              <Form.Control id='phone'
-                            type='text'
-                            value={phone}
-                            placeholder="+420123456789"
-                            onChange={e => setPhone(e.target.value)} />
-            </Form.Group>
-          </Row>
+        <h2>{title}</h2>
+        <Accordion defaultActiveKey={['0']} alwaysOpen>
+          <Accordion.Item eventKey='0'>
+            <Accordion.Header>
+              <h3>Basic information</h3>
+            </Accordion.Header>
+            <Accordion.Body>
+              <Stack gap={4}>
+                <Row>
+                  <Form.Group as={Col}>
+                      <Form.Label htmlFor='email'>Email address:</Form.Label>
+                      <Form.Control id='email'
+                                    type='text'
+                                    value={email}
+                                    required
+                                    placeholder="example@google.com"
+                                    disabled={type === 'profile'}
+                                    isInvalid={invalidEmail} isValid={!invalidEmail}
+                                    onChange={e => handleEmailChange(e.target.value)}/>
+                      <Form.Control.Feedback type="invalid">Email must be in form 'x@y.z'!</Form.Control.Feedback>
+                      <Form.Control.Feedback type="valid">&nbsp;</Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
+                {type === 'register' && (
+                  <Row>
+                    <Password password1={password1}
+                              password2={password2}
+                              onPassword1Change={setPassword1}
+                              onPassword2Change={setPassword2}
+                              onInvalidPassword={setInvalidPassword}
+                              passwordTitle='Password:'
+                              repeatPasswordTitle='Repeat password:'/>
+                  </Row>
+                )}
+                <Row>
+                  <Form.Group as={Col}>
+                    <Form.Label htmlFor='firstname'>First name:</Form.Label>
+                    <Form.Control id='firstname'
+                                  type='text'
+                                  value={firstname}
+                                  maxLength={20}
+                                  onChange={(e) => setFirstname(e.target.value)}/>
+                  </Form.Group>
+                  <Form.Group as={Col}>
+                    <Form.Label htmlFor='surname'>Last name:</Form.Label>
+                    <Form.Control id='surname'
+                                  type='text'
+                                  value={surname}
+                                  maxLength={20}
+                                  onChange={(e) => setSurname(e.target.value)}/>
+                  </Form.Group>
+                </Row>
+                <Row>
+                  <Form.Group as={Col}>
+                    <Form.Label htmlFor='phone'>Phone number:</Form.Label>
+                    <Form.Control id='phone'
+                                  type='text'
+                                  value={phone}
+                                  placeholder="+420123456789"
+                                  onChange={e => setPhone(e.target.value)} />
+                  </Form.Group>
+                </Row>
 
-          {type === 'profile' && (
-            <Button type='button' size='sm' variant='outline-primary'>Change password</Button>
-          )}
-          <h3>Address</h3>
-          <Address state={state}
-                   town={town}
-                   postcode={postCode}
-                   street={street}
-                   streetNumber={streetNumber}
-                   onStateChange={setState}
-                   onTownChange={setTown}
-                   onPostcodeChange={setPostCode}
-                   onStreetChange={setStreet}
-                   onStreetNumberChange={setStreetNumber}/>
-          <Button type='submit' disabled={disableSubmit}>Register</Button>
-        </Stack>
+                {type !== 'create' && (
+                  <ChangePassword userId={userId}/>
+                )}
+              </Stack>
+            </Accordion.Body>
+          </Accordion.Item>
+          <Accordion.Item eventKey='1'>
+            <Accordion.Header>
+              <h3>Address</h3>
+            </Accordion.Header>
+            <Accordion.Body>
+              <Stack gap={4}>
+                <Address state={state}
+                        town={town}
+                        postcode={postCode}
+                        street={street}
+                        streetNumber={streetNumber}
+                        onStateChange={setState}
+                        onTownChange={setTown}
+                        onPostcodeChange={setPostCode}
+                        onStreetChange={setStreet}
+                        onStreetNumberChange={setStreetNumber}/>
+              </Stack>
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
+        <Row className='p-3'>
+          <Button type='submit' disabled={disableSubmit}>
+            {type !== 'register'
+              ? 'Save'
+              : 'Register'
+            }
+          </Button>
+        </Row>
       </Form>
     </>
   );

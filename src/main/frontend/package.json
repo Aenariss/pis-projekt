@@ -29,11 +29,11 @@
       "react-app/jest"
     ],
     "overrides": [{
-      "files": "*",
-      "rules": {
-        "jsx-a11y/anchor-is-valid": "off"
-      }
-    }]
+        "files": "*",
+        "rules": {
+          "jsx-a11y/anchor-is-valid": "off"
+        }
+      }]
   },
   "browserslist": {
     "production": [

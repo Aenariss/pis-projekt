@@ -43,7 +43,7 @@ public class DiscountManager {
     /**
      * Returns Discount by name if it exists, otherwise null.
      * 
-     * @param name name of the searched Discount.
+     * @param discount name of the searched Discount.
      * @return Discount
      */
     public Discount findDiscount(int discount) {
