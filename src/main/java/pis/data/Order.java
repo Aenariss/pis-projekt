@@ -30,8 +30,7 @@ public class Order {
     @NotNull
     private LocalDateTime creationDate;
 
-    @ManyToOne
-    @JoinColumn(name = "orderUserInfo_id")
+    @NotNull
     private OrderUserInfo orderUserInfo;
 
     @Embedded

@@ -13,6 +13,7 @@ import pis.data.OrderItem;
 import pis.data.OrderStatus;
 import pis.data.OrderUserInfo;
 import pis.data.ProductDescription;
+import pis.data.RegisteredUser;
 import pis.data.UserAddress;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
@@ -23,12 +24,15 @@ import pis.api.dto.CreateOrderItemDTO;
 import pis.api.dto.OrderUserInfoDTO;
 import pis.api.dto.UpdateOrderDTO;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import pis.service.OrderManager;
 import pis.service.OrderUserInfoManager;
 import pis.service.ProductDescriptionManager;
+import pis.service.RegisteredUserManager;
 import jakarta.ws.rs.core.Response;
 import pis.api.dto.Address;
+import jakarta.ws.rs.core.SecurityContext;
 
 //TODO: check permissions
 
@@ -46,6 +50,12 @@ public class OrderResource {
 
     @Inject
     private OrderUserInfoManager orderUserInfoManager;
+
+    @Context
+    private SecurityContext securityContext;
+
+    @Inject
+    private RegisteredUserManager registeredUserManager;
 
     /**
      * Returns list of all Orders.
@@ -131,15 +141,19 @@ public class OrderResource {
             int amount = item.getAmount();
             order.addOrderItem(orderItem);
             product.setAvailableQuantity(product.getAvailableQuantity() - amount);
+            // Need to persist
+            productDescriptionManager.save(product);
         }
 
-        // Check if the order did user which is logged in
-        if (dto.getOrderUserInfo() != null) {
-            OrderUserInfo orderUserInfo = orderUserInfoManager.find(dto.getOrderUserInfo().getId());
-            if (orderUserInfo == null) {
-                return Response.status(Response.Status.NOT_FOUND).entity("Error: Order user info not found").build();
-            }
-            order.setOrderUserInfo(orderUserInfo);
+        // Check if the order did user which is logged in.
+        // If it was logged in user then the securityContext will contain his email.
+        if (securityContext.getUserPrincipal() != null) {
+            String userEmail = securityContext.getUserPrincipal().getName();
+            // Getting user who ordered the items
+            RegisteredUser user = registeredUserManager.findByEmail(userEmail);
+            user.addOrder(order);
+            // Saving user for the reason his updated orders are saved in DB.
+            registeredUserManager.save(user);
         }
 
         // Save order
