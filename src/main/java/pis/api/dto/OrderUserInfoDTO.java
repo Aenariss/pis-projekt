@@ -5,7 +5,7 @@
 
 package pis.api.dto;
 
-public class UserDTO {
+public class OrderUserInfoDTO {
     private String firstname;
     private String surname;
     private String phone;

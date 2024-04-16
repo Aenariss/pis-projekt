@@ -7,11 +7,13 @@ package pis.api.dto;
 
 import java.util.List;
 
+import pis.data.OrderUserInfo;
+
 public class CreateOrderDTO {
     private List<CreateOrderItemDTO> items;
     private AddressDTO userAddress;
     private AddressDTO deliveryAddress;
-    private UserDTO userInfo;
+    private OrderUserInfo orderUserInfo;
 
     public List<CreateOrderItemDTO> getItems() {
         return items;
@@ -37,11 +39,11 @@ public class CreateOrderDTO {
         this.deliveryAddress = deliveryAddress;
     }
 
-    public UserDTO getUserInfo() {
-        return userInfo;
+    public OrderUserInfo getOrderUserInfo() {
+        return orderUserInfo;
     }
 
-    public void setUserInfo(UserDTO userInfo) {
-        this.userInfo = userInfo;
+    public void setOrderUserInfo(OrderUserInfo orderUserInfo) {
+        this.orderUserInfo = orderUserInfo;
     }
 }

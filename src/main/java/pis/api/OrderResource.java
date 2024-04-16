@@ -9,19 +9,24 @@ package pis.api;
 import java.util.List;
 
 import pis.data.Order;
+import pis.data.OrderItem;
 import pis.data.OrderStatus;
 import pis.data.OrderUserInfo;
+import pis.data.ProductDescription;
 import pis.data.UserAddress;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import pis.api.dto.AddressDTO;
 import pis.api.dto.CreateOrderDTO;
-import pis.api.dto.UserDTO;
+import pis.api.dto.CreateOrderItemDTO;
+import pis.api.dto.OrderUserInfoDTO;
+import pis.api.dto.UpdateOrderDTO;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import pis.service.OrderManager;
 import pis.service.OrderUserInfoManager;
+import pis.service.ProductDescriptionManager;
 import jakarta.ws.rs.core.Response;
 import pis.api.dto.Address;
 
@@ -35,6 +40,9 @@ import pis.api.dto.Address;
 public class OrderResource {
     @Inject
     private OrderManager orderManager;
+
+    @Inject
+    private ProductDescriptionManager productDescriptionManager;
 
     @Inject
     private OrderUserInfoManager orderUserInfoManager;
@@ -81,59 +89,76 @@ public class OrderResource {
         return Response.status(Response.Status.CONFLICT).entity("Error: Order already exists").build();
     }
 
+    /**
+     * Creates new order.
+     * 
+     * @param dto DTO with order data.
+     * @return Response status.
+     */
     @POST
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createNewOrder(CreateOrderDTO dto) {
-        // TODO
-        // Add items to order (find product description by id)
-        // check available quantity
-        // Create order item connected to ProductItem with quantity set to amount
+        List<CreateOrderItemDTO> items = dto.getItems();
+
+        for (CreateOrderItemDTO item : items) {
+            ProductDescription product = productDescriptionManager.find(item.getId());
+            int amount = item.getAmount();
+            if (amount <= 0) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("Error: Amount cannot be negative or zero")
+                        .build();
+            }
+
+            if (product == null) {
+                return Response.status(Response.Status.NOT_FOUND).entity("Error: Product not found").build();
+            }
+
+            if (product.getAvailableQuantity() < amount) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("Error: Not enough items in stock").build();
+            }
+        }
+
+        // Create order
+        Order order = new Order(OrderStatus.IN_PROGRESS, dto.getOrderUserInfo(), dto.getDeliveryAddress().getState(),
+                dto.getDeliveryAddress().getTown(), dto.getDeliveryAddress().getStreet(),
+                dto.getDeliveryAddress().getStreetNumber(), dto.getDeliveryAddress().getPostCode(),
+                dto.getUserAddress().getState(), dto.getUserAddress().getTown(), dto.getUserAddress().getStreet(),
+                dto.getUserAddress().getStreetNumber(), dto.getUserAddress().getPostCode());
+
+        for (CreateOrderItemDTO item : items) {
+            ProductDescription product = productDescriptionManager.find(item.getId());
+            OrderItem orderItem = new OrderItem(item.getAmount(), product);
+            int amount = item.getAmount();
+            order.addOrderItem(orderItem);
+            product.setAvailableQuantity(product.getAvailableQuantity() - amount);
+        }
 
         // Check if the order did user which is logged in
-        // Probably something like this could be used
-        // RegisteredUser u =
-        // userManager.findByEmail(securityContext.getUserPrincipal().getName());
+        if (dto.getOrderUserInfo() != null) {
+            OrderUserInfo orderUserInfo = orderUserInfoManager.find(dto.getOrderUserInfo().getId());
+            if (orderUserInfo == null) {
+                return Response.status(Response.Status.NOT_FOUND).entity("Error: Order user info not found").build();
+            }
+            order.setOrderUserInfo(orderUserInfo);
+        }
 
-        // Could by used - depends how we want to do it
-        // UserDTO userDTO = dto.getUserInfo();
-        // OrderUserInfo userInfo = new OrderUserInfo(
-        // userDTO.getFirstname(),
-        // userDTO.getSurname(),
-        // userDTO.getPhone(),
-        // userDTO.getEmail()
-        // );
-        // AddressDTO deliveryAddressDTO = dto.getDeliveryAddress();
-        // Address deliveryAddress = new Address(
-        // deliveryAddressDTO.getState(),
-        // deliveryAddressDTO.getTown(),
-        // deliveryAddressDTO.getStreet(),
-        // deliveryAddressDTO.getStreetNumber(),
-        // deliveryAddressDTO.getPostCode()
-        // );
-        // AddressDTO userAddressDTO = dto.getUserAddress();
-        // UserAddress userAddress = ...
+        // Save order
+        orderManager.save(order);
         return Response.ok().build();
     }
 
-    /**
-     * Updates order.
-     * 
-     * @param id    Id of the Order.
-     * @param order Order to be updated.
-     * @return Response status.
-     */
     @PUT
-    @Path("/{id}")
+    @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({ "admin", "employee" })
-    public Response updateOrder(@PathParam("id") long id, Order order) {
-        Order o = orderManager.find(id);
+    public Response updateOrderStatus(UpdateOrderDTO dto) {
+        Order o = orderManager.find(dto.getId());
+        System.out.println(dto.getId());
         if (o == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Error: Order not found").build();
         }
-        o.setStatus(order.getStatus());
+        o.setStatus(dto.getStatus());
         orderManager.save(o);
         return Response.ok(o).entity(o).build();
     }
