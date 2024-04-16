@@ -246,6 +246,8 @@ public class PreFill {
                 order4 = orderManager.save(order4);
                 order5 = orderManager.save(order5);
 
+                admin.addOrder(order1);
+
                 return Response.status(Response.Status.OK).entity("DB was prefilled").build();
         }
 }
