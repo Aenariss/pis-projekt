@@ -55,6 +55,7 @@ export default function Address({
           <Form.Control id='postcode'
                         type='text'
                         value={postcode}
+                        maxLength={8}
                         onChange={(e) => onPostcodeChange(e.target.value)} />
         </Form.Group>
       </Row>

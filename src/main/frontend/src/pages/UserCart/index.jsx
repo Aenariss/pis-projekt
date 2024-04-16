@@ -52,50 +52,59 @@ export default function UserCartPage() {
   return (
     <>
       <h2>Your cart</h2>
-      <Table striped>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Title</th>
-            <th>Amount</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          {books.map(book => {
-            const amount = getAmountForId(book.id);
-            return (
-              <tr key={book.id}>
-                <td><Image src={book?.image} height='150px'/></td>
-                <td>
-                  <div style={{fontSize: '20px'}}>{book?.name}</div>
-                  <div>{book.author?.firstName} {book.author?.lastName}</div>
-                </td>
-                <td>{amount}</td>
-                <td>
-                  <div style={{fontSize: '20px'}}>{(amount * book.currentPrice).toFixed(2)} $</div>
-                  <div  className='text-muted'>{book.currentPrice.toFixed(2)} $ / item</div>
-                </td>
-                <td>
-                  <Button className='p-1'
-                          variant='danger'
-                          onClick={() => handleDeleteItem(book.id)}>
-                    <X size={25}/>
-                  </Button>
-                </td>
+      { books.length === 0
+        ? (
+          <div className='display-5 text-center text-muted mt-5'>
+            Your cart is empty
+          </div>
+        ) : (
+        <>
+          <Table striped>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Amount</th>
+                <th>Price</th>
               </tr>
-            );
-          })}
-        </tbody>
-      </Table>
-      <div className='d-flex'>
-        <span className='display-6'>Total price: {totalPrice.toFixed(2)} $</span>
-        <Button className='ms-auto px-5'
-                size='lg'
-                onClick={() => navigate('/finish-order')}>
-          Continue to order
-        </Button>
-      </div>
+            </thead>
+            <tbody>
+              {books.map(book => {
+                const amount = getAmountForId(book.id);
+                return (
+                  <tr key={book.id}>
+                    <td><Image src={book?.image} height='150px'/></td>
+                    <td>
+                      <div style={{fontSize: '20px'}}>{book?.name}</div>
+                      <div>{book.author?.firstName} {book.author?.lastName}</div>
+                    </td>
+                    <td>{amount}</td>
+                    <td>
+                      <div style={{fontSize: '20px'}}>{(amount * book.currentPrice).toFixed(2)} $</div>
+                      <div  className='text-muted'>{book.currentPrice.toFixed(2)} $ / item</div>
+                    </td>
+                    <td>
+                      <Button className='p-1'
+                              variant='danger'
+                              onClick={() => handleDeleteItem(book.id)}>
+                        <X size={25}/>
+                      </Button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+          <div className='d-flex'>
+            <span className='display-6'>Total price: {totalPrice.toFixed(2)} $</span>
+            <Button className='ms-auto px-5'
+                    size='lg'
+                    onClick={() => navigate('/finish-order')}>
+              Continue to order
+            </Button>
+          </div>
+        </>
+      )}
     </>
   );
 }

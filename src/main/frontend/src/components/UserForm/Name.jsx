@@ -5,6 +5,9 @@
 
 import { Col, Form } from 'react-bootstrap';
 
+/** Basic regex for checking name - cannot contain numbers and white characters. */
+const REGEX_BASIC_NAME = /^[^\d\s]*$/;
+
 /**
  * Form component for filling name and surname.
  * @param {string} props.firstname Firstname to show.
@@ -19,6 +22,17 @@ export default function Name({
   onFirstnameChange,
   onSurnameChange
 }) {
+  /** Returns true if the name is 'correct'.*/
+  function checkName(name) {
+    return REGEX_BASIC_NAME.test(name);
+  }
+  /** Updates name if the name is 'correct'. */
+  function handleFirstnameChange(name) {
+    if (checkName(name)) onFirstnameChange(name);
+  }
+  function handleSurnameChange(name) {
+    if (checkName(name)) onSurnameChange(name);
+  }
   return (
     <>
       <Form.Group as={Col}>
@@ -27,7 +41,7 @@ export default function Name({
                       type='text'
                       value={firstname}
                       maxLength={20}
-                      onChange={(e) => onFirstnameChange(e.target.value)}/>
+                      onChange={(e) => handleFirstnameChange(e.target.value)}/>
       </Form.Group>
       <Form.Group as={Col}>
         <Form.Label htmlFor='surname'>Last name:</Form.Label>
@@ -35,7 +49,7 @@ export default function Name({
                       type='text'
                       value={surname}
                       maxLength={20}
-                      onChange={(e) => onSurnameChange(e.target.value)}/>
+                      onChange={(e) => handleSurnameChange(e.target.value)}/>
       </Form.Group>
     </>
   );

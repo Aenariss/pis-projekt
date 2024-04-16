@@ -5,6 +5,7 @@
 
 import { Col, Form } from "react-bootstrap";
 
+
 /**
  * Form component for filling phone number.
  * @param {string} props.phone Phone number to show.
@@ -16,6 +17,11 @@ export default function Phone({
   phone,
   onChange
 }) {
+  function handlePhoneChange(phone) {
+    if (/^[\d\s-.+]*$/.test(phone)) {
+      onChange(phone);
+    }
+  }
   return (
     <Form.Group as={Col}>
       <Form.Label htmlFor='phone'>Phone number:</Form.Label>
@@ -23,7 +29,7 @@ export default function Phone({
                     type='text'
                     value={phone}
                     placeholder="+420123456789"
-                    onChange={e => onChange(e.target.value)} />
+                    onChange={e => handlePhoneChange(e.target.value)} />
     </Form.Group>
   );
 }
