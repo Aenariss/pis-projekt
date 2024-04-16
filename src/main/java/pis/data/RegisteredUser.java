@@ -44,7 +44,7 @@ public class RegisteredUser {
 
     @OneToMany
     @JoinColumn(name="user_id")
-    private List<OrderItem> orders = new ArrayList<>();
+    private List<Order> orders = new ArrayList<>();
 
     public RegisteredUser() {}
 
@@ -143,15 +143,15 @@ public class RegisteredUser {
         this.address = address;
     }
 
-    public List<OrderItem> getOrders() {
+    public List<Order> getOrders() {
         return orders;
     }
 
-    public void addOrder(OrderItem order) {
+    public void addOrder(Order order) {
         this.orders.add(order);
     }
 
-    public void setOrders(List<OrderItem> orders) {
+    public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
 
