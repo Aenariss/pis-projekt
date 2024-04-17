@@ -2,35 +2,30 @@
  * Page with book detail.
  * @author Lukas Petr
  */
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {
   Badge,
-  Button,
-  ButtonGroup,
   Col,
   Image,
   Row,
   Spinner,
   Table
 } from "react-bootstrap";
-import {Dash, Plus} from "react-bootstrap-icons";
 import Container from "react-bootstrap/Container";
 import {api} from "../../api";
-import { CartContext } from "../../context/CartContext";
+import AmountChanger from "../../components/Cart/AmountChanger";
 
 /**
  * Page with book detail.
  * @component
  */
 export default function BookDetailPage() {
-  const {getAmountForId, addOneToCart, removeOneFromCart} = useContext(CartContext);
   const params = useParams();
   // Getting book id from url
   const bookId = Number(params.bookId);
   // Product information fetched from backend.
   const [product, setProduct] = useState(null);
-  const [amountInCart,setAmountInCart] = useState(getAmountForId(bookId));
 
   // Fetching book information.
   useEffect(() => {
@@ -38,20 +33,6 @@ export default function BookDetailPage() {
       .then(response => setProduct(response.data))
   }, [bookId]);
 
-  /**
-   * Increments amount of product in cart.
-   */
-  function amountIncrement() {
-    addOneToCart(bookId);
-    setAmountInCart(amount => amount + 1);
-  }
-  /**
-   * Decrements amount of product in cart.
-   */
-  function amountDecrement() {
-    removeOneFromCart(bookId);
-    setAmountInCart(amount => amount - 1);
-  }
   // Loading data
   if (product === null) {
     return (
@@ -60,7 +41,6 @@ export default function BookDetailPage() {
       </Spinner>
     );
   }
-
   return (
     <>
       <h1>{product.name}</h1>
@@ -98,14 +78,9 @@ export default function BookDetailPage() {
           <Col md={4} className="text-center">
             <Image src={product?.image} width="55%" className="my-2"/>
             <Price price={product.price} discount={product?.discount?.discount} />
-            <div className='pb-2'>Quantity in the cart:</div>
-            <ButtonGroup>
-              <Button variant="primary" onClick={amountDecrement} disabled={amountInCart === 0}><Dash size={30}/></Button>
-              <span className="px-3 d-inline-flex align-items-center border border-primary ">
-                {amountInCart}
-              </span>
-              <Button variant="primary" onClick={amountIncrement}><Plus size={30}/></Button>
-            </ButtonGroup>
+            <div className='pb-2 mb-1'>Quantity in the cart:</div>
+            <AmountChanger bookId={bookId}
+                           availableQuantity={product.availableQuantity}/>
           </Col>
         </Row>
       </Container>

@@ -31,7 +31,8 @@ export default function BookListing({products}) {
                   author={book.author}
                   price={book.price}
                   image={book.image}
-                  discount={book?.discount?.discount}/>
+                  discount={book?.discount?.discount}
+                  availableQuantity={book?.availableQuantity}/>
           </Col>
         )}
       </Row>
