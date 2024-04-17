@@ -117,4 +117,12 @@ public class Order {
     public void addOrderItem(OrderItem orderItem) {
         this.getOrderItems().add(orderItem);
     }
+
+    public double getTotalPrice() {
+        double totalPrice = 0;
+        for (OrderItem item : orderItems) {
+            totalPrice += item.getPrice();
+        }
+        return totalPrice;
+    }
 }

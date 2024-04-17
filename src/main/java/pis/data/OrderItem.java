@@ -32,6 +32,13 @@ public class OrderItem {
         this.productDescription = productDescription;
     }
 
+    /**
+     * Get total price for ordered items.
+     */
+    public double getPrice() {
+        return productDescription.getCurrentPrice() * quantity;
+    }
+
     public Integer getQuantity() {
         return quantity;
     }

@@ -21,6 +21,7 @@ import jakarta.inject.Inject;
 import pis.api.dto.AddressDTO;
 import pis.api.dto.CreateOrderDTO;
 import pis.api.dto.CreateOrderItemDTO;
+import pis.api.dto.OrderPreviewDTO;
 import pis.api.dto.OrderUserInfoDTO;
 import pis.api.dto.UpdateOrderDTO;
 import jakarta.ws.rs.*;
@@ -62,6 +63,7 @@ public class OrderResource {
      */
     @GET
     @RolesAllowed("admin")
+    @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Order> getOrders() {
         return orderManager.findAll();
@@ -74,7 +76,20 @@ public class OrderResource {
     @Path("/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Order> getOrdersByEmail(@PathParam("email") String email) {
+        // todo needs to be fixed - if it will be used
         return orderManager.findByEmail(email);
+    }
+
+    /**
+     * Returns list of all Orders for logged in user.
+     */
+    @GET
+    @RolesAllowed({ "admin", "user", "employee" })
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<OrderPreviewDTO> getOrdersForUser() {
+        String userEmail = securityContext.getUserPrincipal().getName();
+        RegisteredUser user = registeredUserManager.findByEmail(userEmail);
+        return user.getOrders().stream().map(o -> OrderPreviewDTO.createFromOrder(o)).toList();
     }
 
     /**

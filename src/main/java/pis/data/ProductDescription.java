@@ -67,6 +67,16 @@ public class ProductDescription {
         this.availableQuantity = availableQuantity;
     }
 
+    /**
+     * Returns current price - if discount exists, substracts the discout.
+     */
+    public double getCurrentPrice() {
+        if (discount == null) {
+            return price;
+        }
+        return price * ((100.0 - discount.getDiscount()) / 100.0);
+    }
+
     public double getPrice() {
         return price;
     }
