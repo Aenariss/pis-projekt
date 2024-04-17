@@ -79,7 +79,7 @@ export default function Layout() {
         </Container>
       </Navbar>
       {employeeNavBar}
-      <Container className="pt-5">
+      <Container className="pt-2">
         <Message />
         <Outlet/>
       </Container>
