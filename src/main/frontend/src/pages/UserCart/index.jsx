@@ -9,6 +9,7 @@ import { Button, Image, Table } from "react-bootstrap";
 import { api } from "../../api";
 import { X } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
+import AmountChanger from "../../components/Cart/AmountChanger";
 
 /**
  * Cart page component.
@@ -74,11 +75,13 @@ export default function UserCartPage() {
                 return (
                   <tr key={book.id}>
                     <td><Image src={book?.image} height='150px'/></td>
-                    <td>
+                    <td className='w-50'>
                       <div style={{fontSize: '20px'}}>{book?.name}</div>
                       <div>{book.author?.firstName} {book.author?.lastName}</div>
                     </td>
-                    <td>{amount}</td>
+                    <td>
+                      <AmountChanger bookId={book?.id} availableQuantity={book?.availableQuantity} />
+                      </td>
                     <td>
                       <div style={{fontSize: '20px'}}>{(amount * book.currentPrice).toFixed(2)} $</div>
                       <div  className='text-muted'>{book.currentPrice.toFixed(2)} $ / item</div>

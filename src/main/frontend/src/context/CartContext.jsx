@@ -72,6 +72,33 @@ export default function CartProvider({children}) {
   }, []);
 
   /**
+   * Set amount of item to amount.
+   * If the item is not in cart then it adds and sets the amount.
+   * If it is then it updates the amount.
+   * @param id Id of the book.
+   * @param amount Amount to update the amount of the book in the cart.
+   */
+    const setAmountForId = useCallback((id, amount) => {
+      if (amount === 0) removeFromCart(id);
+      else {
+        setItems((items) => {
+          const newItems = new Map(items);
+          if (newItems.has(id)) {
+            // Item is already in the cart
+            newItems.set(id, amount);
+          } else {
+            // Item is not in the card add it to it.
+            newItems.set(id, amount);
+          }
+          // add to local storage to be available after reload
+          localStorage.setItem('cart', JSON.stringify(Array.from(newItems.entries())));
+          return newItems;
+        })
+      }
+    },[removeFromCart]);
+
+
+  /**
    * Clearing cart from all of the items.
    * (used when the order is finished).
    */
@@ -96,6 +123,7 @@ export default function CartProvider({children}) {
       removeFromCart,
       items,
       getAmountForId,
+      setAmountForId,
       clearCart,
       }}>
       {children}
