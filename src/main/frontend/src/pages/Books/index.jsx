@@ -31,7 +31,17 @@ export default function BooksPage() {
       api.post('/productdescription/search', {query})
         .then(response => {
           if (response.status === 200) {
-            setProducts(response.data);
+            const result = response.data;
+            // Removing duplicit - search can return multiple amount of the same item
+            const ids = [];
+            const productsCleaned = [];
+            result.forEach(book => {
+              if (!ids.includes(book.id)) {
+                productsCleaned.push(book);
+                ids.push(book.id);
+              }
+            })
+            setProducts(productsCleaned);
           }
         })
     } else if (categoryIds.length > 0 || languageIds.length > 0 || authorIds.length > 0) {
@@ -60,7 +70,7 @@ export default function BooksPage() {
 
   return (
     <Container>
-      <Row>
+      <Row className='vh-75'>
         <Col md={3}>
           <Filter />
         </Col>
