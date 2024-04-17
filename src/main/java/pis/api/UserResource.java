@@ -91,7 +91,7 @@ public class UserResource {
 
         userManager.save(u);
 
-        return Response.status(Response.Status.OK).entity(u).build();
+        return Response.status(Response.Status.OK).build();
     }
 
     @PUT
@@ -156,7 +156,7 @@ public class UserResource {
         u.setPasswordHash(DigestUtils.sha512Hex(r.getPassword()));
         userManager.save(u);
 
-        return Response.status(Response.Status.OK).entity(u).build();
+        return Response.status(Response.Status.OK).build();
     }
 
     @PUT
@@ -183,6 +183,6 @@ public class UserResource {
         u.setPasswordHash(DigestUtils.sha512Hex(r.getPassword()));
         userManager.save(u);
 
-        return Response.status(Response.Status.OK).entity(u).build();
+        return Response.status(Response.Status.OK).build();
     }
 }
