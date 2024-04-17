@@ -14,6 +14,9 @@ import pis.service.RegisteredUserManager;
 
 import java.util.regex.Pattern;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -132,6 +135,23 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/password")
     @RolesAllowed({ "admin", "user", "employee" })
+    // Documentation for http://localhost:9089/openapi/ui/
+    @APIResponses(
+        value = {
+            @APIResponse(
+                responseCode = "200",
+                description = "Password was successfully changed"
+            ),
+            @APIResponse(
+                responseCode = "403",
+                description = "Invalid current password!"
+            ),
+            @APIResponse(
+                responseCode = "400",
+                description = "Password was not possible to change"
+            )
+        }
+    )
     public Response setPassword(PasswordChangeRequest r) {
 
         if (!r.valid()) {
@@ -146,7 +166,7 @@ public class UserResource {
         }
         
         if (!DigestUtils.sha512Hex(r.getOld_password()).equals(u.getPasswordHash())) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid current password!").build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Invalid current password!").build();
         }
 
         if (r.getPassword().length() < 3) {
