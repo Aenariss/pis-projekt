@@ -71,6 +71,15 @@ export default function CartProvider({children}) {
     })
   }, []);
 
+  /**
+   * Clearing cart from all of the items.
+   * (used when the order is finished).
+   */
+  const clearCart = useCallback(() => {
+    setItems(new Map());
+    localStorage.removeItem('cart');
+  }, []);
+
   /** Returns amount of item with specified id in the cart. */
   const getAmountForId = useCallback((id) => {
     if (items.has(id)) {
@@ -81,7 +90,14 @@ export default function CartProvider({children}) {
   },[items]);
 
   return (
-    <CartContext.Provider value={{addOneToCart, removeOneFromCart, removeFromCart, items, getAmountForId}}>
+    <CartContext.Provider value={{
+      addOneToCart,
+      removeOneFromCart,
+      removeFromCart,
+      items,
+      getAmountForId,
+      clearCart,
+      }}>
       {children}
     </CartContext.Provider>
   )

@@ -4,7 +4,7 @@
  * @author Vojtech Fiala <xfiala61>
  */
 
-package pis.data;
+package pis.api.dto;
 
 public class PasswordChangeRequest extends Request {
     

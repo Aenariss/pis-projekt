@@ -8,6 +8,9 @@ package pis.data;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import pis.api.dto.*;
 
 /**
  * Data model for an order.
@@ -27,8 +30,7 @@ public class Order {
     @NotNull
     private LocalDateTime creationDate;
 
-    @ManyToOne
-    @JoinColumn(name = "orderUserInfo_id")
+    @NotNull
     private OrderUserInfo orderUserInfo;
 
     @Embedded
@@ -36,6 +38,10 @@ public class Order {
 
     @Embedded
     private UserAddress userAddress;
+
+    @OneToMany
+    @JoinColumn(name = "order_id")
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     public Order() {
         this.creationDate = LocalDateTime.now();
@@ -100,4 +106,23 @@ public class Order {
         this.userAddress = userAddress;
     }
 
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return this.orderItems;
+    }
+
+    public void addOrderItem(OrderItem orderItem) {
+        this.getOrderItems().add(orderItem);
+    }
+
+    public double getTotalPrice() {
+        double totalPrice = 0;
+        for (OrderItem item : orderItems) {
+            totalPrice += item.getPrice();
+        }
+        return totalPrice;
+    }
 }

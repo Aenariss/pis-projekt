@@ -4,7 +4,7 @@
  * @author Vojtech Fiala <xfiala61>
  */
 
-package pis.data;
+package pis.api.dto;
 
 public class RoleRequest extends Request {
     private String email;
@@ -13,7 +13,8 @@ public class RoleRequest extends Request {
         this.email = email;
     }
 
-    public RoleRequest() {}
+    public RoleRequest() {
+    }
 
     public String getEmail() {
         return email;

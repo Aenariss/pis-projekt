@@ -76,6 +76,7 @@ format -> {"query":"query_text"}
 ```json
 format -> ["name1","name2"]
 ```
+- `PUT /api/productdescription/{id}/{amount}` Sets available quantity of book with given id to the amount.
 - `DELETE /api/productdescription/{id}` - delete product description by id
 - `DELETE /api/productdescription` - delete product description by title <span style="color:red">Maybe by ISBN?</span>
 - `DELETE /api/productdescription/{id}/author` - delete author from product description,
@@ -83,6 +84,13 @@ format -> ["name1","name2"]
 - `DELETE /api/productdescription/{id}/discount` - delete discount from product description,
 - `DELETE /api/productdescription/{id}/category/{categoryId}` - delete category with given id from product description,
 - `DELETE /api/productdescription/{id}/categories` - delete categories from product description
+
+# Order
+
+- `GET /api/order` - basic overview of history of logged in user orders,
+- `POST /api/order/create` - API for creating new order
+- `PUT /api/order/update` with body `{status,id}` Updates status of order with given id to the status.
+- `GET /api/order/all` returns all orders for admin
 
 ### For development purposes
 

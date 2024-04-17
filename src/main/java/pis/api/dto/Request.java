@@ -5,7 +5,7 @@
  */
 
 
-package pis.data;
+package pis.api.dto;
 
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Field;

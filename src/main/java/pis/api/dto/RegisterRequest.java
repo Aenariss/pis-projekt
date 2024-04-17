@@ -4,11 +4,10 @@
  * @author Vojtech Fiala <xfiala61>
  */
 
-
-package pis.data;
+package pis.api.dto;
 
 public class RegisterRequest extends Request {
-    
+
     private String firstname;
     private String surname;
     private String phone;
@@ -20,13 +19,14 @@ public class RegisterRequest extends Request {
     private String street;
     private String streetNumber;
     private String postCode;
-  
-    public RegisterRequest(String firstname, String surname, String phone, String email, String password, String state, String town, String street, String streetNumber, String postCode) {
+
+    public RegisterRequest(String firstname, String surname, String phone, String email, String password, String state,
+            String town, String street, String streetNumber, String postCode) {
         this.firstname = firstname;
         this.surname = surname;
         this.phone = phone;
         this.email = email;
-        this.password = password; 
+        this.password = password;
         this.state = state;
         this.town = town;
         this.street = street;
@@ -34,7 +34,8 @@ public class RegisterRequest extends Request {
         this.postCode = postCode;
     }
 
-    public RegisterRequest() {}
+    public RegisterRequest() {
+    }
 
     public String getState() {
         return state;
@@ -83,9 +84,11 @@ public class RegisterRequest extends Request {
     public void setEmail(String email) {
         this.email = email;
     }
+
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -113,4 +116,4 @@ public class RegisterRequest extends Request {
     public void setPhone(String phone) {
         this.phone = phone;
     }
- }
+}
