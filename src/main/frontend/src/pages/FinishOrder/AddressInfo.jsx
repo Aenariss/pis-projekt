@@ -36,7 +36,7 @@ export default function AddressInfo({
           <h4>Billing address</h4>
           <Address state={userAddress.state}
                    town={userAddress.town}
-                   postcode={userAddress.postcode}
+                   postcode={userAddress.postCode}
                    street={userAddress.street}
                    streetNumber={userAddress.streetNumber}
                    onStateChange={(value) => setUserAddress((original) => ({...original, state: value}))}
@@ -48,7 +48,7 @@ export default function AddressInfo({
           <h4>Delivery address</h4>
           <Address state={deliveryAddress.state}
                    town={deliveryAddress.town}
-                   postcode={deliveryAddress.postcode}
+                   postcode={deliveryAddress.postCode}
                    street={deliveryAddress.street}
                    streetNumber={deliveryAddress.streetNumber}
                    onStateChange={(value) => setDeliveryAddress((original) => ({...original, state: value}))}
