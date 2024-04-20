@@ -73,7 +73,7 @@ public class OrderResource {
      * Returns list of all Orders of user found by email
      */
     @GET
-    @Path("/{email}")
+    @Path("/byEmail/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Order> getOrdersByEmail(@PathParam("email") String email) {
         // todo needs to be fixed - if it will be used

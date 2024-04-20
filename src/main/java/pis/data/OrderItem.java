@@ -20,6 +20,12 @@ public class OrderItem {
     @NotNull
     private Integer quantity;
 
+    /**
+     * Price of one piece of the product at the time the product was bought.
+     */
+    @NotNull
+    private double pricePerPiece;
+
     @OneToOne
     @JoinColumn(name = "productDescription_id")
     private ProductDescription productDescription;
@@ -30,13 +36,18 @@ public class OrderItem {
     public OrderItem(Integer quantity, ProductDescription productDescription) {
         this.quantity = quantity;
         this.productDescription = productDescription;
+        this.pricePerPiece = productDescription.getCurrentPrice();
+    }
+
+    public double getPricePerPiece() {
+        return this.pricePerPiece;
     }
 
     /**
      * Get total price for ordered items.
      */
     public double getPrice() {
-        return productDescription.getCurrentPrice() * quantity;
+        return this.pricePerPiece * quantity;
     }
 
     public Integer getQuantity() {
