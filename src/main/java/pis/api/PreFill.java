@@ -60,10 +60,17 @@ public class PreFill {
 
     @GET
     public Response prefillDB() {
-        RegisteredUser admin = new RegisteredUser("Admin", "Admin","","admin@admin.cz","admin",
-                                                   "", "","","","");
+        RegisteredUser admin = new RegisteredUser("Admin", "Admin","+420999111999","admin@admin.cz","admin",
+                                                   "The Czech Republic", "Prague","Příčná","123/77","19361");
         admin.makeAdmin();
-        registeredUserManager.save(admin);
+        admin = registeredUserManager.save(admin);
+        RegisteredUser employee = new RegisteredUser("Karel", "Dvořák","+420156679254","employee@employee.cz","employee",
+        "The Czech Republic", "Hradec Králové","Nové Sady","9","63333");
+        employee.makeEmployee();
+        employee = registeredUserManager.save(employee);
+        RegisteredUser user = new RegisteredUser("Franta", "Novák","+420449331226","user@user.cz","user",
+        "The Czech Republic", "Brno","Pražská","4/99","60009");
+        user = registeredUserManager.save(user);
 
         // Note some source for filling the DB: wordery.com, wikipedia, the things does
         // not have to exists,
@@ -150,12 +157,12 @@ public class PreFill {
                         " Grand Tour: Letters and Photographs from the British Empire Expedition 1922",
                         "Unpublished for 90 years, Agatha Christie's extensive and evocative letters and photographs from her year-long round-the-world trip to South Africa, Australia, New ...",
                         "9780007460687", 420, agathaCristie, List.of(travelWritings, fantasy, scienceFiction),
-                        english, discount2, "https://wordery.com/images/9780007460687.jpg", 20);
+                        english, discount2, "https://m.media-amazon.com/images/I/71olNZROxYL._AC_UF1000,1000_QL80_.jpg", 20);
         groundTour = productDescriptionManager.save(groundTour);
         ProductDescription harryPotter = new ProductDescription(25, "Harry Potter and the Philosopher's Stone",
                         "Harry Potter has never even heard of Hogwarts when the letters start dropping on the doormat at number four, Privet Drive.",
                         "9781408855652", 352, jkRowling, List.of(fantasy), english, discount3,
-                        "https://m.media-amazon.com/images/I/71olNZROxYL._AC_UF1000,1000_QL80_.jpg", 4);
+                        "https://m.media-amazon.com/images/I/51zZ3SAulVL._SY445_SX342_.jpg", 4);
         harryPotter = productDescriptionManager.save(harryPotter);
         ProductDescription harryPotter2 = new ProductDescription(25, "Harry Potter and the Chamber of Secrets",
                         "Harry Potter's summer has included the worst birthday ever, doomy warnings from a house-elf called Dobby, and rescue from the Dursleys by his friend Ron Weasley in a magical flying car!",
@@ -175,6 +182,18 @@ public class PreFill {
                         "https://m.media-amazon.com/images/M/MV5BOTViY2FkZDMtNGRmZS00MTZmLTg3MzMtZjA4OWU2Mzk4N2JkXkEyXkFqcGdeQXVyNjkzNjUzODY@._V1_.jpg",
                         10);
         romeoAndJuliet = productDescriptionManager.save(romeoAndJuliet);
+        ProductDescription hamlet = new ProductDescription(9, "Hamlet",
+                        "Hamlet is Shakespeare's most popular, and most puzzling, play. It follows the form of a revenge tragedy, in which the hero, Hamlet, seeks vengeance against his father's murderer, his uncle Claudius, now the king of Denmark.",
+                        "1451669410", 432, williamShakespeare, List.of(drama), english, null,
+                        "https://m.media-amazon.com/images/I/81eCNI+JafL._SL1500_.jpg",
+                        50);
+        hamlet = productDescriptionManager.save(hamlet);
+        ProductDescription othello = new ProductDescription(7, "Othello",
+                        "The Tragedy of Othello, the Moor of Venice is a tragedy by William Shakespeare, believed to have been written in the year approximately 1603, and based on the short story Un Capitano Moro (A Moorish Captain) by Cinthio, a disciple of ...",
+                        "1512317764", 432, williamShakespeare, List.of(drama), english, null,
+                        "https://m.media-amazon.com/images/I/61UXvbWjAXL._SL1500_.jpg",
+                        25);
+        othello = productDescriptionManager.save(othello);
         ProductDescription onenineeigthfour = new ProductDescription(30, "1984",
                         "1984 is a dystopian social science fiction novel by English novelist George Orwell. It was published on 8 June 1949 by Secker & Warburg as Orwell's ninth and final book completed in his lifetime.",
                         "9780141396477", 400, georgeOrwell, List.of(scienceFiction), english, discount2,
@@ -247,6 +266,10 @@ public class PreFill {
         order5 = orderManager.save(order5);
 
         admin.addOrder(order1);
+        user.addOrder(order3);
+        user.addOrder(order4);
+        registeredUserManager.save(admin);
+        registeredUserManager.save(user);
 
         return Response.status(Response.Status.OK).entity("DB was prefilled").build();
     }
