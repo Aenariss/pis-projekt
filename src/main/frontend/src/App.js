@@ -25,6 +25,7 @@ import Providers from './context/Providers';
 import { AuthContext } from './context/AuthContext';
 import FinishOrder from './pages/FinishOrder';
 import EditUser from './pages/EditUser';
+import OrderDetail from './pages/OrderDetail';
 
 /** Time remaining for JWT expiration in which we should try to renew the JWT token. */
 const RENEW_AT_REMAINING_TIME = 600000; // (10 min)
@@ -40,6 +41,7 @@ export default function App() {
             <Route path="/cart" element={<UserCartPage />}></Route>
             <Route path="/register" element={<Register />}></Route>
             <Route path="/finish-order" element={<FinishOrder />}></Route>
+            <Route path="/order/:orderId" element={<OrderDetail />}></Route>
             <Route element={<ProtectedRoute roles={["user", "employee"]} />} >
               <Route path="/profile" element={<UserProfilePage />}></Route>
               <Route path="/my-orders" element={<UserOrdersPage />}></Route>
