@@ -2,13 +2,13 @@
  * Page for showing details about order.
  * @author Lukas Petr
  */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { api } from '../../api';
-import { orderStateToString } from '../../utils/orders';
 import OrderedItems from './OrderedItems';
 import { OrderInformation } from './OrderInformation';
 import { Spinner } from 'react-bootstrap';
+import OrderStatus from './OrderStatus';
 
 /**
  * Page for showing details about order.
@@ -25,6 +25,10 @@ export default function OrderDetail() {
       })
   },[orderId]);
 
+  const updateStatus = useCallback((status) => {
+    setOrder((order) => ({...order, status}));
+  }, []);
+
   if (order === null) return null;
 
   return (
@@ -36,11 +40,7 @@ export default function OrderDetail() {
         ? (<Spinner animation="border" />)
         : (
         <>
-          <div className='my-3'>
-            <h3>
-              Status: {orderStateToString(order.status)}
-            </h3>
-          </div>
+          <OrderStatus order={order} updateStatus={updateStatus}/>
           <OrderInformation order={order} />
           <OrderedItems items={order.orderItems} />
         </>

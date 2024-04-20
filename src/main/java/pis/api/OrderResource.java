@@ -2,6 +2,7 @@
  * PIS Projekt 2024
  * OrderResource.java
  * @author Filip Brna <xbrnaf00>
+ * @author Lukas Petr <xpetrl06>
  */
 
 package pis.api;
@@ -11,18 +12,14 @@ import java.util.List;
 import pis.data.Order;
 import pis.data.OrderItem;
 import pis.data.OrderStatus;
-import pis.data.OrderUserInfo;
 import pis.data.ProductDescription;
 import pis.data.RegisteredUser;
-import pis.data.UserAddress;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import pis.api.dto.AddressDTO;
 import pis.api.dto.CreateOrderDTO;
 import pis.api.dto.CreateOrderItemDTO;
 import pis.api.dto.OrderPreviewDTO;
-import pis.api.dto.OrderUserInfoDTO;
 import pis.api.dto.UpdateOrderDTO;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -32,7 +29,6 @@ import pis.service.OrderUserInfoManager;
 import pis.service.ProductDescriptionManager;
 import pis.service.RegisteredUserManager;
 import jakarta.ws.rs.core.Response;
-import pis.api.dto.Address;
 import jakarta.ws.rs.core.SecurityContext;
 
 //TODO: check permissions
@@ -49,9 +45,6 @@ public class OrderResource {
     @Inject
     private ProductDescriptionManager productDescriptionManager;
 
-    @Inject
-    private OrderUserInfoManager orderUserInfoManager;
-
     @Context
     private SecurityContext securityContext;
 
@@ -62,11 +55,12 @@ public class OrderResource {
      * Returns list of all Orders.
      */
     @GET
-    @RolesAllowed("admin")
+    @RolesAllowed({ "admin", "employee" })
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Order> getOrders() {
-        return orderManager.findAll();
+    public List<OrderPreviewDTO> getOrders() {
+        List<Order> orders = orderManager.findAll();
+        return orders.stream().map(o -> OrderPreviewDTO.createFromOrder(o)).toList();
     }
 
     /**

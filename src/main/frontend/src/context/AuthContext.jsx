@@ -13,7 +13,7 @@ export const AuthContext = createContext(null);
  * @param children Subelements.
  */
 export default function AuthProvider({ children }) {
-  // user = {token, email} if logged in else user = null
+  // user = {token, email, role} if logged in else user = null
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
   /**
