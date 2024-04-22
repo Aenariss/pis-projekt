@@ -154,10 +154,12 @@ public class OrderResource {
             user.addOrder(order);
             // Saving user for the reason his updated orders are saved in DB.
             registeredUserManager.save(user);
+        } else {
+            // If user was registered the order is saved with the user
+            // If the user was not registered we have to save the order now
+            orderManager.save(order);
         }
 
-        // Save order
-        orderManager.save(order);
         return Response.ok().build();
     }
 
