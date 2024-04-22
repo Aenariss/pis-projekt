@@ -3,7 +3,7 @@
  * @author Lukas Petr
  */
 import { Button, Table } from 'react-bootstrap';
-import { orderStateToString } from '../utils/orders';
+import { orderStateToString } from '../../utils/orders';
 import { useNavigate } from 'react-router-dom';
 
 /**
