@@ -7,6 +7,7 @@ import React, {useContext} from 'react';
 import {Button, Table} from "react-bootstrap";
 import DiscountInput from "./DiscountInput";
 import {AuthContext} from "../../context/AuthContext";
+import { Link } from 'react-router-dom';
 
 /**
  * List of books for admin/employee to manage storage of books
@@ -50,8 +51,22 @@ export default function BookListing({books, handleEditClick, handleDeleteClick, 
             {booksCleaned.map((book, index) => (
                 <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{book.name}</td>
-                    <td>{book.author?.firstName} {book.author?.lastName}</td>
+                    <td>
+                        <Link as='a'
+                              role='button'
+                              className='link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover'
+                              to={`/book/${book?.id}`}>
+                            {book.name}
+                        </Link>
+                    </td>
+                    <td>
+                        <Link as='a'
+                              role='button'
+                              className='link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover'
+                              to={`/?authorIds=${book?.author?.id}`}>
+                            {book.author?.firstName} {book.author?.lastName}
+                        </Link>
+                    </td>
                     <td>{parseFloat(book.price).toFixed(2)}&nbsp;$</td>
                     <td>
                         <div style={{display: "flex"}}>

@@ -3,7 +3,7 @@
  * @author Lukas Petr
  */
 import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {
   Badge,
   Col,
@@ -47,10 +47,17 @@ export default function BookDetailPage() {
       <Container>
         <Row>
           <Col md={6}>
-            <p className="text-secondary">Author: {product?.author?.firstName} {product?.author?.lastName}</p>
+            <p className="text-secondary">
+              Author:{' '}
+              <Link as='a'
+                    role='button'
+                    className='link-secondary link-underline link-underline-opacity-0 link-underline-opacity-100-hover'
+                    to={`/?authorIds=${product?.author?.id}`}>
+                {product?.author?.firstName} {product?.author?.lastName}
+              </Link>
+            </p>
             <p>{product.description}</p>
             <Table className="mt-5">
-              {/* TODO make the values be links for searching. */}
               <tbody>
               <tr>
                 <td>Pages</td>
@@ -58,7 +65,14 @@ export default function BookDetailPage() {
               </tr>
               <tr>
                 <td>Language</td>
-                <td>{product?.language?.language}</td>
+                <td>
+                  <Link as='a'
+                      role='button'
+                      className='link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover'
+                      to={`/?languageIds=${product?.language?.id}`}>
+                    {product?.language?.language}
+                  </Link>
+                </td>
               </tr>
               <tr>
                 <td>ISBN</td>
@@ -68,7 +82,14 @@ export default function BookDetailPage() {
                 <td>Categories</td>
                 <td>
                   <ul className="list-unstyled">
-                    {product.categories.map(category => <li key={category.id}>{category.name}</li>)}
+                    {product.categories.map(category => (
+                      <Link as='a'
+                            role='button'
+                            className='link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover'
+                            to={`/?categoryIds=${category?.id}`}>
+                        <li key={category.id}>{category.name}</li>
+                      </Link>
+                    ))}
                   </ul>
                 </td>
               </tr>
