@@ -69,9 +69,15 @@ public class OrderResource {
     @GET
     @Path("/byEmail/{email}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Order> getOrdersByEmail(@PathParam("email") String email) {
-        // todo needs to be fixed - if it will be used
-        return orderManager.findByEmail(email);
+    public List<OrderPreviewDTO> getOrdersByEmail(@PathParam("email") String email) {
+        // Find orders where the email is set in user info
+        List<Order> orders = orderManager.findByEmail(email);
+        // Also add orders which was done by registered user with given email
+        orders.addAll(registeredUserManager.findByEmail(email).getOrders());
+        // If the user did not chagend the email for the order there will be
+        // duplicates, therefore we are removing them.
+        orders = orders.stream().distinct().toList();
+        return orders.stream().map(o -> OrderPreviewDTO.createFromOrder(o)).toList();
     }
 
     /**
