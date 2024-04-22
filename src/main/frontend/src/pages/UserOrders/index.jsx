@@ -20,8 +20,6 @@ export default function UserOrdersPage() {
         orders = orders.map(o => (
           {...o, creationDate: new Date(o.creationDate)}
         ));
-        // Sort by the newest to oldest
-        orders.sort((o1, o2) => (o2.creationDate - o1.creationDate))
         setOrders(orders);
       })
   }, [])
