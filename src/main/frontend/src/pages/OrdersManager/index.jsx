@@ -39,8 +39,6 @@ export default function OrdersManager() {
     orders = orders.map(o => (
       {...o, creationDate: new Date(o.creationDate)}
     ));
-    // Sort by the newest to oldest
-    orders.sort((o1, o2) => (o2.creationDate - o1.creationDate))
     setOrders(orders);
   }
 
@@ -90,7 +88,7 @@ export default function OrdersManager() {
     if (toDate) {
       ordersToShow = ordersToShow.filter(o => o.creationDate <= toDate);
     }
-    content = (<OrdersTable orders={ordersToShow} type='employee'/>);
+    content = (<OrdersTable orders={ordersToShow} type='employee' defaultFromOldest={true}/>);
   }
 
   return (
