@@ -7,12 +7,16 @@ import { useEffect, useState } from 'react';
 import { api } from '../../api';
 import OrdersTable from '../../components/Orders/OrdersTable';
 import { Spinner } from 'react-bootstrap';
+import OrdersFilter from '../../components/Orders/OrdersFilter';
 /**
  * User order page component.
  * @component
  */
 export default function UserOrdersPage() {
   const [orders, setOrders] = useState(null);
+  const [status, setStatus] = useState('');
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
   useEffect(() => {
     api.get('order')
       .then((response) =>{
@@ -33,11 +37,29 @@ export default function UserOrdersPage() {
       </div>
     );
   } else {
-    content = (<OrdersTable orders={orders}/>);
+    let ordersToShow = orders;
+    // Filtering
+    if (status !== '') {
+      ordersToShow = ordersToShow.filter(o => o.status === status);
+    }
+    if (fromDate) {
+      ordersToShow = ordersToShow.filter(o => o.creationDate >= fromDate);
+    }
+    if (toDate) {
+      ordersToShow = ordersToShow.filter(o => o.creationDate <= toDate);
+    }
+    content = (<OrdersTable orders={ordersToShow}/>);
   }
   return (
     <>
       <h2 className='my-3'>History of my orders</h2>
+      <OrdersFilter status={status}
+                    onStatusChange={setStatus}
+                    fromDate={fromDate}
+                    onFromDateChange={setFromDate}
+                    toDate={toDate}
+                    onToDateChange={setToDate}/>
+      <br/>
       {content}
     </>
   );

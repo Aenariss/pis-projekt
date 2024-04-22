@@ -7,7 +7,6 @@ import { orderStateToString } from '../../utils/orders';
 import { useNavigate } from 'react-router-dom';
 import Paginator from '../Paginator';
 import { useMemo, useState } from 'react';
-import { CaretDownFill, CaretUpFill } from 'react-bootstrap-icons';
 import SorterButtons from '../SorterButton';
 
 const AMOUNT_OF_ORDERS_ON_PAGE = 15;
