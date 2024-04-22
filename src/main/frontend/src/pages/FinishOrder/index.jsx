@@ -11,12 +11,15 @@ import ContactInfo from './ContactInfo';
 import AddressInfo from './AddressInfo';
 import { CartContext } from '../../context/CartContext';
 import { MessageContext } from '../../context/MessageContext';
+import { Link } from 'react-router-dom';
 
 export default function FinishOrder() {
   const {items, clearCart} = useContext(CartContext);
   const {setMessage} = useContext(MessageContext);
   const {user} = useContext(AuthContext);
   const [orderInfo, setOrderInfo] = useState(null);
+  // Id of created order after creation
+  const [orderId, setOrderId] = useState(null);
   // Steps 0 - contact info, 1 address, 2 order is finished
   const [step, setStep] = useState(0);
 
@@ -78,12 +81,11 @@ export default function FinishOrder() {
         // successful order
         clearCart();
         setStep(2);
+        setOrderId(Number(response.data));
       })
       .catch((error) => {
         setMessage({variant: 'danger', text: error?.response?.data })
       })
-
-    // todo call api
   }
 
   let content = null;
@@ -110,6 +112,16 @@ export default function FinishOrder() {
               Your purchase has been successfully placed. We're now busy processing your order and getting it ready for shipment.
               You'll receive a confirmation email shortly with all the details of your purchase.
             </p>
+            {/* showing link where to watch order for not logged user */}
+            {user === null && (
+              <p>You can watch the state of your order{' '}
+                <Link as='a'
+                      to={`/order/${orderId}`}>
+                  here
+                </Link>
+                .
+              </p>
+            )}
           </div>
 
         );

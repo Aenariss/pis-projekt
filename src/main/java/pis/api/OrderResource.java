@@ -177,6 +177,7 @@ public class OrderResource {
             productDescriptionManager.save(product);
         }
 
+        order = orderManager.save(order);
         // Check if the order did user which is logged in.
         // If it was logged in user then the securityContext will contain his email.
         if (securityContext.getUserPrincipal() != null) {
@@ -186,13 +187,9 @@ public class OrderResource {
             user.addOrder(order);
             // Saving user for the reason his updated orders are saved in DB.
             registeredUserManager.save(user);
-        } else {
-            // If user was registered the order is saved with the user
-            // If the user was not registered we have to save the order now
-            orderManager.save(order);
         }
-
-        return Response.ok().build();
+        // returning order id in the body of response
+        return Response.ok(order.getId()).build();
     }
 
     @PUT
