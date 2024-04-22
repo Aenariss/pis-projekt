@@ -30,6 +30,8 @@ import pis.service.ProductDescriptionManager;
 import pis.service.RegisteredUserManager;
 import pis.service.OrderItemManager;
 
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 
 @Path("/prefill")
@@ -231,6 +233,7 @@ public class PreFill {
 
         Order order1 = new Order(delivered, user1, "Slovakia", "Bratislava", "Komenskeho", "32", "03601",
                         "Slovakia", "Bratislava", "Komenskeho", "32", "03601");
+        order1.setCreationDate(LocalDateTime.of(2023, Month.DECEMBER, 20, 10, 30, 0));
         Order order2 = new Order(confirmed, user2, "Slovakia", "Bratislava", "Dlha", "56", "02348", "Slovakia",
                         "Bratislava", "Dlha", "56", "02348");
         Order order3 = new Order(inProgress, user3, "Czech Republic", "Praha", "Karlova", "4", "23456",

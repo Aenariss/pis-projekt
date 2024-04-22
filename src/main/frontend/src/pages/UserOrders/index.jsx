@@ -5,7 +5,7 @@
 
 import { useEffect, useState } from 'react';
 import { api } from '../../api';
-import OrdersTable from '../../components/OrdersTable';
+import OrdersTable from '../../components/Orders/OrdersTable';
 import { Spinner } from 'react-bootstrap';
 /**
  * User order page component.
