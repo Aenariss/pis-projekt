@@ -43,19 +43,6 @@ public class CategoryResource {
     }
 
     /**
-     * Returns category from id.
-     * 
-     * @param id Id of the category.
-     * @return Category with given id.
-     */
-    @GET
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Category getCategory(@PathParam("id") long id) {
-        return categoryManager.find(id);
-    }
-
-    /**
      * Adds new category.
      * 
      * @param cat Category which will be added.
@@ -114,41 +101,6 @@ public class CategoryResource {
         Category toDelete = categoryManager.find(id);
         if (toDelete == null) {
             // Category with given id does not exist, nothing to remove
-            return Response.status(Response.Status.BAD_REQUEST).entity("Error: category doesnt exist").build();
-        }
-        List<ProductDescription> products = productDescriptionManager.findAll();
-
-        for (ProductDescription pd : products) {
-            // ///////////////////////////////////////////////// error
-            if (pd.getCategories().contains(toDelete)) {
-                return Response.status(Response.Status.BAD_REQUEST).entity("Error: Category is used in a product")
-                        .build();
-            }
-            // ///////////////////OR////////////////////////////// remove category from
-            // product
-            // pd.removeCategory(toDelete); // Assuming there is a method to remove the
-            // category from a product description
-            // productDescriptionManager.save(pd);
-            // /////////////////////////////////////////////////
-        }
-        categoryManager.delete(toDelete);
-        return Response.ok().entity("Succesfully removed the category").build();
-    }
-
-    /**
-     * Deletes a category by name
-     * 
-     * @param cat Category name to be removed
-     * @return Response status
-     */
-    @DELETE
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin"})
-    public Response deleteCategory(Category cat) {
-        Category toDelete = categoryManager.findByName(cat.getName());
-        if (toDelete == null) {
-            // Category with given name does not exist, nothing to remove
             return Response.status(Response.Status.BAD_REQUEST).entity("Error: category doesnt exist").build();
         }
         List<ProductDescription> products = productDescriptionManager.findAll();
