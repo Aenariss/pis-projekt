@@ -4,14 +4,14 @@
  * @author Tomas Ondrusek <xondru18>
  */
 
-package pis.data;
+package pis.api.dto;
 
 import java.util.List;
 
 /**
  * Data model for search query.
  */
-public class FilterQuery {
+public class FilterQuery extends Request {
     private List<Long> authorIds;
     private List<Long> categoryIds;
     private List<Long> languageIds;

@@ -23,6 +23,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
+/**
+ * REST API for renewal of the JWT
+ */
 @Path("/renewToken")
 public class RenewToken {
 
@@ -32,10 +35,13 @@ public class RenewToken {
     @Context
     private SecurityContext securityContext;
 
+    // Hardcoded private key, such security
     private static final Key key = Keys.hmacShaKeyFor("12345789101112131415161718192021222324252627282930".getBytes());
 
     /**
-     * Ask server for new token, only if the user is already logged in
+     * Method for token renewal
+     * Ask server for a new token only if the user is already logged in -- else no access
+     * @return Response containing the token
      */
     @RolesAllowed({"admin", "employee", "user"})
     @POST

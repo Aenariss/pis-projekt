@@ -42,6 +42,7 @@ public class RegisteredUser {
     @Embedded
     private Address address;
 
+    // One user has many orders
     @OneToMany
     @JoinColumn(name="user_id")
     private List<Order> orders = new ArrayList<>();

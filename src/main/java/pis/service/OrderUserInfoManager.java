@@ -39,7 +39,7 @@ public class OrderUserInfoManager {
         OrderUserInfo orderUserInfo = null;
         try {
             Query q = em.createQuery(
-                    "SELECT o FROM OrderUserInfo o WHERE o.firstname = :firstname AND o.surname = :surname");
+                    "SELECT o FROM OrderUserInfo o WHERE lower(o.firstname) = lower( :firstname ) AND lower(o.surname) = lower( :surname  )");
             q.setParameter("firstname", firstname);
             q.setParameter("surname", surname);
             return (OrderUserInfo) q.getSingleResult();
@@ -64,7 +64,7 @@ public class OrderUserInfoManager {
     public OrderUserInfo findByEmail(String email) {
         OrderUserInfo orderUserInfo = null;
         try {
-            Query q = em.createQuery("SELECT o FROM OrderUserInfo o WHERE o.email = :email");
+            Query q = em.createQuery("SELECT o FROM OrderUserInfo o WHERE lower(o.email) = lower( :email )");
             q.setParameter("email", email);
             return (OrderUserInfo) q.getSingleResult();
         } catch (Exception e) {

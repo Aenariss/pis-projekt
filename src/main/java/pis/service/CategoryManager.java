@@ -47,7 +47,7 @@ public class CategoryManager {
     public Category findByName(String name) {
         Category cat = null;
         try {
-            Query q = em.createQuery("SELECT c FROM Category c WHERE c.name = :name");
+            Query q = em.createQuery("SELECT c FROM Category c WHERE lower(c.name) = lower( :name )");
             q.setParameter("name", name); // is this safe?
             return (Category) q.getSingleResult();
         }

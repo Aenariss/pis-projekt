@@ -14,8 +14,8 @@ import jakarta.persistence.Query;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import pis.api.dto.FilterQuery;
 import pis.data.Category;
-import pis.data.FilterQuery;
 import pis.data.Language;
 
 /**
@@ -52,7 +52,7 @@ public class ProductDescriptionManager {
     public ProductDescription findProductDescription(String name) {
         ProductDescription product = null;
         try {
-            Query q = em.createQuery("SELECT p FROM ProductDescription p WHERE p.name = :name");
+            Query q = em.createQuery("SELECT p FROM ProductDescription p WHERE lower(p.name) = lower( :name )");
             q.setParameter("name", name);
             return (ProductDescription) q.getSingleResult();
         } catch (Exception e) {
@@ -69,11 +69,12 @@ public class ProductDescriptionManager {
      * @param lastName  last name of the searched Product.
      * @return List of ProductDescriptions
      */
+    @SuppressWarnings("unchecked")
     public List<ProductDescription> findByAuthor(String firstName, String lastName) {
         List<ProductDescription> products = null;
         try {
             Query q = em.createQuery(
-                    "SELECT p FROM ProductDescription p WHERE p.author.firstName = :firstName AND p.author.lastName = :lastName");
+                    "SELECT p FROM ProductDescription p WHERE lower(p.author.firstName) = lower( :firstName ) AND lower( p.author.lastName ) = lower( :lastName )");
             q.setParameter("firstName", firstName);
             q.setParameter("lastName", lastName);
             return (List<ProductDescription>) q.getResultList();
@@ -89,10 +90,11 @@ public class ProductDescriptionManager {
      * @param language language of the searched Product.
      * @return List of ProductDescriptions
      */
+    @SuppressWarnings("unchecked")
     public List<ProductDescription> findByLanguage(String language) {
         List<ProductDescription> products = null;
         try {
-            Query q = em.createQuery("SELECT p FROM ProductDescription p WHERE p.language.language = :language");
+            Query q = em.createQuery("SELECT p FROM ProductDescription p WHERE lower(p.language.language) =  lower( :language )");
             q.setParameter("language", language);
             return (List<ProductDescription>) q.getResultList();
         } catch (Exception e) {
@@ -107,11 +109,12 @@ public class ProductDescriptionManager {
      * @param category category of the searched Product.
      * @return List of ProductDescriptions
      */
+    @SuppressWarnings("unchecked")
     public List<ProductDescription> findByCategory(String category) {
         List<ProductDescription> products = null;
         try {
             Query q = em.createQuery(
-                    "SELECT p FROM ProductDescription p JOIN p.categories c WHERE c.name = :category OR c.description = :category");
+                    "SELECT p FROM ProductDescription p JOIN p.categories c WHERE lower(c.name) = lower( :category ) OR lower(c.description) = lower( :category )");
             q.setParameter("category", category);
             return (List<ProductDescription>) q.getResultList();
         } catch (Exception e) {
@@ -126,6 +129,7 @@ public class ProductDescriptionManager {
      * @param discount discount of the searched Product.
      * @return List of ProductDescriptions
      */
+    @SuppressWarnings("unchecked")
     public List<ProductDescription> findByDiscount(int discount) {
         List<ProductDescription> products = null;
         try {
@@ -146,10 +150,11 @@ public class ProductDescriptionManager {
      *              category name and description, language.
      * @return List of ProductDescriptions
      */
+    @SuppressWarnings("unchecked")
     public List<ProductDescription> searchProductDescriptions(String query) {
         try {
             Query q = em.createQuery(
-                "SELECT p FROM ProductDescription p LEFT JOIN p.author a LEFT JOIN p.categories c WHERE p.name LIKE :query OR p.description LIKE :query OR p.ISBN LIKE :query OR a.firstName LIKE :query OR a.lastName LIKE :query OR c.name LIKE :query OR c.description LIKE :query OR p.language.language LIKE :query");
+                "SELECT p FROM ProductDescription p LEFT JOIN p.author a LEFT JOIN p.categories c WHERE lower(p.name) LIKE lower( :query ) OR p.description LIKE  :query  OR p.ISBN LIKE :query OR lower( a.firstName ) LIKE lower( :query ) OR lower( a.lastName ) LIKE lower( :query ) OR lower(c.name) LIKE lower( :query ) OR c.description LIKE  :query OR lower(p.language.language) LIKE lower( :query)");
             System.out.println(query);
             q.setParameter("query", "%" + query + "%");
 

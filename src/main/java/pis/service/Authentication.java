@@ -2,6 +2,7 @@
  * PIS Projekt 2024
  * Authentication.java
  * @author Vojtech Fiala <xfiala61>
+ * @author Lukas Petr <xpetrl06>
  */
 
 package pis.service;
@@ -46,7 +47,9 @@ public class Authentication implements ContainerRequestFilter {
 
     private static final Key key = Keys.hmacShaKeyFor("12345789101112131415161718192021222324252627282930".getBytes()); // very stupid but w/e
 
-
+    /**
+     * Perform filter on each incoming request
+     */
     public void filter(ContainerRequestContext ctx) {
         String authorizationHeader = ctx.getHeaderString(HttpHeaders.AUTHORIZATION);
         // If there is an authorization header and the JWT is ok, set security context

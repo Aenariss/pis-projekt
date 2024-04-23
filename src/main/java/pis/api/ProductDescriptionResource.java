@@ -7,15 +7,16 @@
 
 package pis.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import pis.data.ProductDescription;
-import pis.data.SearchQuery;
 import pis.data.Category;
+import pis.api.dto.FilterQuery;
+import pis.api.dto.SearchQuery;
 import pis.data.BookAuthor;
 import pis.data.Language;
 import pis.data.Discount;
-import pis.data.FilterQuery;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -137,6 +138,14 @@ public class ProductDescriptionResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public List<ProductDescription> searchProductDescriptions(SearchQuery searchQuery) {
+        
+        // Empty array to be returned in case the request is not valid
+        List<ProductDescription> arr = new ArrayList<>();
+        // Request validation
+        if (!searchQuery.valid()) {
+            return arr;
+        }
+
         return productDescriptionManager.searchProductDescriptions(searchQuery.getQuery());
     }
 
@@ -152,6 +161,14 @@ public class ProductDescriptionResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public List<ProductDescription> filterProductDescriptions(FilterQuery filterQuery) {
+
+        // Empty array to be returned in case the request is not valid
+        List<ProductDescription> arr = new ArrayList<>();
+        // Request validation
+        if (!filterQuery.valid()) {
+            return arr;
+        }
+
         return productDescriptionManager.filterProductDescriptions(filterQuery);
     }
 
@@ -166,6 +183,14 @@ public class ProductDescriptionResource {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({ "admin" })
     public Response addProductDescription(ProductDescription productDescription) {
+        
+        /**
+         * The request has to be valid -- contain all required fields
+         */
+        if (!productDescription.valid()) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid request!").build();
+        }
+
         if (productDescription.getName().length() < 2) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Product Description needs a valid name!")
                     .build();
@@ -194,6 +219,12 @@ public class ProductDescriptionResource {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({ "admin" })
     public Response updateProductDescription(@PathParam("id") long id, ProductDescription productDescription) {
+
+        // The request must contain all necessary fields
+        if (!productDescription.valid()) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid request!").build();
+        }
+
         ProductDescription toUpdate = productDescriptionManager.find(id);
         if (toUpdate == null) {
             // ProductDescription with given id does not exist

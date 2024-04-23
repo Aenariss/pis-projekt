@@ -17,12 +17,21 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+/**
+ * REST API for working with user roles
+ */
 @Path("/setRole")
 public class SetRole {
 
     @Inject
 	private RegisteredUserManager userManager;
 
+    /**
+     * Private method for setting the user's role
+     * @param r Request, must be valid
+     * @param role can be either "user", "employee" or "admin"
+     * @return Response
+     */
     private Response setRoleBody(RoleRequest r, String role) {
         if (!r.valid()) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid user!").build();
@@ -35,13 +44,15 @@ public class SetRole {
         }
 
         u.setRole(role);
-        userManager.save(u);
+        userManager.save(u); // save for persistence
         String resp_text = u.getEmail() + " is now a " + role;
         return Response.status(Response.Status.OK).entity(resp_text).build();
     }
 
     /**
      * Set the client's role as regular user
+     * @param r Request for role change, has to be valid
+     * @return Response
      */
     @POST
     @Path("/user")
@@ -54,6 +65,8 @@ public class SetRole {
 
     /**
      * Set the client's role as employee
+     * @param r Request for role change, has to be valid
+     * @return Response
      */
     @POST
     @Path("/employee")
@@ -65,7 +78,9 @@ public class SetRole {
     }
 
     /**
-     * Set the client's role as adm,in
+     * Set the client's role as admin
+     * @param r Request for role change, has to be valid
+     * @return Response
      */
     @POST
     @Path("/admin")
@@ -75,25 +90,4 @@ public class SetRole {
 
         return this.setRoleBody(r, "admin");
     }
-
-    /**
-     * Set the test@test.cz user's role to admin
-     */
-    @POST
-    @Path("/testUserAdmin/{email}")
-    public Response testAdmin(@PathParam("email") String email) {
-        
-        RegisteredUser u = userManager.findByEmail(email);
-
-        if (u == null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("test user not registered!").build();
-        }
-
-        u.setRole("admin");
-        userManager.save(u);
-        String resp_text = u.getEmail() + " is now an admin";
-        return Response.status(Response.Status.OK).entity(resp_text).build();
-    }
-
-
 }

@@ -44,8 +44,8 @@ public class RegisteredUserManager {
     public RegisteredUser findByEmail(String email) {
         RegisteredUser u = null;
         try {
-            Query q = em.createQuery("SELECT u FROM RegisteredUser u WHERE u.email = :email");
-            q.setParameter("email", email); // is this safe?
+            Query q = em.createQuery("SELECT u FROM RegisteredUser u WHERE lower(u.email) = lower( :email )");
+            q.setParameter("email", email); // is this safe? seems to be
             return (RegisteredUser) q.getSingleResult();
         }
         catch(Exception e) {
@@ -77,7 +77,7 @@ public class RegisteredUserManager {
     public List<RegisteredUser> getEmployeeQuery(String name) {
         List<RegisteredUser> employees = null;
         try {
-            Query q = em.createQuery("SELECT u FROM RegisteredUser u WHERE (u.role = 'employee' OR u.role = 'admin') AND u.surname LIKE :name");
+            Query q = em.createQuery("SELECT u FROM RegisteredUser u WHERE (u.role = 'employee' OR u.role = 'admin') AND lower(u.surname) LIKE lower( :name )");
             q.setParameter("name", '%' + name + '%');
             return (List<RegisteredUser>) q.getResultList();
         }
@@ -95,7 +95,7 @@ public class RegisteredUserManager {
     public List<RegisteredUser> getEmployeeByEmailQuery(String email) {
         List<RegisteredUser> employees = null;
         try {
-            Query q = em.createQuery("SELECT u FROM RegisteredUser u WHERE (u.role = 'employee' OR u.role = 'admin') AND u.email LIKE :email");
+            Query q = em.createQuery("SELECT u FROM RegisteredUser u WHERE (u.role = 'employee' OR u.role = 'admin') AND lower(u.email) LIKE lower( :email )");
             q.setParameter("email", '%' + email + '%');
             return (List<RegisteredUser>) q.getResultList();
         }
@@ -112,7 +112,7 @@ public class RegisteredUserManager {
     public List<RegisteredUser> getUserQuery(String name) {
         List<RegisteredUser> users = null;
         try {
-            Query q = em.createQuery("SELECT u FROM RegisteredUser u WHERE u.surname LIKE :name");
+            Query q = em.createQuery("SELECT u FROM RegisteredUser u WHERE lower(u.surname) LIKE lower( :name )");
             q.setParameter("name", '%' + name + '%');
             return (List<RegisteredUser>) q.getResultList();
         }
@@ -129,7 +129,7 @@ public class RegisteredUserManager {
     public List<RegisteredUser> getUserByEmailQuery(String email) {
         List<RegisteredUser> users = null;
         try {
-            Query q = em.createQuery("SELECT u FROM RegisteredUser u WHERE u.email LIKE :email");
+            Query q = em.createQuery("SELECT u FROM RegisteredUser u WHERE lower(u.email) LIKE lower( :email )");
             q.setParameter("email", '%' + email + '%');
             return (List<RegisteredUser>) q.getResultList();
         }
