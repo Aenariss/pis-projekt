@@ -3,15 +3,21 @@
  * @author Lukas Petr <xpetrl06>
  */
 import {Button, Form, InputGroup} from "react-bootstrap";
-import {useState} from "react";
-import {createSearchParams, useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {createSearchParams, useNavigate, useSearchParams} from "react-router-dom";
 
 /**
  * Component for searching for books.
  */
 export default function Search() {
+  const [searchParams] = useSearchParams();
   const [input, setInput] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setInput(searchParams.get('query') || '');
+  },[searchParams]);
+
 
   function search(e) {
     e.preventDefault();
