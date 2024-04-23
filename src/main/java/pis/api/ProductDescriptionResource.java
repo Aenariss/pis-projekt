@@ -146,7 +146,9 @@ public class ProductDescriptionResource {
             return arr;
         }
 
-        return productDescriptionManager.searchProductDescriptions(searchQuery.getQuery());
+        return productDescriptionManager.searchProductDescriptions(searchQuery.getQuery())
+        // filtering so it does not have to be done on frontend
+                                        .stream().distinct().toList();
     }
 
     /**
@@ -168,8 +170,9 @@ public class ProductDescriptionResource {
         if (!filterQuery.valid()) {
             return arr;
         }
-
-        return productDescriptionManager.filterProductDescriptions(filterQuery);
+        return productDescriptionManager.filterProductDescriptions(filterQuery)
+        // filtering so it does not have to be done on frontend
+                                        .stream().distinct().toList();
     }
 
     /**

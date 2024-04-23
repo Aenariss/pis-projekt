@@ -7,6 +7,7 @@
 
 package pis.api;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import pis.data.Order;
@@ -25,11 +26,15 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import pis.service.OrderManager;
-import pis.service.OrderUserInfoManager;
 import pis.service.ProductDescriptionManager;
 import pis.service.RegisteredUserManager;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 //TODO: check permissions
 
@@ -71,9 +76,13 @@ public class OrderResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<OrderPreviewDTO> getOrdersByEmail(@PathParam("email") String email) {
         // Find orders where the email is set in user info
-        List<Order> orders = orderManager.findByEmail(email);
+        List<Order> orders = new LinkedList<Order>();
+        orders.addAll(orderManager.findByEmail(email));
         // Also add orders which was done by registered user with given email
-        orders.addAll(registeredUserManager.findByEmail(email).getOrders());
+        RegisteredUser user = registeredUserManager.findByEmail(email);
+        if (user != null) {
+            orders.addAll(user.getOrders());
+        }
         // If the user did not chagend the email for the order there will be
         // duplicates, therefore we are removing them.
         orders = orders.stream().distinct().toList();
@@ -100,9 +109,26 @@ public class OrderResource {
      */
     @GET
     @Path("/{id}")
+    @Operation(summary = "Returns order", description = "Returns order specified by id")
+    @APIResponses(
+        value = {
+            @APIResponse(responseCode = "200", description = "Order was found.",
+                content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = Order.class)
+                )
+            ),
+            @APIResponse(responseCode = "404", description = "Order with given id was not found."
+            ),
+        }
+    )
     @Produces(MediaType.APPLICATION_JSON)
-    public Order getOrder(@PathParam("id") long id) {
-        return orderManager.find(id);
+    public Response getOrder(@PathParam("id") long id) {
+        Order o = orderManager.find(id);
+        if (o != null) {
+            return Response.ok().entity(o).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     /**
@@ -151,6 +177,7 @@ public class OrderResource {
             productDescriptionManager.save(product);
         }
 
+        order = orderManager.save(order);
         // Check if the order did user which is logged in.
         // If it was logged in user then the securityContext will contain his email.
         if (securityContext.getUserPrincipal() != null) {
@@ -160,13 +187,9 @@ public class OrderResource {
             user.addOrder(order);
             // Saving user for the reason his updated orders are saved in DB.
             registeredUserManager.save(user);
-        } else {
-            // If user was registered the order is saved with the user
-            // If the user was not registered we have to save the order now
-            orderManager.save(order);
         }
-
-        return Response.ok().build();
+        // returning order id in the body of response
+        return Response.ok(order.getId()).build();
     }
 
     @PUT

@@ -2,7 +2,7 @@
  * Lists books.
  * @author Lukas Petr <xpetrl06>
  */
-import {Col, Pagination, Row, Stack} from "react-bootstrap";
+import {Col, Row, Stack} from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Book from "./Book";
 import {useState} from "react";

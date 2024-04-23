@@ -8,7 +8,7 @@ import { CartContext } from "../../context/CartContext";
 import { Button, Image, Table } from "react-bootstrap";
 import { api } from "../../api";
 import { X } from "react-bootstrap-icons";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AmountChanger from "../../components/Cart/AmountChanger";
 
 /**
@@ -76,8 +76,22 @@ export default function UserCartPage() {
                   <tr key={book.id}>
                     <td><Image src={book?.image} height='150px'/></td>
                     <td className='w-50'>
-                      <div style={{fontSize: '20px'}}>{book?.name}</div>
-                      <div>{book.author?.firstName} {book.author?.lastName}</div>
+                      <div style={{fontSize: '20px'}}>
+                        <Link as='a'
+                              role='button'
+                              className='link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover'
+                              to={`/book/${book.id}`}>
+                              {book?.name}
+                        </Link>
+                      </div>
+                      <div>
+                        <Link as='a'
+                              role='button'
+                              className='link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover'
+                              to={`/?authorIds=${book?.author?.id}`}>
+                          {book.author?.firstName} {book.author?.lastName}
+                        </Link>
+                      </div>
                     </td>
                     <td>
                       <AmountChanger bookId={book?.id} availableQuantity={book?.availableQuantity} />
