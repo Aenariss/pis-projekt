@@ -16,7 +16,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import pis.api.dto.FilterQuery;
 import pis.data.Category;
-import pis.data.Language;
 
 /**
  * Business logic for working with ProductDescriptions.

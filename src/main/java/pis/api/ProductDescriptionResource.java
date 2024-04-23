@@ -109,13 +109,6 @@ public class ProductDescriptionResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public List<ProductDescription> filterProductDescriptions(FilterQuery filterQuery) {
-
-        // Empty array to be returned in case the request is not valid
-        List<ProductDescription> arr = new ArrayList<>();
-        // Request validation
-        if (!filterQuery.valid()) {
-            return arr;
-        }
         return productDescriptionManager.filterProductDescriptions(filterQuery)
         // filtering so it does not have to be done on frontend
                                         .stream().distinct().toList();

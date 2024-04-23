@@ -10,7 +10,6 @@ import java.util.List;
 
 import pis.data.OrderUserInfo;
 //import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;

@@ -5,9 +5,6 @@
 
 package pis.api.dto;
 
-import java.util.List;
-
-import pis.data.Order;
 import pis.data.OrderStatus;
 
 public class UpdateOrderDTO {

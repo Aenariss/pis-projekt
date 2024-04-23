@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Data model for search query.
  */
-public class FilterQuery extends Request {
+public class FilterQuery {
     private List<Long> authorIds;
     private List<Long> categoryIds;
     private List<Long> languageIds;

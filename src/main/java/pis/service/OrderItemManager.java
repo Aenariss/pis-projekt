@@ -5,12 +5,8 @@
  */
 
 package pis.service;
-
-import java.util.List;
-
 import pis.data.OrderItem;
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.persistence.Query;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
