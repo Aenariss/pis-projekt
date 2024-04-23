@@ -42,18 +42,6 @@ public class UsersControl {
     }
 
     /**
-     * Returns a list of all current users - not suited for production. Extremely bad performance with increasing number of users.
-     * @return A list with all registered users.
-     */
-    @GET
-    @Path("/getUsers")
-    @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed("admin")
-    public List<RegisteredUser> getAllUsers() {
-        return userManager.findAll();
-    }
-
-    /**
      * Returns a list of all employees whose surname matches given query
      * @param name The surname of the employee you want to find
      * @return List of users whose surname matches the query
