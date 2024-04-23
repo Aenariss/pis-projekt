@@ -85,6 +85,7 @@ export default function BookDetailPage() {
                     {product.categories.map(category => (
                       <Link as='a'
                             role='button'
+                            key={`category-${category?.id}`}
                             className='link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover'
                             to={`/?categoryIds=${category?.id}`}>
                         <li key={category.id}>{category.name}</li>
