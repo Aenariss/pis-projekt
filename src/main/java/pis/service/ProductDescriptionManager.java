@@ -236,7 +236,7 @@ public class ProductDescriptionManager {
         data.pagesFrom = query.getPagesFrom();
         data.discountFrom = query.getDiscountFrom();
 
-        data.print(); // TODO remove debug print
+        // data.print(); // TODO remove debug print
         if (data.authorIds != null) {
             try {
                 Query q = em.createQuery("SELECT p FROM ProductDescription p JOIN p.author a WHERE a.id IN :authorIds");

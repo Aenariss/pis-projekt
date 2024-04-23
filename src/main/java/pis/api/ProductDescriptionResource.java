@@ -137,7 +137,9 @@ public class ProductDescriptionResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public List<ProductDescription> searchProductDescriptions(SearchQuery searchQuery) {
-        return productDescriptionManager.searchProductDescriptions(searchQuery.getQuery());
+        return productDescriptionManager.searchProductDescriptions(searchQuery.getQuery())
+        // filtering so it does not have to be done on frontend
+                                        .stream().distinct().toList();
     }
 
     /**
@@ -152,7 +154,9 @@ public class ProductDescriptionResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public List<ProductDescription> filterProductDescriptions(FilterQuery filterQuery) {
-        return productDescriptionManager.filterProductDescriptions(filterQuery);
+        return productDescriptionManager.filterProductDescriptions(filterQuery)
+        // filtering so it does not have to be done on frontend
+                                        .stream().distinct().toList();
     }
 
     /**
