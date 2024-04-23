@@ -4,7 +4,7 @@
  */
 import {useEffect, useState} from "react";
 import {Button, Form, ListGroup} from "react-bootstrap";
-import {createSearchParams, useNavigate} from "react-router-dom";
+import {useSearchParams} from "react-router-dom";
 import {api} from "../../api";
 
 /**
@@ -12,7 +12,7 @@ import {api} from "../../api";
  * @component
  */
 export default function Filter() {
-  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   // List of all categories
   const [categories, setCategories] = useState([]);
   // List of all languages
@@ -20,32 +20,29 @@ export default function Filter() {
   // List of all authors
   const [authors, setAuthors] = useState([]);
   // IDs of selected categories.
-  const [selectedCatID, setSelectedCatID] = useState([]);
+  const [selectedCatID, setSelectedCatID] = useState(new Set());
   // IDs of selected language ids.
-  const [selectedLangID, setSelectedLangID] = useState([]);
+  const [selectedLangID, setSelectedLangID] = useState(new Set());
   // IDs of selected author ids.
-  const [selectedAuthorID, setSelectedAuthorID] = useState([]);
+  const [selectedAuthorID, setSelectedAuthorID] = useState(new Set());
+  useEffect(() => {
+    // Updating selected items according to url param
+    setSelectedCatID(new Set(searchParams.getAll('categoryIds').map(id => Number(id))));
+    setSelectedAuthorID(new Set(searchParams.getAll('authorIds').map(id => Number(id))));
+    setSelectedLangID(new Set(searchParams.getAll('languageIds').map(id => Number(id))));
+  }, [searchParams]);
 
   // Fetches list of categories for filtering.
   useEffect(() => {
-    api.get("/category")
-      .then(response => {
-        if (response.status === 200) {
-          setCategories(response.data);
-        }
-      });
-    api.get("/language")
-      .then(response => {
-        if (response.status === 200) {
-          setLanguages(response.data);
-        }
-      })
-    api.get("/bookauthor")
-      .then(response => {
-        if (response.status === 200) {
-          setAuthors(response.data);
-        }
-      })
+    Promise.all([
+      api.get("/category"),
+      api.get("/language"),
+      api.get("/bookauthor")
+    ]).then(([categoryResponse, languageResponse, authorResponse]) => {
+        setCategories(categoryResponse.data);
+        setLanguages(languageResponse.data);
+        setAuthors(authorResponse.data);
+    });
   }, []);
 
   /**
@@ -54,63 +51,49 @@ export default function Filter() {
   function handleFilter(e) {
     e.preventDefault();
     const params = {
-      categoryIds: selectedCatID,
-      authorIds: selectedAuthorID,
-      languageIds: selectedLangID
+      categoryIds: Array.from(selectedCatID),
+      authorIds: Array.from(selectedAuthorID),
+      languageIds: Array.from(selectedLangID)
     };
-    const query = createSearchParams(params).toString();
-    navigate({pathname: '/', search: `?${query}`});
+    setSearchParams(params);
   }
-
   /**
-   * Handles category change - checked/unchecked.
-   * @param e Event
-   * @param id Category id.
+   * Updates selected ids based on checked id in filter.
+   * @param setFunction One of selectedCatID, selectedLangID, selectedAuthorID.
+   * @param id Id which was changed.
    */
-  function handleCategoryChange(e, id) {
-    if (e.target.checked) {
-      // category was checked add it to list
-      setSelectedCatID(ids => [...ids, id]);
-    } else {
-      // category was unchecked remove it from list
-      setSelectedCatID(ids => ids.filter(oldId => oldId !== id));
-    }
+  function handleChange(setFunction, id) {
+    setFunction(ids => {
+      const newIds = new Set(ids);
+      // If id was selected then remove it, otherwise add it.
+      if (ids.has(id)) {
+        newIds.delete(id);
+      } else {
+        newIds.add(id);
+      }
+      return newIds;
+    });
   }
 
-  /**
-   * Handles language change - checked/unchecked.
-   * @param e Event
-   * @param id Language id.
-   */
-  function handleLanguageChange(e, id) {
-    if (e.target.checked) {
-      setSelectedLangID(ids => [...ids, id]);
-    } else {
-      setSelectedLangID(ids => ids.filter(oldId => oldId !== id));
-    }
-  }
-
-  /**
-   * Handles author change - checked/unchecked.
-   * @param e Event
-   * @param id Author id.
-   */
-  function handleAuthorChange(e, id) {
-    if (e.target.checked) {
-      setSelectedAuthorID(ids => [...ids, id]);
-    } else {
-      setSelectedAuthorID(ids => ids.filter(oldId => oldId !== id));
-    }
-  }
-
-  // TODO add more filters
   return (
     <div >
       <Form className="border border-primary px-2 py-3 rounded-3" onSubmit={handleFilter}>
         <h2>Filter</h2>
-        <FilterList name="Categories" items={categories} getLabel={category => category.name} onItemClick={handleCategoryChange}/>
-        <FilterList name="Languages" items={languages} getLabel={language => language.language}  onItemClick={handleLanguageChange}/>
-        <FilterList name="Authors" items={authors} getLabel={author => `${author.firstName} ${author.lastName}`}  onItemClick={handleAuthorChange}/>
+        <FilterList name="Categories"
+                    items={categories}
+                    getLabel={category => category.name}
+                    onItemClick={(id) => handleChange(setSelectedCatID, id)}
+                    selectedIds={selectedCatID}/>
+        <FilterList name="Languages"
+                    items={languages}
+                    getLabel={language => language.language}
+                    onItemClick={(id) => handleChange(setSelectedLangID, id)}
+                    selectedIds={selectedLangID}/>
+        <FilterList name="Authors"
+                    items={authors}
+                    getLabel={author => `${author.firstName} ${author.lastName}`}
+                    onItemClick={(id) => handleChange(setSelectedAuthorID, id)}
+                    selectedIds={selectedAuthorID}/>
         <Button type="submit" className="mt-3 w-100">Filter</Button>
       </Form>
     </div>
@@ -118,23 +101,32 @@ export default function Filter() {
 }
 
 /**
- *
- * @param name
- * @param items
- * @param onItemClick
- * @param getLabel
- * @returns {JSX.Element}
- * @constructor
+ * List of options to filter.
+ * @param props.name Name of the filter.
+ * @param props.items Possible items to select.
+ * @param props.onItemsClick Handler called with item id.
+ * @param props.getLabel Function which returns label for given item.
+ * @param props.selectedIds Set of selected ids.
  */
-function FilterList({name, items, onItemClick, getLabel}) {
+function FilterList({
+  name,
+  items,
+  onItemClick,
+  getLabel,
+  selectedIds,
+}) {
   return (
     <Form.Group>
       <Form.Label>{name}</Form.Label>
       <ListGroup className="overflow-auto" style={{maxHeight: "140px"}}>
         {items.map(item => (
-          <ListGroup.Item key={item.id}>
-            <Form.Check type="checkbox" label={getLabel(item)} onClick={(e) => onItemClick(e, item.id)}/>
-          </ListGroup.Item>
+            <label className="list-group-item" key={`label-${name}-${item.id}`}>
+              <input className="form-check-input me-1"
+                     type="checkbox"
+                     checked={selectedIds.has(item.id)}
+                     onChange={() => onItemClick(item.id)}/>
+              {getLabel(item)}
+            </label>
         ))}
       </ListGroup>
     </Form.Group>
