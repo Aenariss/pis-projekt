@@ -2,11 +2,12 @@
  * Filtering of books.
  * @author Lukas Petr <xpetrl06>
  */
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {Button, Form, ListGroup, Stack} from "react-bootstrap";
 import {useSearchParams} from "react-router-dom";
 import {api} from "../../api";
 import NumberInput from "./NumberInput";
+import { X } from "react-bootstrap-icons";
 
 /**
  * Component for filtering of books.
@@ -74,7 +75,7 @@ export default function Filter() {
    * @param setFunction One of selectedCatID, selectedLangID, selectedAuthorID.
    * @param id Id which was changed.
    */
-  function handleChange(setFunction, id) {
+  const handleChange = useCallback((setFunction, id) => {
     setFunction(ids => {
       const newIds = new Set(ids);
       // If id was selected then remove it, otherwise add it.
@@ -85,33 +86,54 @@ export default function Filter() {
       }
       return newIds;
     });
-  }
+  },[]);
+
+  /**
+   * Clears all filters and reloads the page.
+   */
+  const handleClear = useCallback(() => {
+    setSearchParams();
+  },[setSearchParams]);
+
+  /** Clears price - does not reload the page. */
+  const handlePriceClear = useCallback(() => {
+    setPriceFrom('');
+    setPriceTo('');
+  }, []);
 
   return (
     <div >
       <Form className="border border-primary px-2 py-3 rounded-3" onSubmit={handleFilter}>
-        <h2>Filter</h2>
+        <h2>Filter
+          <Button variant='outline-primary px-2 py-1 float-end me-1' onClick={handleClear}>
+            <X/> Clear
+          </Button>
+        </h2>
         <PriceFilter priceFrom={priceFrom}
                      onPriceFromChange={setPriceFrom}
                      priceTo={priceTo}
                      onPriceToChange={setPriceTo}
-                     onInvalidChange={setIsInvalid}/>
+                     onInvalidChange={setIsInvalid}
+                     onClear={handlePriceClear}/>
         <FilterList name="Categories"
                     items={categories}
                     getLabel={category => category.name}
                     onItemClick={(id) => handleChange(setSelectedCatID, id)}
                     showTitle={(item) => item.description}
-                    selectedIds={selectedCatID}/>
+                    selectedIds={selectedCatID}
+                    onClear={() => setSelectedCatID(new Set())}/>
         <FilterList name="Languages"
                     items={languages}
                     getLabel={language => language.language}
                     onItemClick={(id) => handleChange(setSelectedLangID, id)}
-                    selectedIds={selectedLangID}/>
+                    selectedIds={selectedLangID}
+                    onClear={() => setSelectedLangID(new Set())}/>
         <FilterList name="Authors"
                     items={authors}
                     getLabel={author => `${author.firstName} ${author.lastName}`}
                     onItemClick={(id) => handleChange(setSelectedAuthorID, id)}
-                    selectedIds={selectedAuthorID}/>
+                    selectedIds={selectedAuthorID}
+                    onClear={() => setSelectedAuthorID(new Set())}/>
         <Button type="submit"
                 className="mt-3 w-100"
                 disabled={isInvalid}>
@@ -130,6 +152,7 @@ export default function Filter() {
  * @param props.getLabel Function which returns label for given item.
  * @param props.selectedIds Set of selected ids.
  * @param props.showTitle Function which returns title for a book or undefined.
+ * @param props.onClear Called when the filter want to be cleared.
  */
 function FilterList({
   name,
@@ -138,10 +161,14 @@ function FilterList({
   getLabel,
   selectedIds,
   showTitle,
+  onClear,
 }) {
   return (
     <div className='mt-3'>
-      <Form.Label><b>{name}</b></Form.Label>
+      <div className='d-flex justify-content-between'>
+        <b>{name}</b>
+        <ClearButton onClick={onClear}/>
+      </div>
       <ListGroup className="overflow-auto"
                  style={{maxHeight: "140px"}}>
         {items.map(item => (
@@ -165,13 +192,15 @@ function FilterList({
  * @param props.priceTo Current set price to.
  * @param props.onPriceFromChange Called with new price from on change.
  * @param props.onPriceToChange Called with new price to on change.
+ * @param props.onClear Called when the filter want to be cleared.
  */
 function PriceFilter({
   priceFrom,
   priceTo,
   onPriceFromChange,
   onPriceToChange,
-  onInvalidChange
+  onInvalidChange,
+  onClear
 }) {
   // Checks if prices are invalid - if both are set but from is bigger then to
   const pricesInvalid = priceFrom !== '' && priceTo !== '' && Number(priceFrom) > Number(priceTo);
@@ -180,7 +209,10 @@ function PriceFilter({
   },[pricesInvalid, onInvalidChange]);
   return (
     <>
-      <Form.Label><b>Price</b></Form.Label>
+      <div className='d-flex justify-content-between'>
+        <b>Price</b>
+        <ClearButton onClick={onClear}/>
+      </div>
       <Stack direction='horizontal'>
         <NumberInput label='From:'
                      value={priceFrom}
@@ -197,5 +229,20 @@ function PriceFilter({
         </div>
       )}
     </>
+  );
+}
+
+/**
+ * Button for clearing individual filters.
+ * @param props.handleClick Called on click.
+ */
+function ClearButton({
+  onClick
+}) {
+  return (
+    <Button variant='outline-secondary px-1 py-0 me-1 my-1'
+            onClick={onClick}>
+      <X size='12px'/>
+    </Button>
   );
 }
