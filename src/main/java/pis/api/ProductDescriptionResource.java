@@ -126,13 +126,6 @@ public class ProductDescriptionResource {
     @RolesAllowed({ "admin" })
     public Response addProductDescription(ProductDescription productDescription) {
         
-        /**
-         * The request has to be valid -- contain all required fields
-         */
-        if (!productDescription.valid()) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid request!").build();
-        }
-
         if (productDescription.getName().length() < 2) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Product Description needs a valid name!")
                     .build();
@@ -161,11 +154,6 @@ public class ProductDescriptionResource {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({ "admin" })
     public Response updateProductDescription(@PathParam("id") long id, ProductDescription productDescription) {
-
-        // The request must contain all necessary fields
-        if (!productDescription.valid()) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid request!").build();
-        }
 
         ProductDescription toUpdate = productDescriptionManager.find(id);
         if (toUpdate == null) {
