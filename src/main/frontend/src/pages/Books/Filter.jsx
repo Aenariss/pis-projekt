@@ -3,9 +3,10 @@
  * @author Lukas Petr <xpetrl06>
  */
 import {useEffect, useState} from "react";
-import {Button, Form, ListGroup} from "react-bootstrap";
+import {Button, Form, ListGroup, Stack} from "react-bootstrap";
 import {useSearchParams} from "react-router-dom";
 import {api} from "../../api";
+import NumberInput from "./NumberInput";
 
 /**
  * Component for filtering of books.
@@ -25,11 +26,20 @@ export default function Filter() {
   const [selectedLangID, setSelectedLangID] = useState(new Set());
   // IDs of selected author ids.
   const [selectedAuthorID, setSelectedAuthorID] = useState(new Set());
+  // Price from
+  const [priceFrom, setPriceFrom] = useState('');
+  // Price To
+  const [priceTo, setPriceTo] = useState('');
+  // Is filter invalid
+  const [isInvalid, setIsInvalid] = useState(false);
+
   useEffect(() => {
     // Updating selected items according to url param
     setSelectedCatID(new Set(searchParams.getAll('categoryIds').map(id => Number(id))));
     setSelectedAuthorID(new Set(searchParams.getAll('authorIds').map(id => Number(id))));
     setSelectedLangID(new Set(searchParams.getAll('languageIds').map(id => Number(id))));
+    setPriceFrom(searchParams.get('priceFrom') || '');
+    setPriceTo(searchParams.get('priceTo') || '');
   }, [searchParams]);
 
   // Fetches list of categories for filtering.
@@ -53,8 +63,10 @@ export default function Filter() {
     const params = {
       categoryIds: Array.from(selectedCatID),
       authorIds: Array.from(selectedAuthorID),
-      languageIds: Array.from(selectedLangID)
+      languageIds: Array.from(selectedLangID),
     };
+    if (priceFrom !== '') params.priceFrom = priceFrom;
+    if (priceTo !== '') params.priceTo = priceTo;
     setSearchParams(params);
   }
   /**
@@ -79,6 +91,11 @@ export default function Filter() {
     <div >
       <Form className="border border-primary px-2 py-3 rounded-3" onSubmit={handleFilter}>
         <h2>Filter</h2>
+        <PriceFilter priceFrom={priceFrom}
+                     onPriceFromChange={setPriceFrom}
+                     priceTo={priceTo}
+                     onPriceToChange={setPriceTo}
+                     onInvalidChange={setIsInvalid}/>
         <FilterList name="Categories"
                     items={categories}
                     getLabel={category => category.name}
@@ -95,7 +112,11 @@ export default function Filter() {
                     getLabel={author => `${author.firstName} ${author.lastName}`}
                     onItemClick={(id) => handleChange(setSelectedAuthorID, id)}
                     selectedIds={selectedAuthorID}/>
-        <Button type="submit" className="mt-3 w-100">Filter</Button>
+        <Button type="submit"
+                className="mt-3 w-100"
+                disabled={isInvalid}>
+          Filter
+        </Button>
       </Form>
     </div>
   );
@@ -119,8 +140,8 @@ function FilterList({
   showTitle,
 }) {
   return (
-    <Form.Group>
-      <Form.Label>{name}</Form.Label>
+    <div className='mt-3'>
+      <Form.Label><b>{name}</b></Form.Label>
       <ListGroup className="overflow-auto"
                  style={{maxHeight: "140px"}}>
         {items.map(item => (
@@ -134,6 +155,47 @@ function FilterList({
             </label>
         ))}
       </ListGroup>
-    </Form.Group>
+    </div>
+  );
+}
+
+/**
+ * Filter for filtering by price.
+ * @param props.priceFrom Current set price from.
+ * @param props.priceTo Current set price to.
+ * @param props.onPriceFromChange Called with new price from on change.
+ * @param props.onPriceToChange Called with new price to on change.
+ */
+function PriceFilter({
+  priceFrom,
+  priceTo,
+  onPriceFromChange,
+  onPriceToChange,
+  onInvalidChange
+}) {
+  // Checks if prices are invalid - if both are set but from is bigger then to
+  const pricesInvalid = priceFrom !== '' && priceTo !== '' && Number(priceFrom) > Number(priceTo);
+  useEffect(() => {
+    onInvalidChange(pricesInvalid);
+  },[pricesInvalid, onInvalidChange]);
+  return (
+    <>
+      <Form.Label><b>Price</b></Form.Label>
+      <Stack direction='horizontal'>
+        <NumberInput label='From:'
+                     value={priceFrom}
+                     onChange={onPriceFromChange}
+                     isInvalid={pricesInvalid}/>
+        <NumberInput label='To:'
+                     value={priceTo}
+                     onChange={onPriceToChange}
+                     isInvalid={pricesInvalid}/>
+      </Stack>
+      {pricesInvalid && (
+        <div className='text-danger'>
+          Error: from must be lesser than to
+        </div>
+      )}
+    </>
   );
 }
