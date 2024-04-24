@@ -87,7 +87,11 @@ function AuthVerify() {
         setShowLoggedOut(true);
       } else if (remainingTime < RENEW_AT_REMAINING_TIME) {
         // No much time left before JWT expires, try to renew it.
-        renewToken();
+        renewToken(() => {
+          // renewal was unsuccessful
+          logout();
+          setShowLoggedOut(true);
+        });
       }
     }
   }, [location, user, logout, renewToken]);
