@@ -83,7 +83,7 @@ public class OrderManager {
         List<Order> orders = null;
         try {
             Query q = em.createQuery(
-                    "SELECT o FROM Order o WHERE o.orderUserInfo.email = :email");
+                    "SELECT o FROM Order o WHERE lower(o.orderUserInfo.email) = lower( :email )");
             q.setParameter("email", email);
             return (List<Order>) q.getResultList();
         } catch (Exception e) {

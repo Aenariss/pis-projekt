@@ -10,13 +10,15 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
+import pis.api.dto.Request; // Not really a DTO, but this makes things easier
+
 /**
  * Data model for product description.
  */
 @Entity
 @Table(name = "ProductDescription")
 @NamedQuery(name = "ProductDescription.findAll", query = "SELECT pd FROM ProductDescription pd")
-public class ProductDescription {
+public class ProductDescription extends Request {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

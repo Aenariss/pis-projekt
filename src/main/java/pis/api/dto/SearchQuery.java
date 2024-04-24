@@ -4,12 +4,12 @@
  * @author Tomas Ondrusek <xondru18>
  */
 
-package pis.data;
+package pis.api.dto;
 
 /**
  * Data model for search query.
  */
-public class SearchQuery {
+public class SearchQuery extends Request {
     private String query;
 
 

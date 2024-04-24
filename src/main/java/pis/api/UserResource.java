@@ -25,6 +25,10 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 
+
+/**
+ * REST API for changing users's information
+ */
 @Path("/user")
 public class UserResource {
     @Inject
@@ -33,6 +37,10 @@ public class UserResource {
     @Context
     private SecurityContext securityContext;
 
+    /**
+     * Method to get the logged-in user's profile
+     * @return Response with user's info
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({ "admin", "user", "employee" })
@@ -48,6 +56,11 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(u).build();
     }
 
+    /**
+     * Method to get profile of user chosen by ID, admin-only
+     * @param id ID of the user
+     * @return Response with user's info
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
@@ -63,6 +76,12 @@ public class UserResource {
         return Response.status(Response.Status.OK).entity(u).build();
     }
 
+    /**
+     * Private methiod to change the given user's profile
+     * @param r Request for change, must be valid
+     * @param u User Object
+     * @return Response
+     */
     private Response setProfileBody(ProfileRequest r, RegisteredUser u) {
 
         Address addr = new Address();
@@ -97,6 +116,11 @@ public class UserResource {
         return Response.status(Response.Status.OK).build();
     }
 
+    /**
+     * Method to change the logged in user's information
+     * @param r Request for change, msut be valid
+     * @return Response
+     */
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -113,6 +137,12 @@ public class UserResource {
         return this.setProfileBody(r, u);
     }
 
+    /***
+     * Method to change given user's information
+     * @param userId ID of the user
+     * @param r Request for change, must be valid
+     * @return Response
+     */
     @PUT
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -130,6 +160,11 @@ public class UserResource {
         return this.setProfileBody(r, u);
     }
 
+    /**
+     * Method to change logged-in user's password
+     * @param r Passowrd change request, must be valid
+     * @return Response
+     */
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -165,10 +200,12 @@ public class UserResource {
                     .build();
         }
         
+        // Check if the user gave his correct password to authorize the change
         if (!DigestUtils.sha512Hex(r.getOld_password()).equals(u.getPasswordHash())) {
             return Response.status(Response.Status.FORBIDDEN).entity("Invalid current password!").build();
         }
 
+        // Check the password's long enough
         if (r.getPassword().length() < 3) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Password is too short!!").build();
         }
@@ -179,6 +216,12 @@ public class UserResource {
         return Response.status(Response.Status.OK).build();
     }
 
+    /**
+     * Method to change given user's password
+     * @param userId ID of the user
+     * @param r Reqeust for password change, msut be valid
+     * @return Response
+     */
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -196,6 +239,7 @@ public class UserResource {
             return Response.status(Response.Status.BAD_REQUEST).entity("User not found!").build();
         }
 
+        // Only check if the new password is valid, because admin is doing this, don't check the old passowrd
         if (r.getPassword().length() < 3) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Password is too short!!").build();
         }

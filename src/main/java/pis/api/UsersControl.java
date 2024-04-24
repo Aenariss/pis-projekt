@@ -18,6 +18,9 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.SecurityContext;
 
+/**
+ * REST API for managing the users
+ */
 @Path("/users")
 public class UsersControl {
     @Inject
@@ -28,6 +31,7 @@ public class UsersControl {
 
     /**
      * Returns a list of all current employees
+     * @return A list with all users with the 'employee' role
      */
     @GET
     @Path("/getEmployees")
@@ -38,18 +42,9 @@ public class UsersControl {
     }
 
     /**
-     * Returns a list of all current users - not suited for production
-     */
-    @GET
-    @Path("/getUsers")
-    @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed("admin")
-    public List<RegisteredUser> getAllUsers() {
-        return userManager.findAll();
-    }
-
-    /**
-     * Returns a list of all employees whose surname contains text
+     * Returns a list of all employees whose surname matches given query
+     * @param name The surname of the employee you want to find
+     * @return List of users whose surname matches the query
      */
     @GET
     @Path("/getEmployeesByName/{name}")
@@ -60,7 +55,9 @@ public class UsersControl {
     }
 
     /**
-     * Returns a list of all users whose surname contains text
+     * Returns a list of all users whose surname matches text
+     * @param name Surname of the user
+     * @return List of users matching the query
      */
     @GET
     @Path("/getUsersByName/{name}")
@@ -72,6 +69,8 @@ public class UsersControl {
 
     /**
      * Returns a list of all employees whose email matches given query
+     * @param email Employee's email
+     * @return List containing employees with email matching the query
      */
     @GET
     @Path("/getEmployeesByEmail/{email}")
@@ -83,6 +82,8 @@ public class UsersControl {
 
     /**
      * Returns a list of all users whose email matches given query
+     * @param email User's email
+     * @return List of all user's whose email matches the given query
      */
     @GET
     @Path("/getUsersByEmail/{email}")

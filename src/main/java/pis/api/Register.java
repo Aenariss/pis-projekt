@@ -17,6 +17,9 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+/**
+ * REST API for registration
+ */
 @Path("/register")
 public class Register {
 
@@ -24,12 +27,15 @@ public class Register {
     private RegisteredUserManager userManager;
 
     /**
-     * Register
+     * Register method 
+     * @param r Request for registration, has to be valid
+     * @return Response
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response register(RegisterRequest r) {
 
+        // Request validation
         if (!r.valid()) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid request!").build();
         }
@@ -49,8 +55,6 @@ public class Register {
 
         RegisteredUser u = new RegisteredUser(r.getFirstname(), r.getSurname(), r.getPhone(), r.getEmail(),
                 r.getPassword(), r.getState(), r.getTown(), r.getStreet(), r.getStreetNumber(), r.getPostCode());
-
-        // TODO: Validations for address?
 
         // User doesnt exist yet validation
         RegisteredUser taken = userManager.findByEmail(r.getEmail());

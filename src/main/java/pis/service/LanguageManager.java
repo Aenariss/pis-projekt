@@ -49,7 +49,7 @@ public class LanguageManager {
     public Language findLanguage(String language) {
         Language author = null;
         try {
-            Query q = em.createQuery("SELECT l FROM Language l WHERE l.language = :language");
+            Query q = em.createQuery("SELECT l FROM Language l WHERE lower(l.language) = lower( :language )");
             q.setParameter("language", language);
             return (Language) q.getSingleResult();
         } catch (Exception e) {

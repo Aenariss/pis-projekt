@@ -19,21 +19,28 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
+/**
+ * Rest API for Login
+ */
 @Path("/login")
 public class Login {
 
     @Inject
     private RegisteredUserManager userManager;
 
+    // Hardcoded private key, such security
     private static final Key key = Keys.hmacShaKeyFor("12345789101112131415161718192021222324252627282930".getBytes());
 
     /**
-     * Login
+     * POST method
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response login(LoginRequest r) {
 
+        /**
+         * The LoginRequest has to be valid (ie contain all required fields, whatever their value)
+         */
         if (!r.valid()) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid request!").build();
         }
@@ -45,7 +52,7 @@ public class Login {
         }
 
         if (u.validatePassword(r.getPassword())) {
-
+            
             String token = Jwts.builder()
                     .setSubject(u.getEmail())
                     .setIssuedAt(new Date())

@@ -49,7 +49,7 @@ public class BookAuthorManager {
     public BookAuthor findByLastName(String lastName) {
         BookAuthor author = null;
         try {
-            Query q = em.createQuery("SELECT a FROM BookAuthor a WHERE a.lastName = :lastName");
+            Query q = em.createQuery("SELECT a FROM BookAuthor a WHERE lower(a.lastName) = lower( :lastName )");
             q.setParameter("lastName", lastName);
             return (BookAuthor) q.getSingleResult();
         } catch (Exception e) {
@@ -69,7 +69,7 @@ public class BookAuthorManager {
         BookAuthor author = null;
         try {
             Query q = em.createQuery(
-                    "SELECT a FROM BookAuthor a WHERE a.firstName = :firstName AND a.lastName = :lastName");
+                    "SELECT a FROM BookAuthor a WHERE lower(a.firstName) = lower( :firstName ) AND lower(a.lastName) = lower( :lastName )");
             q.setParameter("firstName", firstName);
             q.setParameter("lastName", lastName);
             return (BookAuthor) q.getSingleResult();
