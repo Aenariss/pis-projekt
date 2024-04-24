@@ -83,6 +83,7 @@ export default function Filter() {
                     items={categories}
                     getLabel={category => category.name}
                     onItemClick={(id) => handleChange(setSelectedCatID, id)}
+                    showTitle={(item) => item.description}
                     selectedIds={selectedCatID}/>
         <FilterList name="Languages"
                     items={languages}
@@ -107,6 +108,7 @@ export default function Filter() {
  * @param props.onItemsClick Handler called with item id.
  * @param props.getLabel Function which returns label for given item.
  * @param props.selectedIds Set of selected ids.
+ * @param props.showTitle Function which returns title for a book or undefined.
  */
 function FilterList({
   name,
@@ -114,13 +116,16 @@ function FilterList({
   onItemClick,
   getLabel,
   selectedIds,
+  showTitle,
 }) {
   return (
     <Form.Group>
       <Form.Label>{name}</Form.Label>
-      <ListGroup className="overflow-auto" style={{maxHeight: "140px"}}>
+      <ListGroup className="overflow-auto"
+                 style={{maxHeight: "140px"}}>
         {items.map(item => (
-            <label className="list-group-item" key={`label-${name}-${item.id}`}>
+            <label className="list-group-item" key={`label-${name}-${item.id}`}
+                   title={showTitle?.(item)}>
               <input className="form-check-input me-1"
                      type="checkbox"
                      checked={selectedIds.has(item.id)}

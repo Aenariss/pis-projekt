@@ -55,6 +55,7 @@ export default function BookInfo({
               <ul className="list-unstyled">
                 {product.categories.map(category => (
                   <Link as='a'
+                        title={category?.description}
                         role='button'
                         key={`category-${category?.id}`}
                         className='link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover'
