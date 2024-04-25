@@ -6,6 +6,8 @@
 
 package pis.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import pis.data.Order;
@@ -101,6 +103,31 @@ public class OrderManager {
     @Transactional
     public Order save(Order o) {
         return em.merge(o);
+    }
+
+
+    /** STATISTICS CALCULATIONS **/
+
+    /**
+     * Return the number of order made between dates
+     * 
+     * @param from from Beginning of the range (including)
+     * @param to from End of the range (including)
+     * @return List of times & order counts
+     */
+    @SuppressWarnings("unchecked")
+    public List<Object[]> salesTimeRange(LocalDateTime from, LocalDateTime to) {
+        List<Object[]> results = null;
+        try {
+            // FUNCTION -- to convert full dateTime to YYYY-MM-DD, which is good for visualization
+            Query query = em.createQuery("SELECT FUNCTION('DATE', o.creationDate), COUNT(o) FROM Order o WHERE o.creationDate BETWEEN :from AND :to GROUP BY FUNCTION('DATE', o.creationDate)");
+            query.setParameter("from", from);
+            query.setParameter("to", to);
+            return (List<Object[]>) query.getResultList();
+        } catch (Exception e) {
+            System.out.println(e);
+            return results;
+        }
     }
 
 }
