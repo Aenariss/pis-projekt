@@ -28,6 +28,8 @@ public class OrderDetailDTO {
 
     private UserAddress userAddress;
 
+    private double totalPrice;
+
     private List<pis.data.OrderItem> orderItems;
 
     private List<ModificationDTO> modifications;
@@ -40,7 +42,12 @@ public class OrderDetailDTO {
         this.deliveryAddress = order.getDeliveryAddress();
         this.userAddress = order.getUserAddress();
         this.orderItems = order.getOrderItems();
+        this.totalPrice = order.getTotalPrice();
         this.modifications = order.getModifications().stream().map(ModificationDTO::new).collect(Collectors.toList());
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
     }
 
     public long getId() {
