@@ -27,6 +27,8 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    private double totalPrice;
+
     @NotNull
     private LocalDateTime creationDate;
 
@@ -119,6 +121,7 @@ public class Order {
     }
 
     public void addOrderItem(OrderItem orderItem) {
+        this.totalPrice += orderItem.getPrice();
         this.getOrderItems().add(orderItem);
     }
 
@@ -135,10 +138,6 @@ public class Order {
     }
 
     public double getTotalPrice() {
-        double totalPrice = 0;
-        for (OrderItem item : orderItems) {
-            totalPrice += item.getPrice();
-        }
         return totalPrice;
     }
 }
