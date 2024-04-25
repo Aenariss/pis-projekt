@@ -27,6 +27,8 @@ public class ProductDescription extends Request {
     private double price;
     @NotNull
     private String name;
+    @Lob
+    @Column
     private String description;
     @NotNull
     private String ISBN;
