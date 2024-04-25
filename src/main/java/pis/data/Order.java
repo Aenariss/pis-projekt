@@ -43,6 +43,10 @@ public class Order {
     @JoinColumn(name = "order_id")
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    @OneToMany
+    @JoinColumn(name = "modifications_id")
+    private List<Modification> modifications = new ArrayList<>();
+
     public Order() {
         this.creationDate = LocalDateTime.now();
     }
@@ -116,6 +120,18 @@ public class Order {
 
     public void addOrderItem(OrderItem orderItem) {
         this.getOrderItems().add(orderItem);
+    }
+
+    public List<Modification> getModifications() {
+        return this.modifications;
+    }
+
+    public void setModifications(List<Modification> modifications) {
+        this.modifications = modifications;
+    }
+
+    public void addModification(Modification modification) {
+        this.getModifications().add(modification);
     }
 
     public double getTotalPrice() {
