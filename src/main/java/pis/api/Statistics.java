@@ -157,7 +157,7 @@ public class Statistics {
          * However, this will do for our purposes
          */
 
-        return Response.status(Response.Status.OK).entity(resp).build();
+        return Response.status(Response.Status.OK).entity(dto).build();
     }
 
     /**
