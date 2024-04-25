@@ -1,33 +1,23 @@
 /**
  * PIS Projekt 2024
- * StatisticsResponse.java
+ * StatisticsCategoriesInTime.java
  * @author Vojtech Fiala <xfiala61>
 */
 
 package pis.api.dto;
 
-import java.sql.Date;
-
 /* Class for response which is returned in statistics */
-public class StatisticsResponse {
-    private Date date;
+public class StatisticsItemsInTime {
+    private String name;
     private Long occurence;
 
     
-    public StatisticsResponse(Date date, Long occurence) {
-        this.date = date;
+    public StatisticsItemsInTime(String name, Long occurence) {
+        this.name = name;
         this.occurence = occurence;
     }
 
-    public StatisticsResponse() {}
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
+    public StatisticsItemsInTime() {}
 
     public Long getOccurence() {
         return occurence;
@@ -35,6 +25,14 @@ public class StatisticsResponse {
 
     public void setOccurence(Long occurence) {
         this.occurence = occurence;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
  
