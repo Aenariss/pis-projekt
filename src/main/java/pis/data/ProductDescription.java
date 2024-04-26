@@ -53,6 +53,8 @@ public class ProductDescription extends Request {
     @JoinColumn(name = "discount_id")
     private Discount discount;
 
+    private List<ProductDescriptionEvidence> productDescriptionEvidences;
+
     public ProductDescription() {
     }
 
@@ -87,6 +89,21 @@ public class ProductDescription extends Request {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public List<ProductDescriptionEvidence> getProductDescriptionEvidences() {
+        return productDescriptionEvidences;
+    }
+
+    public void setProductDescriptionEvidences(List<ProductDescriptionEvidence> productDescriptionEvidences) {
+        this.productDescriptionEvidences = productDescriptionEvidences;
+    }
+
+    public void addProductDescriptionEvidence(ProductDescriptionEvidence productDescriptionEvidence) {
+        this.productDescriptionEvidences.add(productDescriptionEvidence);
+    }
+    public void addProductDescriptionEvidences(List<ProductDescriptionEvidence> productDescriptionEvidences) {
+        this.productDescriptionEvidences.addAll(productDescriptionEvidences);
     }
 
     public String getName() {
