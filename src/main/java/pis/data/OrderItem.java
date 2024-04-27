@@ -6,6 +6,8 @@
 
 package pis.data;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -26,16 +28,24 @@ public class OrderItem {
     @NotNull
     private double pricePerPiece;
 
-    @OneToOne
-    @JoinColumn(name = "productDescription_id")
-    private ProductDescription productDescription;
+    // Product description fields (for when the product is no longer available in the system)
+    private String image;
+    private String productName;
+    private String authorFirstName;
+    private String authorLastName;
+    private List<Category> categories;
+
 
     public OrderItem() {
     }
 
     public OrderItem(Integer quantity, ProductDescription productDescription) {
         this.quantity = quantity;
-        this.productDescription = productDescription;
+        this.image = productDescription.getImage();
+        this.productName = productDescription.getName();
+        this.authorFirstName = productDescription.getAuthor() != null ? productDescription.getAuthor().getFirstName() : null;
+        this.authorLastName = productDescription.getAuthor() != null ? productDescription.getAuthor().getLastName() : null;
+        this.categories = productDescription.getCategories();
         this.pricePerPiece = productDescription.getCurrentPrice();
     }
 
@@ -66,11 +76,56 @@ public class OrderItem {
         this.id = id;
     }
 
-    public ProductDescription getProductDescription() {
-        return productDescription;
+    public String getImage() {
+        return image;
     }
 
-    public void setProductDescription(ProductDescription productDescription) {
-        this.productDescription = productDescription;
+    public void setImage(String image) {
+        this.image = image;
     }
+
+    public String getName() {
+        return productName;
+    }
+
+    public void setName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getFirstName() {
+        return authorFirstName;
+    }
+
+    public void setFirstName(String authorFirstName) {
+        this.authorFirstName = authorFirstName;
+    }
+
+    public String getLastName() {
+        return authorLastName;
+    }
+
+    public void setLastName(String authorLastName) {
+        this.authorLastName = authorLastName;
+    }
+    
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    public void addCategory(Category category) {
+        this.categories.add(category);
+    }
+
+    public void removeCategory(Category category) {
+        this.categories.remove(category);
+    }
+
+    public void clearCategories() {
+        this.categories.clear();
+    }
+
 }

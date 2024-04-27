@@ -11,12 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pis.data.ProductDescription;
+import pis.data.ProductDescriptionEvidence;
 import pis.data.Category;
 import pis.api.dto.FilterQuery;
 import pis.api.dto.SearchQuery;
 import pis.data.BookAuthor;
 import pis.data.Language;
 import pis.data.Discount;
+import pis.data.RegisteredUser;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -27,7 +29,9 @@ import pis.service.CategoryManager;
 import pis.service.BookAuthorManager;
 import pis.service.LanguageManager;
 import pis.service.DiscountManager;
+import pis.service.RegisteredUserManager;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
 
 /**
  * REST API resource for working with ProductDescriptions.
@@ -47,6 +51,10 @@ public class ProductDescriptionResource {
     private LanguageManager languageManager;
     @Inject
     private DiscountManager discountManager;
+    @Inject
+    private SecurityContext securityContext;
+    @Inject
+    private RegisteredUserManager registeredUserManager;
 
     /**
      * Returns list of all ProductDescriptions.
@@ -203,6 +211,16 @@ public class ProductDescriptionResource {
         toUpdate.setISBN(productDescription.getISBN());
         toUpdate.setPages(productDescription.getPages());
         toUpdate.setImage(productDescription.getImage());
+
+        // TOTO PROSTE NEJDE
+        String userEmail = securityContext.getUserPrincipal().getName();
+        RegisteredUser user = registeredUserManager.findByEmail(userEmail);
+        String message = "Name changed";
+        ProductDescriptionEvidence quantityEvidence = new ProductDescriptionEvidence(user, message);
+        System.out.println(quantityEvidence.getFirstName() + quantityEvidence.getLastName());
+        toUpdate.addProductDescriptionEvidence(quantityEvidence);
+        //
+
         productDescriptionManager.save(toUpdate);
         return Response.ok().entity(toUpdate).build();
     }
@@ -262,6 +280,11 @@ public class ProductDescriptionResource {
             discountToAdd.setDiscount(discount);
             discountManager.save(discountToAdd);
         }
+        String userEmail = securityContext.getUserPrincipal().getName();
+        RegisteredUser user = registeredUserManager.findByEmail(userEmail);
+        String message = "Discount updated to " + discount + "%.";
+        ProductDescriptionEvidence discountEvidence = new ProductDescriptionEvidence(user, message);
+        productDescription.addProductDescriptionEvidence(discountEvidence);
         productDescription.setDiscount(discountToAdd);
         productDescriptionManager.save(productDescription);
         return Response.ok().entity(productDescription).build();
@@ -302,6 +325,11 @@ public class ProductDescriptionResource {
                     .build();
         }
         productDescription.setAvailableQuantity(amount);
+        String userEmail = securityContext.getUserPrincipal().getName();
+        RegisteredUser user = registeredUserManager.findByEmail(userEmail);
+        String message = "Quantity updated to " + amount + ".";
+        ProductDescriptionEvidence quantityEvidence = new ProductDescriptionEvidence(user, message);
+        productDescription.addProductDescriptionEvidence(quantityEvidence);
         productDescriptionManager.save(productDescription);
         return Response.ok().entity("Succesfully updated quantity of given Product Description ID").build();
     }
