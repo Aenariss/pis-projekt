@@ -94,6 +94,25 @@ public class OrderManager {
     }
 
     /**
+     * Find order containing category
+     * @param name of the category
+     * @return Order
+     */
+    public Order findByCategory(String name) {
+        Order orders = null;
+        try {
+            Query q = em.createQuery(
+                    "SELECT o FROM Order o JOIN o.orderItems oi JOIN oi.categories c WHERE c.name = :name");
+            q.setParameter("name", name);
+            q.setMaxResults(1);
+            return (Order) q.getSingleResult();
+        } catch (Exception e) {
+            System.out.println(e);
+            return orders;
+        }
+    }
+
+    /**
      * Add Order to db.
      * 
      * @param o Order to add.

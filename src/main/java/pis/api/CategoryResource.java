@@ -11,12 +11,14 @@ package pis.api;
 import java.util.List;
 
 import pis.data.Category;
+import pis.data.Order;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import pis.service.CategoryManager;
+import pis.service.OrderManager;
 import jakarta.ws.rs.core.Response;
 import pis.service.ProductDescriptionManager;
 import pis.data.ProductDescription;
@@ -29,6 +31,9 @@ import pis.data.ProductDescription;
 public class CategoryResource {
     @Inject
     private CategoryManager categoryManager;
+
+    @Inject
+    private OrderManager orderManager;
 
     @Inject
     private ProductDescriptionManager productDescriptionManager;
@@ -103,21 +108,21 @@ public class CategoryResource {
             // Category with given id does not exist, nothing to remove
             return Response.status(Response.Status.BAD_REQUEST).entity("Error: category doesnt exist").build();
         }
-        List<ProductDescription> products = productDescriptionManager.findAll();
 
-        for (ProductDescription pd : products) {
-            // ///////////////////////////////////////////////// error
-            if (pd.getCategories().contains(toDelete)) {
-                return Response.status(Response.Status.BAD_REQUEST).entity("Error: Category is used in a product")
+        ProductDescription p = productDescriptionManager.findByCategoryOne(toDelete.getName());
+
+        if (p != null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Error: Category is used in at least one product, for example " + p.getName())
                         .build();
-            }
-            // ///////////////////OR////////////////////////////// remove category from
-            // product
-            // pd.removeCategory(toDelete); // Assuming there is a method to remove the
-            // category from a product description
-            // productDescriptionManager.save(pd);
-            // /////////////////////////////////////////////////
         }
+
+        Order o = orderManager.findByCategory(toDelete.getName());
+
+        if (o != null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Error: Category is used in at least one order, can't delete anymore")
+                        .build();
+        }
+
         categoryManager.delete(toDelete);
         return Response.ok().entity("Succesfully removed the category").build();
     }
