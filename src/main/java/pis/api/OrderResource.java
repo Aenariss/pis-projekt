@@ -10,6 +10,7 @@ package pis.api;
 import java.util.LinkedList;
 import java.util.List;
 
+import pis.data.Modification;
 import pis.data.Order;
 import pis.data.OrderItem;
 import pis.data.OrderStatus;
@@ -20,6 +21,7 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import pis.api.dto.CreateOrderDTO;
 import pis.api.dto.CreateOrderItemDTO;
+import pis.api.dto.OrderDetailDTO;
 import pis.api.dto.OrderPreviewDTO;
 import pis.api.dto.UpdateOrderDTO;
 import jakarta.ws.rs.*;
@@ -72,6 +74,7 @@ public class OrderResource {
      * Returns list of all Orders of user found by email
      */
     @GET
+    @RolesAllowed({ "admin", "employee" })
     @Path("/byEmail/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<OrderPreviewDTO> getOrdersByEmail(@PathParam("email") String email) {
@@ -110,23 +113,16 @@ public class OrderResource {
     @GET
     @Path("/{id}")
     @Operation(summary = "Returns order", description = "Returns order specified by id")
-    @APIResponses(
-        value = {
-            @APIResponse(responseCode = "200", description = "Order was found.",
-                content = @Content(
-                    mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = Order.class)
-                )
-            ),
-            @APIResponse(responseCode = "404", description = "Order with given id was not found."
-            ),
-        }
-    )
+    @APIResponses(value = {
+            @APIResponse(responseCode = "200", description = "Order was found.", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Order.class))),
+            @APIResponse(responseCode = "404", description = "Order with given id was not found."),
+    })
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOrder(@PathParam("id") long id) {
         Order o = orderManager.find(id);
         if (o != null) {
-            return Response.ok().entity(o).build();
+            OrderDetailDTO oDTO = new OrderDetailDTO(o);
+            return Response.ok().entity(oDTO).build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }
@@ -199,11 +195,15 @@ public class OrderResource {
     @RolesAllowed({ "admin", "employee" })
     public Response updateOrderStatus(UpdateOrderDTO dto) {
         Order o = orderManager.find(dto.getId());
+        String userEmail = securityContext.getUserPrincipal().getName();
+        RegisteredUser user = registeredUserManager.findByEmail(userEmail);
         System.out.println(dto.getId());
+        System.out.println(user.getId());
         if (o == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Error: Order not found").build();
         }
         o.setStatus(dto.getStatus());
+        o.addModification(new Modification(user, dto.getStatus()));
         orderManager.save(o);
         return Response.ok().entity("Succesfully updated status for given order ID").build();
     }
