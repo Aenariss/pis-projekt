@@ -123,6 +123,26 @@ public class ProductDescriptionManager {
     }
 
     /**
+     * Returns first ProductDescriptions by category if it exists, otherwise null.
+     * 
+     * @param category category of the searched Product.
+     * @return ProductDescriptions
+     */
+    public ProductDescription findByCategoryOne(String category) {
+        ProductDescription products = null;
+        try {
+            Query q = em.createQuery(
+                    "SELECT p FROM ProductDescription p JOIN p.categories c WHERE lower(c.name) = lower( :category )");
+            q.setParameter("category", category);
+            q.setMaxResults(1);
+            return (ProductDescription) q.getSingleResult();
+        } catch (Exception e) {
+            System.out.println(e);
+            return products;
+        }
+    }
+
+    /**
      * Returns ProductDescriptions by discount if it exists, otherwise null.
      * 
      * @param discount discount of the searched Product.
