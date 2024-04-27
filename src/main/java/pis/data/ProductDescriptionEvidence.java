@@ -17,11 +17,7 @@ public class ProductDescriptionEvidence {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    // User who made the change
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String role;
+    private RegisteredUser registeredUser;
 
     private String changeDescription;
 
@@ -33,10 +29,7 @@ public class ProductDescriptionEvidence {
 
     public ProductDescriptionEvidence(RegisteredUser registeredUser, String changeDescription) {
         this();
-        this.firstName = registeredUser.getFirstname();
-        this.lastName = registeredUser.getSurname();
-        this.email = registeredUser.getEmail();
-        this.role = registeredUser.getRole();
+        this.registeredUser = registeredUser;
         this.changeDescription = changeDescription;
     }
 
@@ -46,38 +39,6 @@ public class ProductDescriptionEvidence {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public String getChangeDescription() {
@@ -94,5 +55,13 @@ public class ProductDescriptionEvidence {
 
     public void setModificationDate(LocalDateTime modificationDate) {
         this.modificationDate = modificationDate;
+    }
+
+    public RegisteredUser getRegisteredUser() {
+        return registeredUser;
+    }
+
+    public void setRegisteredUser(RegisteredUser registeredUser) {
+        this.registeredUser = registeredUser;
     }
 }
