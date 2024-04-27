@@ -4,7 +4,6 @@
  */
 
 import { Image, Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 
 /**
  * Component for showing ordered items in order detail.
@@ -26,29 +25,18 @@ export default function OrderedItems({items}) {
         </thead>
         <tbody>
           {items.map((item) => {
-            const book = item?.productDescription;
             return (
               <tr key={item.id}>
                 <td width='100px'>
-                  <Image src={book?.image}
+                  <Image src={item?.image}
                          style={{maxHeight: '80px', maxWidth: '80px'}}/>
                 </td>
                 <td className='w-50'>
                   <div style={{fontSize: '20px'}}>
-                    <Link as='a'
-                          role='button'
-                          className='link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover'
-                          to={`/book/${book.id}`}>
-                      {book?.name}
-                    </Link>
+                    {item?.name}
                   </div>
                   <div>
-                    <Link as='a'
-                          role='button'
-                          className='link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover'
-                          to={`/?authorIds=${book?.author?.id}`}>
-                      {book.author?.firstName} {book.author?.lastName}
-                    </Link>
+                    {item?.firstName} {item?.lastName}
                   </div>
                 </td>
                 <td style={{fontSize: '20px'}} >
