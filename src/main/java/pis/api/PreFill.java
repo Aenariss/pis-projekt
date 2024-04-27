@@ -39,6 +39,8 @@ public class PreFill {
     @Inject
     RegisteredUserManager registeredUserManager;
 
+    private static boolean alreadyUsed = false;
+
     @Inject
     CategoryManager categoryManager;
     @Inject
@@ -62,6 +64,14 @@ public class PreFill {
 
     @GET
     public Response prefillDB() {
+
+        if (PreFill.alreadyUsed) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("DB was already prefilled! Manually delete it to start over").build();
+        }
+        else {
+                PreFill.alreadyUsed = true;
+        }
+
         RegisteredUser admin = new RegisteredUser("Admin", "Admin","+420999111999","admin@admin.cz","admin",
                                                    "The Czech Republic", "Prague","Příčná","123/77","19361");
         admin.makeAdmin();
@@ -198,7 +208,7 @@ public class PreFill {
         othello = productDescriptionManager.save(othello);
         ProductDescription onenineeigthfour = new ProductDescription(30, "1984",
                         "1984 is a dystopian social science fiction novel by English novelist George Orwell. It was published on 8 June 1949 by Secker & Warburg as Orwell's ninth and final book completed in his lifetime.",
-                        "9780141396477", 400, georgeOrwell, List.of(scienceFiction), english, discount2,
+                        "9780141396478", 400, georgeOrwell, List.of(scienceFiction), english, discount2,
                         "https://www.slovart.cz/buxus/images/image_16865_19_v1.jpeg", 8);
         onenineeigthfour = productDescriptionManager.save(onenineeigthfour);
         ProductDescription greatExpectations = new ProductDescription(25, "Great Expectations",
