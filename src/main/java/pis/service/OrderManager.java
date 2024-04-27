@@ -141,9 +141,7 @@ public class OrderManager {
     public List<Object[]> categoriesSalesInRange(LocalDateTime from, LocalDateTime to) {
         List<Object[]> results = null;
         try {
-            // maybe after we improve the data per order
-            //Query query = em.createQuery("SELECT c.name AS category, COUNT(o) FROM Order o JOIN o.orderItems oi JOIN oi.categories c WHERE o.creationDate BETWEEN :from AND :to GROUP BY c.name");
-            Query query = em.createQuery("SELECT c.name, COUNT(o) FROM Order o JOIN o.orderItems oi JOIN oi.productDescription pd JOIN pd.categories c WHERE o.creationDate BETWEEN :from AND :to GROUP BY c.name");
+            Query query = em.createQuery("SELECT c.name, COUNT(o) FROM Order o JOIN o.orderItems oi JOIN oi.categories c WHERE o.creationDate BETWEEN :from AND :to GROUP BY c.name");
             query.setParameter("from", from);
             query.setParameter("to", to);
             return (List<Object[]>) query.getResultList();
@@ -154,7 +152,7 @@ public class OrderManager {
     }
 
     /**
-     * Return the number of order per category made between dates
+     * Return the amount of the top 20 items sold
      * 
      * @param from from Beginning of the range (including)
      * @param to from End of the range (including)
@@ -164,9 +162,7 @@ public class OrderManager {
     public List<Object[]> itemSalesInRange(LocalDateTime from, LocalDateTime to) {
         List<Object[]> results = null;
         try {
-            // maybe after we improve the data per order
-            //Query query = em.createQuery("SELECT oi.name, COUNT(o) FROM Order o JOIN o.orderItems oi JOIN WHERE o.creationDate BETWEEN :from AND :to GROUP BY c.name");
-            Query query = em.createQuery("SELECT pd.name, COUNT(o) FROM Order o JOIN o.orderItems oi JOIN oi.productDescription pd WHERE o.creationDate BETWEEN :from AND :to GROUP BY pd.name");
+            Query query = em.createQuery("SELECT oi.productName, COUNT(o) FROM Order o JOIN o.orderItems oi WHERE o.creationDate BETWEEN :from AND :to GROUP BY oi.productName");
             query.setParameter("from", from);
             query.setParameter("to", to);
             query.setMaxResults(20); // Limit the results to the top 20 books
@@ -188,8 +184,6 @@ public class OrderManager {
     public List<Object[]> earningsInRange(LocalDateTime from, LocalDateTime to) {
         List<Object[]> results = null;
         try {
-            // maybe after we improve the data per order
-            //Query query = em.createQuery("SELECT oi.name, COUNT(o) FROM Order o JOIN o.orderItems oi JOIN WHERE o.creationDate BETWEEN :from AND :to GROUP BY c.name");
             Query query = em.createQuery("SELECT FUNCTION('DATE', o.creationDate), SUM(o.totalPrice) FROM Order o WHERE o.creationDate BETWEEN :from AND :to GROUP BY FUNCTION('DATE', o.creationDate)");
             query.setParameter("from", from);
             query.setParameter("to", to);
