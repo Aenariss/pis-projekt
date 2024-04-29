@@ -31,10 +31,25 @@ function DiscountInput({bookDiscount, productId, onDiscountChange}) {
     }, [bookDiscount]);
 
     /**
-     * Function for handling the change of the discount value
+     * Function for handling the change of the discount value - just to see price after discount in real-time
      * @param event - event of the input field
      */
     const handleChange = (event) => {
+        const value = event.target.value;
+        // Range from 0 to 100
+        if (value >= 0 && value <= 100) {
+            setDiscount(value); // Update the state
+            // Calculate the new price and update the ref
+            initialDiscount.current = value * initialDiscount.current;
+            onDiscountChange(value); // Call the callback function
+        }
+    };
+
+    /**
+     * Function for handling the blur of the discount value (when the input field loses focus)
+     * @param event - event of the input field
+     */
+    const handleBlur = (event) => {
         const value = event.target.value;
         // Range from 0 to 100
         if (value >= 0 && value <= 100) {
@@ -43,7 +58,7 @@ function DiscountInput({bookDiscount, productId, onDiscountChange}) {
             initialDiscount.current = value; // Update the ref
             onDiscountChange(value); // Call the callback function
         }
-    };
+    }
 
     /**
      * Function for updating the discount of the product using the REST API
@@ -57,7 +72,9 @@ function DiscountInput({bookDiscount, productId, onDiscountChange}) {
                     console.log("Discount updated");
                 }
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+                alert(error.response.data); // Display error message
+            });
     }
 
     return (
@@ -69,6 +86,7 @@ function DiscountInput({bookDiscount, productId, onDiscountChange}) {
                 step="10"
                 style={{width: "50px"}}
                 value={discount}
+                onBlur={handleBlur}
                 onChange={handleChange}
             />
             <span style={{marginLeft: "5px"}}>%</span>

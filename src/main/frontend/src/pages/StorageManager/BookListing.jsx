@@ -8,6 +8,7 @@ import {Button, Table} from "react-bootstrap";
 import DiscountInput from "./DiscountInput";
 import {AuthContext} from "../../context/AuthContext";
 import { Link } from 'react-router-dom';
+import StockInput from "./StockInput";
 
 /**
  * List of books for admin/employee to manage storage of books
@@ -77,16 +78,20 @@ export default function BookListing({books, handleEditClick, handleDeleteClick, 
                             }
                         </div>
                     </td>
-                    {/*TODO: Add stock to the book model*/}
                     {isAdmin &&
-                    <td style={{width: "6%"}}>
-                        <DiscountInput
-                            bookDiscount={book.discount?.discount}
+                        <td style={{width: "6%"}}>
+                            <DiscountInput
+                                bookDiscount={book.discount?.discount}
+                                productId={book.id}
+                                onDiscountChange={(newDiscount) => updateBookDiscount(book.id, newDiscount)}
+                            />
+                        </td>}
+                    <td>
+                        <StockInput
+                            bookStock={book.availableQuantity}
                             productId={book.id}
-                            onDiscountChange={(newDiscount) => updateBookDiscount(book.id, newDiscount)}
                         />
-                    </td>}
-                    <td>{book.stock}</td>
+                    </td>
                     {isAdmin &&
                     <td style={{width: "4%"}}>
                         <Button onClick={() => handleEditClick(book)}>Edit</Button>

@@ -62,9 +62,9 @@ export default function BookForm({showModal, setShowModal, bookToEdit, getBooks,
     const [name, setName] = useState('');
     const [author, setAuthor] = useState({firstName: '', lastName: ''});
     const [description, setDescription] = useState('');
-    const [price, setPrice] = useState('');
+    const [price, setPrice] = useState('0');
     const [ISBN, setISBN] = useState('');
-    const [pages, setPages] = useState('');
+    const [pages, setPages] = useState('0');
     const [image, setImage] = useState('');
 
     const [allCategories, setAllCategories] = useState([]); // All available categories
@@ -209,8 +209,6 @@ export default function BookForm({showModal, setShowModal, bookToEdit, getBooks,
             image
         };
 
-        // TODO add more validation for the form fields
-
         // Check if book with this ISBN already exists
         if (books.some(b => b.ISBN.toLowerCase() === ISBN.toLowerCase() && (!bookToEdit || b.id !== bookToEdit.id))) {
             setErrorMessage('Book with this ISBN already exists.');
@@ -230,9 +228,9 @@ export default function BookForm({showModal, setShowModal, bookToEdit, getBooks,
         setDescription('');
         setName('');
         setAuthor({firstName: '', lastName: ''});
-        setPrice('');
+        setPrice('0');
         setISBN('');
-        setPages('');
+        setPages('0');
         setLanguage(defaultLanguageId); // Reset the language to the default language
         setSelectedCategories([]);
         setImage('');
@@ -266,13 +264,12 @@ export default function BookForm({showModal, setShowModal, bookToEdit, getBooks,
                     </Row>
                     <Form.Group className="mb-3">
                         <Form.Label>Description</Form.Label>
-                        <Form.Control as="textarea" value={description} onChange={e => setDescription(e.target.value)}
-                                      required/>
+                        <Form.Control as="textarea" value={description} onChange={e => setDescription(e.target.value)} />
                     </Form.Group>
                     <Row>
                         <Form.Group as={Col} className="mb-3">
                             <Form.Label>Price ($)</Form.Label>
-                            <Form.Control type="number" value={price} onChange={e => setPrice(e.target.value)} required/>
+                            <Form.Control type="number" value={price} onChange={e => setPrice(e.target.value)} min={0} required/>
                         </Form.Group>
                         <Form.Group as={Col} className="mb-3">
                             <Form.Label>ISBN</Form.Label>
@@ -303,7 +300,7 @@ export default function BookForm({showModal, setShowModal, bookToEdit, getBooks,
                     <Row>
                         <Form.Group as={Col} className="mb-3">
                             <Form.Label>Pages</Form.Label>
-                            <Form.Control type="number" value={pages} onChange={e => setPages(e.target.value)} required/>
+                            <Form.Control type="number" value={pages} onChange={e => setPages(e.target.value)} min={0} required/>
                         </Form.Group>
                         <Form.Group as={Col} className="mb-3">
                             <Form.Label>Language</Form.Label>

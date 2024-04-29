@@ -91,6 +91,10 @@ public class LanguageResource {
             // Language with given id does not exist
             return Response.status(Response.Status.BAD_REQUEST).entity("Error: Language does not exist").build();
         }
+        // Language with given name already exists
+        if (languageManager.findLanguage(language.getLanguage()) != null) {
+            return Response.status(Response.Status.CONFLICT).entity("Error: Language already exists").build();
+        }
         toUpdate.setLanguage(language.getLanguage());
         languageManager.save(toUpdate);
         return Response.ok().entity(toUpdate).build();
