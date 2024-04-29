@@ -8,6 +8,9 @@
 package pis.api;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import pis.data.ProductDescription;
@@ -112,6 +115,16 @@ public class ProductDescriptionResource {
         if (productDescription != null) {
             List<ProductDescriptionEvidence> productDescriptionEvidences = productDescription
                     .getProductDescriptionEvidences();
+
+            // sort https://stackoverflow.com/questions/18895915/how-to-sort-an-array-of-objects-in-java
+            Collections.sort(productDescriptionEvidences, new Comparator<ProductDescriptionEvidence>() {
+
+            public int compare(ProductDescriptionEvidence p1, ProductDescriptionEvidence p2)
+            {
+                return Long.compare(p1.getId(), p2.getId());
+            }
+            });
+
             List<ProductDescriptionEvidenceDTO> productDescriptionEvidenceDTOs = new ArrayList<>();
             for (ProductDescriptionEvidence productDescriptionEvidence : productDescriptionEvidences) {
                 ProductDescriptionEvidenceDTO productDescriptionEvidenceDTO = new ProductDescriptionEvidenceDTO(
