@@ -15,7 +15,7 @@ import CategoryForm from "./CategoryForm";
 /**
  * Component for the Category Manager page.
  * @returns {JSX.Element} - Category Manager page
- * @constructor - CategoryManager
+ * @constructor CategoryManager
  */
 export default function CategoryManager() {
     const [showModal, setShowModal] = useState(false);

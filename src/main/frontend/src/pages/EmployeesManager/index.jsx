@@ -120,6 +120,12 @@ export default function ManageEmployees() {
                     ))}
                     </tbody>
                 </Table>
+
+                {users.length === 0 &&
+                    <div className='display-5 text-center text-muted mt-5'>
+                        Use search to find the user!
+                    </div>
+                }
             </div>
         </div>
     );

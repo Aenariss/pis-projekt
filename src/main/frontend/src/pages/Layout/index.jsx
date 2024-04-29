@@ -35,6 +35,8 @@ export default function Layout() {
               <>
                 <Nav.Link as={Link} to="/category-manager"
                           active={location.pathname === "/category-manager"}>Categories</Nav.Link>
+                <Nav.Link as={Link} to="/language-manager"
+                            active={location.pathname === "/language-manager"}>Languages</Nav.Link>
                 <Nav.Link as={Link} to="/employees-manager"
                           active={location.pathname === "/employees-manager"}>Employees</Nav.Link>
                 <Nav.Link as={Link} to="/orders-manager"

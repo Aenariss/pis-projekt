@@ -36,8 +36,6 @@ export default function StorageNavbarComponent({books, getBooks, bookToEdit, set
         navigate({pathname: '/storage-manager', search: `?${new URLSearchParams({query: input})}`}); // Add query to URL
     };
 
-    // TODO maybe add checkbox for filtering books with discount
-
     return (
         <Navbar bg="light" expand="lg">
             <Container>

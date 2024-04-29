@@ -11,7 +11,7 @@ import {Button, Table} from "react-bootstrap";
  * @param deleteCategory - function for deleting a category
  * @param editCategory - function for editing a category
  * @returns {JSX.Element} - table with categories
- * @constructor - CategoryList
+ * @constructor CategoryList
  */
 export default function CategoryList({categories, deleteCategory, editCategory}) {
     return (
