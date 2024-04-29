@@ -17,7 +17,7 @@ import BookListing from "./BookListing";
  */
 export default function BooksPage() {
   const [products, setProducts] = useState(null);
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     // Searching for books?
@@ -26,30 +26,24 @@ export default function BooksPage() {
     const categoryIds = searchParams.getAll('categoryIds');
     const authorIds = searchParams.getAll('authorIds');
     const languageIds = searchParams.getAll('languageIds');
+    const priceFrom = searchParams.get('priceFrom');
+    const priceTo = searchParams.get('priceTo');
     if (query && query !== '') {
       // User is searching for book.
       api.post('/productdescription/search', {query})
         .then(response => {
           if (response.status === 200) {
-            const result = response.data;
-            // Removing duplicit - search can return multiple amount of the same item
-            const ids = [];
-            const productsCleaned = [];
-            result.forEach(book => {
-              if (!ids.includes(book.id)) {
-                productsCleaned.push(book);
-                ids.push(book.id);
-              }
-            })
-            setProducts(productsCleaned);
+            setProducts(response.data);
           }
         })
-    } else if (categoryIds.length > 0 || languageIds.length > 0 || authorIds.length > 0) {
+    } else if (categoryIds.length > 0 || languageIds.length > 0 || authorIds.length > 0
+               || priceFrom || priceTo ) {
       let body = {};
       if (categoryIds.length > 0) body.categoryIds = categoryIds;
       if (authorIds.length > 0) body.authorIds = authorIds;
       if (languageIds.length > 0) body.languageIds = languageIds;
-
+      if (priceFrom) body.priceFrom = Number(priceFrom);
+      if (priceTo) body.priceTo = Number(priceTo);
       // User is filtering by category
       api.post('/productdescription/filter', body)
         .then(response => {

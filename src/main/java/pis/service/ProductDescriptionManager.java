@@ -323,9 +323,9 @@ public class ProductDescriptionManager {
             products.removeIf(p -> p.getLanguage() == null);
             products.removeIf(p -> !data.languageIds.contains(p.getLanguage().getId()));
         }
-        // Filter products by price, pages and discount
+        // Filter products by current price, pages and discount
         if (products != null) {
-            products.removeIf(p -> p.getPrice() < data.priceFrom || p.getPrice() > data.priceTo);
+            products.removeIf(p -> p.getCurrentPrice() < data.priceFrom || p.getCurrentPrice() > data.priceTo);
         }
         if (products != null) {
             products.removeIf(p -> p.getPages() < data.pagesFrom || p.getPages() > data.pagesTo);

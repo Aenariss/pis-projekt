@@ -213,7 +213,7 @@ public class PreFill {
         onenineeigthfour = productDescriptionManager.save(onenineeigthfour);
         ProductDescription greatExpectations = new ProductDescription(25, "Great Expectations",
                         "Great Expectations is the thirteenth novel by Charles Dickens and his penultimate completed novel, which depicts the education of an orphan nicknamed Pip.",
-                        "9780141439563", 400, charlesDickens, List.of(drama), english, discount3,
+                        "9780141439123", 400, charlesDickens, List.of(drama), english, discount3,
                         "https://m.media-amazon.com/images/M/MV5BYTRkYjAyNmEtMzdjMC00MjRhLWJkYjItNTU5OWNlNjc4ODk3XkEyXkFqcGdeQXVyMzA5NjkwNDM@._V1_.jpg",
                         5);
         greatExpectations = productDescriptionManager.save(greatExpectations);

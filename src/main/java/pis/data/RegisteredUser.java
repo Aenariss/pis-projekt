@@ -124,6 +124,10 @@ public class RegisteredUser {
         this.role = "admin";
     }
 
+    public boolean isAdmin() {
+        return this.role.equals("admin");
+    }
+
     /**
      * Password validation
      * @param password The user's password

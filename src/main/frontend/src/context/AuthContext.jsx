@@ -2,7 +2,7 @@
  * Context for containing info about user.
  * @author Lukas Petr
  */
-import {createContext, useState} from 'react';
+import {createContext, useCallback, useState} from 'react';
 import {api} from "../api";
 
 export const AuthContext = createContext(null);
@@ -49,8 +49,9 @@ export default function AuthProvider({ children }) {
 
   /**
    * Tries to renew JWT token, must be called before the JWT token expires.
+   * @param errorHandler Called when the renewal was unsuccessful.
    */
-  function renewToken() {
+  const renewToken = useCallback((errorHandler) => {
     api.post('/renewToken', {email: user.email})
       .then(response => {
         if (response.status === 200) {
@@ -62,8 +63,10 @@ export default function AuthProvider({ children }) {
         }
       })
       // Catching errors
-      .catch(() => {});
-  }
+      .catch(() => {
+        errorHandler();
+      });
+  },[user]);
 
   /**
    * Sets that user is logged out.

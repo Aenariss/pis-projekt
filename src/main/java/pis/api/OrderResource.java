@@ -7,6 +7,7 @@
 
 package pis.api;
 
+import java.security.Principal;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -122,6 +123,18 @@ public class OrderResource {
         Order o = orderManager.find(id);
         if (o != null) {
             OrderDetailDTO oDTO = new OrderDetailDTO(o);
+            // Check who is accessing the data, if it is admin or not,
+            boolean isAdmin = false;
+            Principal principal = securityContext.getUserPrincipal();
+            if (principal != null) {
+                RegisteredUser user = registeredUserManager.findByEmail(principal.getName());
+                isAdmin = user.isAdmin();
+            }
+            // If it is not accessing admin then hide/remove the information
+            // about who did the modifications
+            if (! isAdmin) {
+                oDTO.censorModificationsAuthor();
+            }
             return Response.ok().entity(oDTO).build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();

@@ -11,6 +11,8 @@ import Password from './Password';
 import Email from './Email';
 import Name from './Name';
 import Phone from './Phone';
+import { AuthContext } from '../../context/AuthContext';
+import { useContext } from 'react';
 
 /**
  @param props.title Title of the form.
@@ -41,6 +43,12 @@ export default function UserForm({
   onSubmit,
   userId,
 }) {
+  // Check if admin is not editing himself
+  // in edit page to block editing his email
+  const {user} = useContext(AuthContext);
+  const editingSelf = useMemo(() => (
+    user?.email === defaultValues?.email
+  ), [defaultValues, user]);
   // User info
   const [firstname, setFirstname] = useState(defaultValues.firstname);
   const [surname, setSurname] = useState(defaultValues.surname);
@@ -109,7 +117,7 @@ export default function UserForm({
                          onChange={setEmail}
                          invalid={invalidEmail}
                          onInvalid={setInvalidEmail}
-                         disabled={type === 'profile'}/>
+                         disabled={type === 'profile' || editingSelf}/>
                 </Row>
                 {type === 'register' && (
                   <Row>
@@ -132,7 +140,7 @@ export default function UserForm({
                   <Phone phone={phone}
                          onChange={setPhone} />
                 </Row>
-                {type !== 'create' && (
+                {type !== 'register' && (
                   <ChangePassword userId={userId}/>
                 )}
               </Stack>

@@ -18,6 +18,7 @@ public class ProductDetailDTO {
 
     private long id;
     private double price;
+    private double currentPrice;
     private String name;
     private String description;
     private String ISBN;
@@ -46,6 +47,7 @@ public class ProductDetailDTO {
         this.categories = productDescription.getCategories();
         this.language = productDescription.getLanguage();
         this.discount = productDescription.getDiscount();
+        this.currentPrice = productDescription.getCurrentPrice();
     }
 
     public long getId() {
@@ -94,5 +96,9 @@ public class ProductDetailDTO {
 
     public Discount getDiscount() {
         return discount;
+    }
+
+    public double getCurrentPrice() {
+        return currentPrice;
     }
 }
