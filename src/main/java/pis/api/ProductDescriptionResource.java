@@ -208,6 +208,12 @@ public class ProductDescriptionResource {
     @RolesAllowed({ "admin" })
     public Response updateProductDescription(@PathParam("id") long id, ProductDescription productDescription) {
 
+
+        if (productDescription.getName().length() < 2) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Product Description needs a valid name!")
+                    .build();
+        }
+        
         ProductDescription toUpdate = productDescriptionManager.find(id);
         String userEmail = securityContext.getUserPrincipal().getName();
         RegisteredUser user = registeredUserManager.findByEmail(userEmail);
