@@ -132,7 +132,7 @@ export default function UserForm({
                   <Phone phone={phone}
                          onChange={setPhone} />
                 </Row>
-                {type !== 'create' && (
+                {type !== 'register' && (
                   <ChangePassword userId={userId}/>
                 )}
               </Stack>
