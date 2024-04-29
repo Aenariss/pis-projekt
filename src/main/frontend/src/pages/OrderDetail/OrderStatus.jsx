@@ -14,17 +14,18 @@ import { MessageContext } from '../../context/MessageContext';
  * Component for showing status of order
  * and for employees / admin it enables to change the status.
  * @param props.order Order.
- * @param {Function} updateStatus Function which will update status of the order.
+ * @param {Function} onRefresh Callback to handle refreshing the page if something changes.
  * @component
  */
-export default function OrderStatus({order, updateStatus}) {
+export default function OrderStatus({order, onRefresh}) {
   const {user} = useContext(AuthContext);
   const {setMessage} = useContext(MessageContext);
 
   const changeStatus = useCallback((status) => {
     api.put('/order/update', { status, id: order.id })
       .then(() => {
-        updateStatus(status);
+        // Refreshing the whole page so the modification table contains current data
+        onRefresh();
       })
       .catch(() => {
         setMessage({
@@ -32,7 +33,8 @@ export default function OrderStatus({order, updateStatus}) {
           variant: 'danger',
         });
       })
-  }, [order.id, updateStatus, setMessage]);
+  }, [order.id, onRefresh, setMessage]);
+
 
   if (['admin', 'employee'].includes(user?.role)) {
     // if admin or employee is logged in then he can update the status of the order
@@ -49,6 +51,7 @@ export default function OrderStatus({order, updateStatus}) {
               <Dropdown.Item onClick={() => changeStatus('CANCELED')}>{orderStateToString('CANCELED')}</Dropdown.Item>
             </StatusSelector>
           </InputGroup>
+          <LastChanged modifications={order?.modifications} />
         </h3>
       </div>
     );
@@ -57,6 +60,7 @@ export default function OrderStatus({order, updateStatus}) {
     <div className='my-3'>
       <h3>
         Status: {orderStateToString(order.status)}
+        <LastChanged modifications={order?.modifications} />
       </h3>
     </div>
   );
@@ -101,4 +105,19 @@ function expectedNextStatus(status) {
     case 'SHIPPED': return 'DELIVERED';
     default: return null;
   }
+}
+
+/**
+ * Component for showing when the status was last changed.
+ * @param props.modifications List of modifications.
+ */
+function LastChanged({modifications}) {
+  if (modifications?.length > 0) {
+    return (
+        <span className='text-muted ms-2' style={{fontSize: '15px'}}>
+          (Last changed: {modifications[0]?.modificationDate?.toLocaleString()})
+        </span>
+    );
+  }
+  return null;
 }
