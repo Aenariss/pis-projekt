@@ -114,4 +114,16 @@ public class OrderDetailDTO {
         this.modifications = modifications;
     }
 
+    /**
+     * Remove modification author from records.
+     */
+    public void censorModificationsAuthor() {
+        for (ModificationDTO mod : modifications) {
+            mod.setEmail("");
+            mod.setFirstname("");
+            mod.setSurname("");
+            mod.setUserId(0);
+        }
+    }
+
 }
