@@ -223,16 +223,18 @@ public class ProductDescriptionResource {
         if (productDescription.getAuthor() != null) {
             BookAuthor author = bookAuthorManager.find(productDescription.getAuthor().getId());
             if (author != null) {
+
+                if (!productDescription.getAuthor().getFirstName().equals(toUpdate.getAuthor().getFirstName()) || !productDescription.getAuthor().getLastName().equals(toUpdate.getAuthor().getLastName())) {
+
+                    didSomethingChange = true;
+                }
+
                 // Update the author with new values
                 author.setFirstName(productDescription.getAuthor().getFirstName());
                 author.setLastName(productDescription.getAuthor().getLastName());
 
                 // Save the updated author
                 bookAuthorManager.save(author);
-
-                if (productDescription.getAuthor().getId() != toUpdate.getAuthor().getId()) {
-                    didSomethingChange = true;
-                }
 
                 // Set the updated author to toUpdate
                 toUpdate.setAuthor(author);
