@@ -27,7 +27,7 @@ export default function BookInfo({
             {product?.author?.firstName} {product?.author?.lastName}
           </Link>
         </p>
-        <p>{product.description}</p>
+        <p>{product?.description}</p>
         <Table className="mt-5">
           <tbody>
           <tr>
