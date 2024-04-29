@@ -10,6 +10,7 @@ import {
 import Container from "react-bootstrap/Container";
 import {api} from "../../api";
 import BookInfo from "./BookInfo";
+import BookEditHistory from "./BookEditHistory";
 
 /**
  * Page with book detail.
@@ -40,6 +41,7 @@ export default function BookDetailPage() {
     <Container>
       <h1>{product.name}</h1>
       <BookInfo product={product} bookId={bookId}/>
+      <BookEditHistory bookId={bookId} />
     </Container>
   );
 }
