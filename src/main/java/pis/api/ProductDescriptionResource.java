@@ -102,6 +102,12 @@ public class ProductDescriptionResource {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({ "admin", "employee" })
     public List<ProductDescriptionEvidenceDTO> getProductDescriptionEvidences(@PathParam("id") long id) {
+        /*
+        List<ProductDescription> all = productDescriptionManager.findAll();
+        for (ProductDescription p : all) {
+            System.out.println(p.getId());
+        }
+        */
         ProductDescription productDescription = productDescriptionManager.find(id);
         if (productDescription != null) {
             List<ProductDescriptionEvidence> productDescriptionEvidences = productDescription
@@ -211,6 +217,8 @@ public class ProductDescriptionResource {
                     .build();
         }
 
+        Boolean didSomethingChange = false;
+
         // Update author
         if (productDescription.getAuthor() != null) {
             BookAuthor author = bookAuthorManager.find(productDescription.getAuthor().getId());
@@ -223,9 +231,7 @@ public class ProductDescriptionResource {
                 bookAuthorManager.save(author);
 
                 if (productDescription.getAuthor().getId() != toUpdate.getAuthor().getId()) {
-                    String message = "Author updated to " + author.getFirstName() + " " + author.getLastName() + ".";
-                    ProductDescriptionEvidence quantityEvidence = new ProductDescriptionEvidence(user, message);
-                    toUpdate.addProductDescriptionEvidence(quantityEvidence);
+                    didSomethingChange = true;
                 }
 
                 // Set the updated author to toUpdate
@@ -237,45 +243,20 @@ public class ProductDescriptionResource {
         if (productDescription.getLanguage() != null) {
             Language language = languageManager.find(productDescription.getLanguage().getId());
             if (language != null) {
-                System.out.println(productDescription.getLanguage().getId());
-                System.out.println(toUpdate.getLanguage().getId());
                 if (productDescription.getLanguage().getId() != toUpdate.getLanguage().getId()) {
-                    String message = "Language updated to " + language.getLanguage() + ".";
-                    ProductDescriptionEvidence quantityEvidence = new ProductDescriptionEvidence(user, message);
-                    toUpdate.addProductDescriptionEvidence(quantityEvidence);
+                    didSomethingChange = true;
                 }
                 toUpdate.setLanguage(language);
             }
         }
 
-        // Update categories
-        if (productDescription.getCategories() != null) {
-            List<Category> pcategories = new ArrayList<>();
-            pcategories = productDescription.getCategories();
-            List<Category> tcategories = new ArrayList<>();
-            tcategories = toUpdate.getCategories();
+        // Update categories if they changed
+        List<Category> bigger = (productDescription.getCategories().size() > toUpdate.getCategories().size()) ? productDescription.getCategories() : toUpdate.getCategories();
+        List<Category> smaller = (productDescription.getCategories().size() > toUpdate.getCategories().size()) ? toUpdate.getCategories() : productDescription.getCategories();
+        
+        if (bigger.size() != smaller.size()) {
 
-            // compare if all categories are the same
-            int same = 0;
-            for (Category category : pcategories) {
-                for (Category category2 : tcategories) {
-                    if (category.getId() == category2.getId()) {
-                        same++;
-                    }
-                }
-            }
-            if (same == pcategories.size() && same == tcategories.size()) {
-            } else {
-                String message = "Categories updated to ";
-                for (Category category : pcategories) {
-                    message += category.getName() + ", ";
-                }
-                message = message.substring(0, message.length() - 2) + ".";
-                ProductDescriptionEvidence quantityEvidence = new ProductDescriptionEvidence(user, message);
-                toUpdate.addProductDescriptionEvidence(quantityEvidence);
-
-            }
-
+            didSomethingChange = true;
             toUpdate.clearCategories(); // Clear the existing categories
             for (Category category : productDescription.getCategories()) {
                 Category categoryToUpdate = categoryManager.find(category.getId());
@@ -286,36 +267,60 @@ public class ProductDescriptionResource {
                 }
             }
         }
+        // They are the same size, check if their contents match
+        else {
+            Boolean any_cat_changed = false;
+            // Go through all of them and check that they're present in the another list
+            for (Category first : bigger) {
+                Boolean tmp = false;
+                for (Category second : smaller) {
+                    if (first.getId() == second.getId())
+                        tmp = true;
+                }
+                if (!tmp) {
+                    any_cat_changed = true;
+                }
+            }
+
+            if (any_cat_changed) {
+                didSomethingChange = true;
+
+                toUpdate.clearCategories(); // Clear the existing categories
+                for (Category category : productDescription.getCategories()) {
+                    Category categoryToUpdate = categoryManager.find(category.getId());
+                    if (categoryToUpdate != null) {
+                        if (!toUpdate.getCategories().contains(categoryToUpdate)) {
+                            toUpdate.addCategory(categoryToUpdate);
+                        }
+                    }
+                }
+            }
+        }
+
         // log the changes
         if (!productDescription.getName().equals(toUpdate.getName())) {
-            String message = "Name updated to " + productDescription.getName() + ".";
-            ProductDescriptionEvidence quantityEvidence = new ProductDescriptionEvidence(user, message);
-            toUpdate.addProductDescriptionEvidence(quantityEvidence);
+            didSomethingChange = true;
         }
         if (!productDescription.getDescription().equals(toUpdate.getDescription())) {
-            String message = "Description updated to " + productDescription.getDescription() + ".";
-            ProductDescriptionEvidence quantityEvidence = new ProductDescriptionEvidence(user, message);
-            toUpdate.addProductDescriptionEvidence(quantityEvidence);
+            didSomethingChange = true;
         }
         if (productDescription.getPrice() != toUpdate.getPrice()) {
-            String message = "Price updated to " + productDescription.getPrice() + ".";
-            ProductDescriptionEvidence quantityEvidence = new ProductDescriptionEvidence(user, message);
-            toUpdate.addProductDescriptionEvidence(quantityEvidence);
+            didSomethingChange = true;
         }
         if (!productDescription.getISBN().equals(toUpdate.getISBN())) {
-            String message = "ISBN updated to " + productDescription.getISBN() + ".";
-            ProductDescriptionEvidence quantityEvidence = new ProductDescriptionEvidence(user, message);
-            toUpdate.addProductDescriptionEvidence(quantityEvidence);
+            didSomethingChange = true;
         }
         if (productDescription.getPages() != toUpdate.getPages()) {
-            String message = "Pages updated to " + productDescription.getPages() + ".";
-            ProductDescriptionEvidence quantityEvidence = new ProductDescriptionEvidence(user, message);
-            toUpdate.addProductDescriptionEvidence(quantityEvidence);
+            didSomethingChange = true;
         }
         if (!productDescription.getImage().equals(toUpdate.getImage())) {
-            String message = "Image updated.";
-            ProductDescriptionEvidence quantityEvidence = new ProductDescriptionEvidence(user, message);
-            toUpdate.addProductDescriptionEvidence(quantityEvidence);
+            didSomethingChange = true;
+        }
+
+        if (didSomethingChange) {
+            String message = "Product information was updated.";
+            ProductDescriptionEvidence editEvidence = new ProductDescriptionEvidence(user, message);
+            toUpdate.addProductDescriptionEvidence(editEvidence);
         }
 
         toUpdate.setName(productDescription.getName());
@@ -387,6 +392,10 @@ public class ProductDescriptionResource {
             return Response.status(Response.Status.BAD_REQUEST).entity("Error: Product Description doesnt exist")
                     .build();
         }
+        int old_discount = 0;
+        if (productDescription.getDiscount() != null) {
+            old_discount = productDescription.getDiscount().getDiscount();
+        }
         Discount discountToAdd = discountManager.findDiscount(discount);
         if (discountToAdd == null) {
             // Discount with given discount does not exist, create a new one
@@ -394,11 +403,15 @@ public class ProductDescriptionResource {
             discountToAdd.setDiscount(discount);
             discountManager.save(discountToAdd);
         }
-        String userEmail = securityContext.getUserPrincipal().getName();
-        RegisteredUser user = registeredUserManager.findByEmail(userEmail);
-        String message = "Discount updated to " + discount + "%.";
-        ProductDescriptionEvidence discountEvidence = new ProductDescriptionEvidence(user, message);
-        productDescription.addProductDescriptionEvidence(discountEvidence);
+
+        // Only log if it changed anything
+        if (discount != old_discount) {
+            String userEmail = securityContext.getUserPrincipal().getName();
+            RegisteredUser user = registeredUserManager.findByEmail(userEmail);
+            String message = "Discount updated from " + String.valueOf(old_discount) +  "% to " + discount + "%.";
+            ProductDescriptionEvidence discountEvidence = new ProductDescriptionEvidence(user, message);
+            productDescription.addProductDescriptionEvidence(discountEvidence);
+        }
         productDescription.setDiscount(discountToAdd);
         productDescriptionManager.save(productDescription);
         return Response.ok().entity(productDescription).build();
@@ -438,12 +451,17 @@ public class ProductDescriptionResource {
             return Response.status(Response.Status.BAD_REQUEST).entity("Error: Product Description doesnt exist")
                     .build();
         }
+        int previousQuantity = productDescription.getAvailableQuantity();
         productDescription.setAvailableQuantity(amount);
-        String userEmail = securityContext.getUserPrincipal().getName();
-        RegisteredUser user = registeredUserManager.findByEmail(userEmail);
-        String message = "Quantity updated to " + amount + ".";
-        ProductDescriptionEvidence quantityEvidence = new ProductDescriptionEvidence(user, message);
-        productDescription.addProductDescriptionEvidence(quantityEvidence);
+
+        // Only log if anything changed
+        if (previousQuantity != amount) {
+            String userEmail = securityContext.getUserPrincipal().getName();
+            RegisteredUser user = registeredUserManager.findByEmail(userEmail);
+            String message = "Quantity updated from " + String.valueOf(previousQuantity) + " to " + amount + ".";
+            ProductDescriptionEvidence quantityEvidence = new ProductDescriptionEvidence(user, message);
+            productDescription.addProductDescriptionEvidence(quantityEvidence);
+        }
         productDescriptionManager.save(productDescription);
         return Response.ok().entity("Succesfully updated quantity of given Product Description ID").build();
     }
