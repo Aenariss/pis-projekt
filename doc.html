@@ -12,33 +12,62 @@
 <body>
 
 <!-- Nahraďte prosím názvem tématu -->
-<h1>Téma projektu (nahraďte)</h1>
+<h1>Téma 24 -- Internetový obchod (s knihami)</h1>
 
 <!-- Editujte jména a maily autorů a jejich činnost -->
 <dl>
 	<dt>Autoři</dt>
-	<dd>První autor (nahraďte)
-	    <a href="mailto:xautor01@stud.fit.vutbr.cz">xautor01@stud.fit.vutbr.cz</a> -
-		správa uživatelů a uživatelské rozhraní
+	<dd>Vojtěch Fiala (xfiala61)
+	    <a href="mailto:xfiala61@stud.fit.vutbr.cz">xfiala61@stud.fit.vutbr.cz</a> -
+		backend: registrace, přihlašování, správa uživatelů, API pro vyhledávání uživatelů,
+		vytváření statistik pro admina, dohled a oprava chyb nad backendu, ...
 	</dd>
-	<dd>Druhý autor  (nahraďte)
-	    <a href="mailto:xautor02@stud.fit.vutbr.cz">xautor02@stud.fit.vutbr.cz</a> - 
-		databázový subsystém
+	<dd>Tomáš Ondrušek (xondru18)
+	    <a href="mailto:xondru18@stud.fit.vutbr.cz">xondru18@stud.fit.vutbr.cz</a> -
+		backend: správa knih, autorů, jazyků, API s tím související,
+		dále API pro vyhledávání a filtraci knih, správa a zaznamenávání změn u produktů, ..
+	</dd>
+	<dd>Filip Brna (xbrnaf00)
+	    <a href="mailto:xbrnaf00@stud.fit.vutbr.cz">xbrnaf00@stud.fit.vutbr.cz</a> -
+		backend: správa objednávek (stavu, položek, ...), správa záznamů změn stavu objednávky,
+		API pro vytvoření nové objednávky, nastavení stavu, naskladění produktu, ...
+	</dd>
+	<dd>Martin Baláž (xbalaz15)
+	    <a href="mailto:xbalaz15@stud.fit.vutbr.cz">xbalaz15@stud.fit.vutbr.cz</a> -
+		frontend: správa kategorií, jazyků, knih (přidávání, úprava, smazání, úprava slevy, naskladění),
+		výpis zaměstnanců, vyhledávání a výpis uživatelů, ...
+	</dd>
+	<dd>Lukáš Petr (xpetrl06)
+	    <a href="mailto:xpetrl06@stud.fit.vutbr.cz">xpetrl06@stud.fit.vutbr.cz</a> -
+		frontend: registrace, přihlášení, filtrování, výpis a detail knih, správa objednávek,
+		úprava uživatelských informací, přehledy pro administrátora, ...
 	</dd>
 </dl>
 
 <!-- uživatelské účty -->
 <h2>Uživatelé systému pro testování</h2>
-<p>Uveďte prosím existující zástupce <strong>všech rolí uživatelů</strong>.</p>
+<!-- <p>Uveďte prosím existující zástupce <strong>všech rolí uživatelů</strong>.</p> -->
 <table>
-<tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
-<tr><td>admin</td><td>admin</td><td>Administrátor</td></tr>
-<tr><td>prodavac</td><td>prodavac</td><td>Prodavač</td></tr>
-<tr><td>franta</td><td>franta</td><td>Zákazník</td></tr>
+<tr><th>Email</th><th>Heslo</th><th>Role</th></tr>
+<tr><td>admin@admin.cz</td><td>admin</td><td>Vedoucí zaměstnanec</td></tr>
+<tr><td>employee@employee.cz</td><td>employee</td><td>Běžný zaměstnanec</td></tr>
+<tr><td>user@user.cz</td><td>user</td><td>Zákazník</td></tr>
 </table>
 
 <h2>Postup instalace</h2>
-<p>Např. vyžadované prostředky na serveru, datové zdroje, inicializace databáze, apod. Stačí v několika stručných bodech.</p>
+<!-- <p>Např. vyžadované prostředky na serveru, datové zdroje, inicializace databáze, apod. Stačí v několika stručných bodech.</p> -->
+<ol>
+	<li>Instalace závislosti: java 17 (např. openjdk-17-jdk), maven</li>
+	<li>Instalace závislostí frontendu pomocí příkazu: <code>mvn process-resources</code></li>
+	<li>Instalace dalších závislostí a spuštění serveru pomocí příkazu: <code>mvn liberty:run</code></li>
+	<li>Inicializace databáze: otevření url
+		<a href="http://localhost:9089/api/prefill">http://localhost:9089/api/prefill</a>
+		v prohlížeči
+	</li>
+	<li>Nyní je možné webovou aplikaci používat na url
+		<a href="http://localhost:9089/">http://localhost:9089/</a>
+	</li>
+</ol>
 
 </body>
 </html>
