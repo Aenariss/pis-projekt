@@ -43,7 +43,7 @@ export default function MostSoldCategoriesChart({from, to}) {
                       left: 50,
                     }}>
             <CartesianGrid />
-            <XAxis type='number' label={{ value: 'Books sold', position: 'insideBottom', offset: -10}}/>
+            <XAxis type='number' label={{ value: 'Books sold', position: 'insideBottom', offset: -10}} allowDecimals={false}/>
             <YAxis type='category' dataKey='name'
                    label={{ value: 'Category', angle: -90, position: 'insideLeft', offset: -30}}
                    width={120}/>
