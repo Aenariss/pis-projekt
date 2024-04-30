@@ -14,6 +14,7 @@ import pis.data.BookAuthor;
 import pis.data.Category;
 import pis.data.Discount;
 import pis.data.Language;
+import pis.data.Modification;
 import pis.data.Order;
 import pis.data.OrderItem;
 import pis.data.OrderStatus;
@@ -246,6 +247,18 @@ public class PreFill {
         Order order1 = new Order(delivered, user1, "Slovakia", "Bratislava", "Komenskeho", "32", "03601",
                         "Slovakia", "Bratislava", "Komenskeho", "32", "03601");
         order1.setCreationDate(LocalDateTime.of(2024, Month.JANUARY, 20, 10, 30, 0));
+        Modification o1mod1 = new Modification(employee, inProgress);
+        Modification o1mod2 = new Modification(employee, confirmed);
+        Modification o1mod3 = new Modification(employee, packed);
+        Modification o1mod4 = new Modification(admin, delivered);
+        o1mod1.setModificationDate(LocalDateTime.of(2024, Month.JANUARY, 21, 10, 30, 0));
+        o1mod2.setModificationDate(LocalDateTime.of(2024, Month.JANUARY, 23, 10, 30, 0));
+        o1mod3.setModificationDate(LocalDateTime.of(2024, Month.FEBRUARY, 2, 10, 30, 0));
+        o1mod4.setModificationDate(LocalDateTime.of(2024, Month.FEBRUARY, 10, 10, 30, 0));
+        order1.addModification(o1mod1);
+        order1.addModification(o1mod2);
+        order1.addModification(o1mod3);
+        order1.addModification(o1mod4);
         Order order2 = new Order(confirmed, user2, "Slovakia", "Bratislava", "Dlha", "56", "02348", "Slovakia",
                         "Bratislava", "Dlha", "56", "02348");
         order2.setCreationDate(LocalDateTime.of(2024, Month.APRIL, 29, 10, 30, 0));
