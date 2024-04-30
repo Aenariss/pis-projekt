@@ -122,6 +122,8 @@ public class PreFill {
         georgeOrwell = bookAuthorManager.save(georgeOrwell);
         BookAuthor charlesDickens = new BookAuthor("Charles", "Dickens");
         charlesDickens = bookAuthorManager.save(charlesDickens);
+        BookAuthor liuCixin = new BookAuthor("Liu", "Cixin");
+        liuCixin = bookAuthorManager.save(liuCixin);
 
         // Discounts
         Discount discount1 = new Discount(10);
@@ -184,7 +186,7 @@ public class PreFill {
         harryPotter2 = productDescriptionManager.save(harryPotter2);
         ProductDescription treeBodyProblem = new ProductDescription(20, "The Three-Body Problem",
                         "The Three-Body Problem is the first chance for English-speaking readers to experience this multiple award winning phenomenon from China's most beloved science fiction author, Liu Cixin.",
-                        "9781784971551", 400, null, List.of(scienceFiction), english, discount5,
+                        "9781784971551", 400, liuCixin, List.of(scienceFiction), english, discount5,
                         "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1415428227i/20518872.jpg",
                         3);
         treeBodyProblem = productDescriptionManager.save(treeBodyProblem);
@@ -217,11 +219,11 @@ public class PreFill {
                         "https://m.media-amazon.com/images/M/MV5BYTRkYjAyNmEtMzdjMC00MjRhLWJkYjItNTU5OWNlNjc4ODk3XkEyXkFqcGdeQXVyMzA5NjkwNDM@._V1_.jpg",
                         5);
         greatExpectations = productDescriptionManager.save(greatExpectations);
-        ProductDescription loremIpsum = new ProductDescription(25, "Lorem Ipsum",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                        "9780141439563", 400, null, List.of(), null, null, null, 10);
-        loremIpsum.setDefaulImage();
-        loremIpsum = productDescriptionManager.save(loremIpsum);
+        // ProductDescription loremIpsum = new ProductDescription(25, "Lorem Ipsum",
+        //                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        //                 "9780141439563", 400, null, List.of(), null, null, null, 10);
+        // loremIpsum.setDefaulImage();
+        // loremIpsum = productDescriptionManager.save(loremIpsum);
 
         OrderUserInfo user1 = new OrderUserInfo("John", "Doe", "+421912333333", "john@doe.sk");
         user1 = orderUserInfoManager.save(user1);
