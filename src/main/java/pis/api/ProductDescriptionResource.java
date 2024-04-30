@@ -192,7 +192,7 @@ public class ProductDescriptionResource {
     @RolesAllowed({ "admin" })
     public Response addProductDescription(ProductDescription productDescription) {
 
-        if (productDescription.getName().length() < 2) {
+        if (productDescription.getName().length() < 1) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Product Description needs a valid name!")
                     .build();
         }
@@ -222,7 +222,7 @@ public class ProductDescriptionResource {
     public Response updateProductDescription(@PathParam("id") long id, ProductDescription productDescription) {
 
 
-        if (productDescription.getName().length() < 2) {
+        if (productDescription.getName().length() < 1) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Product Description needs a valid name!")
                     .build();
         }
