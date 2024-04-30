@@ -181,7 +181,7 @@ public class OrderManager {
     public List<Object[]> itemSalesInRange(LocalDateTime from, LocalDateTime to) {
         List<Object[]> results = null;
         try {
-            Query query = em.createQuery("SELECT oi.productName, COUNT(o) FROM Order o JOIN o.orderItems oi WHERE o.creationDate BETWEEN :from AND :to GROUP BY oi.productName");
+            Query query = em.createQuery("SELECT oi.productName, SUM(oi.quantity) FROM Order o JOIN o.orderItems oi WHERE o.creationDate BETWEEN :from AND :to GROUP BY oi.productName");
             query.setParameter("from", from);
             query.setParameter("to", to);
             query.setMaxResults(20); // Limit the results to the top 20 books

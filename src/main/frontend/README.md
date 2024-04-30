@@ -12,3 +12,4 @@
 - [react-bootstrap-icons](https://www.npmjs.com/package/react-bootstrap-icons) for icons,
 - [jwt-decode](https://www.npmjs.com/package/jwt-decode) for decoding json-web-token.
 - [sass](https://www.npmjs.com/package/sass) for redefining bootstrap default setting.
+- [recharts](https://recharts.org/) for redefining graphs/overviews.

@@ -245,11 +245,13 @@ public class PreFill {
 
         Order order1 = new Order(delivered, user1, "Slovakia", "Bratislava", "Komenskeho", "32", "03601",
                         "Slovakia", "Bratislava", "Komenskeho", "32", "03601");
-        order1.setCreationDate(LocalDateTime.of(2023, Month.DECEMBER, 20, 10, 30, 0));
+        order1.setCreationDate(LocalDateTime.of(2024, Month.JANUARY, 20, 10, 30, 0));
         Order order2 = new Order(confirmed, user2, "Slovakia", "Bratislava", "Dlha", "56", "02348", "Slovakia",
                         "Bratislava", "Dlha", "56", "02348");
+        order2.setCreationDate(LocalDateTime.of(2024, Month.APRIL, 29, 10, 30, 0));
         Order order3 = new Order(inProgress, user3, "Czech Republic", "Praha", "Karlova", "4", "23456",
                         "Czech Republic", "Brno", "Kolejni", "2", "67843");
+        order3.setCreationDate(LocalDateTime.of(2024, Month.APRIL, 10, 10, 30, 0));
         Order order4 = new Order(shipped, user4, "Czech Republic", "Praha", "Palackeho", "3", "234345",
                         "Czech Republic", "Brno", "Bozetechova", "2", "63012");
         Order order5 = new Order(inProgress, user1, "Slovakia", "Bratislava", "Zilinska", "65", "76907",
