@@ -6,6 +6,7 @@
 import { useMemo, useState } from 'react';
 import MostSoldCategoriesChart from './MostSoldCategoriesChart';
 import { Button, ButtonGroup, Container, Navbar } from 'react-bootstrap';
+import TopSoldProductsChart from './TopSoldProductsChart';
 
 // For what period we are showing statistics
 const THIS_YEAR = 0;
@@ -67,7 +68,8 @@ export default function Overview() {
           </Container>
         </Navbar>
         <Container className='mt-2'>
-          <MostSoldCategoriesChart from={getDateForAPI(from)} to={getDateForAPI(to)} key={period}/>
+          <MostSoldCategoriesChart from={getDateForAPI(from)} to={getDateForAPI(to)} key={`category-statistics-${period}`}/>
+          <TopSoldProductsChart from={getDateForAPI(from)} to={getDateForAPI(to)} key={`top-products-${period}`}/>
         </Container>
     </Container>
   );
