@@ -160,7 +160,7 @@ public class OrderManager {
     public List<Object[]> categoriesSalesInRange(LocalDateTime from, LocalDateTime to) {
         List<Object[]> results = null;
         try {
-            Query query = em.createQuery("SELECT c.name, COUNT(o) FROM Order o JOIN o.orderItems oi JOIN oi.categories c WHERE o.creationDate BETWEEN :from AND :to GROUP BY c.name");
+            Query query = em.createQuery("SELECT c.name, SUM(oi.quantity) FROM Order o JOIN o.orderItems oi JOIN oi.categories c WHERE o.creationDate BETWEEN :from AND :to GROUP BY c.name");
             query.setParameter("from", from);
             query.setParameter("to", to);
             return (List<Object[]>) query.getResultList();
