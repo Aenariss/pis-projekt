@@ -19,7 +19,7 @@ public class UserProfileDTO {
         this.id = user.getId();
         this.firstname = user.getFirstname();
         this.surname = user.getSurname();
-        this.phone = user.getSurname();
+        this.phone = user.getPhone();
         this.email = user.getEmail();
         this.role = user.getRole();
         this.address = user.getAddress();
