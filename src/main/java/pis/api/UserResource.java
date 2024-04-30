@@ -6,8 +6,6 @@
 
 package pis.api;
 
-import pis.api.dto.ProfileRequest;
-import pis.api.dto.Address;
 import pis.api.dto.*;
 import pis.data.RegisteredUser;
 import pis.service.RegisteredUserManager;
@@ -53,7 +51,7 @@ public class UserResource {
                     .build();
         }
 
-        return Response.status(Response.Status.OK).entity(u).build();
+        return Response.status(Response.Status.OK).entity(new UserProfileDTO(u)).build();
     }
 
     /**
@@ -73,7 +71,7 @@ public class UserResource {
             return Response.status(Response.Status.BAD_REQUEST).entity("User not found!").build();
         }
 
-        return Response.status(Response.Status.OK).entity(u).build();
+        return Response.status(Response.Status.OK).entity(new UserProfileDTO(u)).build();
     }
 
     /**

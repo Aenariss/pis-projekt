@@ -6,6 +6,7 @@
 
 package pis.api;
 
+import pis.api.dto.UserOverviewDTO;
 import pis.data.RegisteredUser;
 import pis.service.RegisteredUserManager;
 
@@ -37,8 +38,9 @@ public class UsersControl {
     @Path("/getEmployees")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("admin")
-    public List<RegisteredUser> getAllEmployees() {
-        return userManager.findEmployees();
+    public List<UserOverviewDTO> getAllEmployees() {
+        List<RegisteredUser> users = userManager.findEmployees();
+        return users.stream().map(user -> new UserOverviewDTO(user)).toList();
     }
 
     /**
@@ -50,8 +52,9 @@ public class UsersControl {
     @Path("/getEmployeesByName/{name}")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("admin")
-    public List<RegisteredUser> getEmployeeQuery(@PathParam("name") String name) {
-        return userManager.getEmployeeQuery(name);
+    public List<UserOverviewDTO> getEmployeeQuery(@PathParam("name") String name) {
+        List<RegisteredUser> users = userManager.getEmployeeQuery(name);
+        return users.stream().map(user -> new UserOverviewDTO(user)).toList();
     }
 
     /**
@@ -63,8 +66,9 @@ public class UsersControl {
     @Path("/getUsersByName/{name}")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("admin")
-    public List<RegisteredUser> getUserQuery(@PathParam("name") String name) {
-        return userManager.getUserQuery(name);
+    public List<UserOverviewDTO> getUserQuery(@PathParam("name") String name) {
+        List<RegisteredUser> users = userManager.getUserQuery(name);
+        return users.stream().map(user -> new UserOverviewDTO(user)).toList();
     }
 
     /**
@@ -76,8 +80,9 @@ public class UsersControl {
     @Path("/getEmployeesByEmail/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("admin")
-    public List<RegisteredUser> getEmployeeByEmailQuery(@PathParam("email") String email) {
-        return userManager.getEmployeeByEmailQuery(email);
+    public List<UserOverviewDTO> getEmployeeByEmailQuery(@PathParam("email") String email) {
+        List<RegisteredUser> users = userManager.getEmployeeByEmailQuery(email);
+        return users.stream().map(user -> new UserOverviewDTO(user)).toList();
     }
 
     /**
@@ -89,7 +94,8 @@ public class UsersControl {
     @Path("/getUsersByEmail/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("admin")
-    public List<RegisteredUser> getUserByEmailQuery(@PathParam("email") String email) {
-        return userManager.getUserByEmailQuery(email);
+    public List<UserOverviewDTO> getUserByEmailQuery(@PathParam("email") String email) {
+        List<RegisteredUser> users = userManager.getUserByEmailQuery(email);
+        return users.stream().map(user -> new UserOverviewDTO(user)).toList();
     }
 }
