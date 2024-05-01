@@ -15,8 +15,9 @@ import { AuthContext } from '../../context/AuthContext';
 import { useContext } from 'react';
 
 /**
- @param props.title Title of the form.
  * User profile page component.
+ * @param props Component props.
+ * @param props.title Title of the form.
  * @param props.type Type of the form, one of 'register', 'profile', 'edit'.
  * Register is for registering new users, profile is for showing profile of logged user,
  * edit is for admin to edit info about another users.
@@ -24,7 +25,8 @@ import { useContext } from 'react';
  * @param props.defaultValues Values which will be shown by default.
  * @param {Function} props.onSubmit Function which will be called with filled data on form submit.
  * @param {number} props.userId For edit type, id of user which is being edited.
- * @component
+ * @returns {JSX.Element} - UserForm component
+ * @constructor UserForm
  */
 export default function UserForm({
   type='register',

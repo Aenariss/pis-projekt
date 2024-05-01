@@ -4,15 +4,18 @@
  */
 import {createContext, useCallback, useState} from 'react';
 import {api} from "../api";
+import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext(null);
 
 /**
  * Component for providing AuthContext - info about logged in user.
- * @component
  * @param children Subelements.
+ * @returns {JSX.Element} - AuthProvider component
+ * @constructor AuthProvider
  */
 export default function AuthProvider({ children }) {
+  const navigate = useNavigate();
   // user = {token, email, role} if logged in else user = null
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
@@ -72,6 +75,7 @@ export default function AuthProvider({ children }) {
    * Sets that user is logged out.
    */
   function logout() {
+    navigate('/');
     setUser(null);
     localStorage.removeItem('user')
   }

@@ -9,7 +9,8 @@ export const CartContext = createContext();
 
 /**
  * Component providing context for containing info about cart content.
- * @component
+ * @returns {JSX.Element} - CartProvider component
+ * @constructor CartProvider
  */
 export default function CartProvider({children}) {
   // Map id -> amount

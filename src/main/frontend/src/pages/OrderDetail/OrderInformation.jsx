@@ -7,8 +7,10 @@ import { Table } from 'react-bootstrap';
 
 /**
  * Component for showing basic information about order.
+ * @param props Component props.
  * @param props.order Order.
- * @component
+ * @returns {JSX.Element} - OrderInformation component
+ * @constructor OrderInformation
  */
 export function OrderInformation({order}) {
   return (

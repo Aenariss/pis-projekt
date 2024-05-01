@@ -11,13 +11,15 @@ import { CartContext } from "../../context/CartContext";
 
 /**
  * Component for showing information about book in book listing.
+ * @param props Component props.
  * @param props.id Book id
  * @param props.name Name of book
  * @param props.author Author information
  * @param props.price Price
  * @param props.discount Discount in percentage.
  * @param props.availableQuantity Amount of available quantity.
- * @component
+ * @returns {JSX.Element} - Book component
+ * @constructor Book
  */
 export default function Book({
   id,

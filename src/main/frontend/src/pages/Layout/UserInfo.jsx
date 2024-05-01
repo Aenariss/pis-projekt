@@ -12,7 +12,8 @@ import {useNavigate} from "react-router-dom";
 
 /**
  * DropDown toggle component for showing possible account actions for user.
- * @component
+ * @returns {JSX.Element} - UserDropDownToggle component
+ * @constructor UserDropDownToggle
  */
 const UserDropDownToggle = React.forwardRef(({ children, onClick, disabled }, ref) => {
   return (
@@ -24,7 +25,8 @@ const UserDropDownToggle = React.forwardRef(({ children, onClick, disabled }, re
 
 /**
  * Navigation component showing info about user - handling login, registering.
- * @component
+ * @returns {JSX.Element} - UserInfo component
+ * @constructor UserInfo
  */
 export default function UserInfo() {
   const navigate = useNavigate();

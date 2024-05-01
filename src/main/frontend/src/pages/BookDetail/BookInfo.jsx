@@ -8,8 +8,11 @@ import AmountChanger from '../../components/Cart/AmountChanger';
 
 /**
  * Component for showing information about book.
+ * @param props Component props.
  * @param props.product Product information.
  * @param props.boobId Id of the book.
+ * @returns {JSX.Element} - BookInfo component
+ * @constructor BookInfo
  */
 export default function BookInfo({
   product,

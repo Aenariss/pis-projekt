@@ -8,12 +8,14 @@ import { isEmailValid } from './utils';
 
 /**
  * Form component for entering email.
+ * @param props Component props.
  * @param {string} props.email Email to be shown.
  * @param {Function} props.onChange Called with new email address.
  * @param {boolean} props.invalid Value telling if the email is invalid.
  * @param {Function} prop.onInvalid Called for setting email invalid status.
  * @param {boolean} props.disabled True to disable the input.
- * @component
+ * @returns {JSX.Element} - Email component
+ * @constructor Email
  */
 export default function Email({
   email,

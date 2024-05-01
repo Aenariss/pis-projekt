@@ -15,9 +15,11 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
+    "recharts": "^2.12.6",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "doc": "jsdoc -c .jsdoc-conf.json",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -50,6 +52,8 @@
     ]
   },
   "devDependencies": {
+    "better-docs": "^2.7.3",
+    "jsdoc": "^4.0.2",
     "sass": "^1.75.0"
   }
 }

@@ -9,9 +9,11 @@ import { CartContext } from '../../context/CartContext';
 
 /**
  * Component for changing amount of item in the cart.
+ * @param props Component props.
  * @param props.bookId Book id
  * @param props.availableQuantity Amount of available quantity.
- * @component
+ * @returns {JSX.Element} - AmountChanger component
+ * @constructor AmountChanger
  */
 export default function AmountChanger({
   bookId,

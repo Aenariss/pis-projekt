@@ -10,6 +10,11 @@ import { Cart } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 import { CartContext } from '../../context/CartContext';
 
+/**
+ * Showing cart info.
+ * @returns {JSX.Element} - CartInfo component
+ * @constructor CartInfo
+ */
 export default function CartInfo() {
   const navigate = useNavigate();
   const {items} = useContext(CartContext);

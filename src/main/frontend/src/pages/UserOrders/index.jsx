@@ -10,7 +10,8 @@ import { Spinner } from 'react-bootstrap';
 import OrdersFilter from '../../components/Orders/OrdersFilter';
 /**
  * User order page component.
- * @component
+ * @returns {JSX.Element} - UserOrdersPage component
+ * @constructor UserOrdersPage
  */
 export default function UserOrdersPage() {
   const [orders, setOrders] = useState(null);

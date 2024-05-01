@@ -13,9 +13,11 @@ import { MessageContext } from '../../context/MessageContext';
 /**
  * Component for showing status of order
  * and for employees / admin it enables to change the status.
+ * @param props Component props.
  * @param props.order Order.
  * @param {Function} onRefresh Callback to handle refreshing the page if something changes.
- * @component
+ * @returns {JSX.Element} - OrderStatus component
+ * @constructor OrderStatus
  */
 export default function OrderStatus({order, onRefresh}) {
   const {user} = useContext(AuthContext);

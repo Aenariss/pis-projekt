@@ -6,9 +6,12 @@ import { Pagination } from 'react-bootstrap';
 
 /**
  * Component for showing number of pages and going to another page.
+ * @param props Component props.
  * @param {number} props.pages Amount of pages.
  * @param {number} props.activePage Number of current page.
  * @param {Function} props.activePage Callback for setting page number.
+ * @returns {JSX.Element} - Paginator component
+ * @constructor Paginator
  */
 export default function Paginator ({
   pages,

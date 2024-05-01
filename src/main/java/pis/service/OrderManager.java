@@ -160,7 +160,7 @@ public class OrderManager {
     public List<Object[]> categoriesSalesInRange(LocalDateTime from, LocalDateTime to) {
         List<Object[]> results = null;
         try {
-            Query query = em.createQuery("SELECT c.name, COUNT(o) FROM Order o JOIN o.orderItems oi JOIN oi.categories c WHERE o.creationDate BETWEEN :from AND :to GROUP BY c.name");
+            Query query = em.createQuery("SELECT c.name, SUM(oi.quantity) FROM Order o JOIN o.orderItems oi JOIN oi.categories c WHERE o.creationDate BETWEEN :from AND :to GROUP BY c.name");
             query.setParameter("from", from);
             query.setParameter("to", to);
             return (List<Object[]>) query.getResultList();
@@ -181,7 +181,7 @@ public class OrderManager {
     public List<Object[]> itemSalesInRange(LocalDateTime from, LocalDateTime to) {
         List<Object[]> results = null;
         try {
-            Query query = em.createQuery("SELECT oi.productName, COUNT(o) FROM Order o JOIN o.orderItems oi WHERE o.creationDate BETWEEN :from AND :to GROUP BY oi.productName");
+            Query query = em.createQuery("SELECT oi.productName, SUM(oi.quantity) FROM Order o JOIN o.orderItems oi WHERE o.creationDate BETWEEN :from AND :to GROUP BY oi.productName");
             query.setParameter("from", from);
             query.setParameter("to", to);
             query.setMaxResults(20); // Limit the results to the top 20 books

@@ -7,8 +7,11 @@ import { orderStateToString } from '../../utils/orders';
 
 /**
  * Component for filtering orders by their status.
+ * @param props Component props.
  * @param props.status Current status.
  * @param props.onChange Handler called with new status.
+ * @returns {JSX.Element} - OrderStatusFilter component
+ * @constructor OrderStatusFilter
  */
 export default function OrderStatusFilter({
   status,

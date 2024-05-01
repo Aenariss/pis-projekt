@@ -7,12 +7,15 @@ import DatePicker from './DatePicker';
 
 /**
  * Component for filtering orders by dates and state.
+ * @param props Component props.
  * @param props.status Current status or '' when not set.
  * @param props.onStatusChange Handler called with new status.
  * @param props.fromDate Date from which to show orders or null.
  * @param props.onFromDateChange Handler call with new from date.
  * @param props.toDate Date to which to show orders or null.
  * @param props.onToDateChange Handler call with new to date.
+ * @returns {JSX.Element} - OrdersFilter component
+ * @constructor OrdersFilter
  */
 export default function OrdersFilter({
   status,

@@ -13,7 +13,8 @@ import BookListing from "./BookListing";
 
 /**
  * Page for listing of books.
- * @component
+ * @returns {JSX.Element} - BooksPage component
+ * @constructor BooksPage
  */
 export default function BooksPage() {
   const [products, setProducts] = useState(null);

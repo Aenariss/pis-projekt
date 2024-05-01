@@ -10,7 +10,8 @@ import {isEmailValid, isPasswordValid} from "../../components/UserForm/utils";
 /**
  * Component for logging in.
  * @param {Function} onHide - Handler for hiding logging modal window.
- * @component
+ * @returns {JSX.Element} - Login component
+ * @constructor Login
  */
 export default function Login({onHide}) {
   const [email, setEmail] = useState('');

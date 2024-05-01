@@ -11,6 +11,8 @@ import { useContext, useState } from 'react';
 
 /**
  * Component for searching order by id and showing its detail.
+ * @returns {JSX.Element} - ShowOrderWithId component
+ * @constructor ShowOrderWithId
  */
 export default function ShowOrderWithId() {
   const navigate = useNavigate();

@@ -13,11 +13,14 @@ const AMOUNT_OF_ORDERS_ON_PAGE = 15;
 
 /**
  * Table component for showing orders.
+ * @param props Component props.
  * @param props.orders List of orders to be shown.
  * @param props.type Type 'user' / 'employee' - for user is shown
  * total price, for employee is shown email of the person who created the order.
  * @param props.defaultFromOldest True to sort by default orders from oldest
  * otherwise there will be sort from newest to oldest.
+ * @returns {JSX.Element} - OrdersTable component
+ * @constructor OrdersTable
  */
 export default function OrdersTable({
   orders,

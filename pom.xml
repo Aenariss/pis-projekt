@@ -94,6 +94,10 @@
                         <goals>
                             <goal>npm</goal>
                         </goals>
+                        <!-- Needs legacy peer deps because of colisions with jsdoc -->
+                        <configuration>
+                            <arguments>install --legacy-peer-deps</arguments>
+                        </configuration>
                     </execution>
                     <!-- build frontend -->
                     <execution>

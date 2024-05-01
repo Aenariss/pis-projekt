@@ -14,7 +14,8 @@ import BookEditHistory from "./BookEditHistory";
 
 /**
  * Page with book detail.
- * @component
+ * @returns {JSX.Element} - BookDetailPage component
+ * @constructor BookDetailPage
  */
 export default function BookDetailPage() {
   const params = useParams();

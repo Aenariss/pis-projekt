@@ -8,7 +8,8 @@ import MessageProvider from './MessageContext';
 
 /**
  * Component which combines all providers to one.
- * @component
+ * @returns {JSX.Element} - Providers component
+ * @constructor Providers
  */
 export default function Providers({children}) {
     return (
