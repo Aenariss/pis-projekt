@@ -6,10 +6,13 @@ import { Form } from 'react-bootstrap';
 
 /**
  * Component for inserting number - used for setting price in filter.
+ * @param props Component props.
  * @param props.value Value of number
  * @param props.onChange Called with new value if it was set to number.
  * @param props.label Label of the input.
  * @param props.isInvalid If the input is invalid.
+ * @returns {JSX.Element} - NumberInput component
+ * @constructor NumberInput
  */
 export default function NumberInput({
   value,

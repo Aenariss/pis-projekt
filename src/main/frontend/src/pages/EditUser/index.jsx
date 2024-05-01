@@ -12,7 +12,8 @@ import { useParams } from "react-router-dom";
 
 /**
  * Page for showing details about customers/employees and editing them.
- * @component
+ * @returns {JSX.Element} - EditUser component
+ * @constructor EditUser
  */
 export default function EditUser() {
   const {userId} = useParams();

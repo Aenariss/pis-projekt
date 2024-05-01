@@ -8,8 +8,11 @@ import { api } from '../../api';
 
 /**
  * Chart component for showing top 20 sold products.
+ * @param props Component props.
  * @param props.from From date.
  * @param props.to To date.
+ * @returns {JSX.Element} - TopSoldProductsChart component
+ * @constructor TopSoldProductsChart
  */
 export default function TopSoldProductsChart({from, to}) {
     const [statistics, setStatistics] = useState(null);

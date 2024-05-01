@@ -6,9 +6,11 @@ import { Badge } from "react-bootstrap";
 
 /**
  * Component for showing price in book listing.
+ * @param props Component props.
  * @param {number} props.price Original price.
  * @param {number} props.discount Number of percentage down.
- * @component
+ * @returns {JSX.Element} - Price component
+ * @constructor Price
  */
 export default function Price({price, discount}) {
   if (discount) {

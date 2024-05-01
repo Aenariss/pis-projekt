@@ -13,7 +13,8 @@ import OrderStatusChanges from './OrderStatusChanges';
 
 /**
  * Page for showing details about order.
- * @component
+ * @returns {JSX.Element} - OrderDetail component
+ * @constructor OrderDetail
  */
 export default function OrderDetail() {
   const {orderId} = useParams();

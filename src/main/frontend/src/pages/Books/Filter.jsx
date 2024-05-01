@@ -11,7 +11,8 @@ import { X } from "react-bootstrap-icons";
 
 /**
  * Component for filtering of books.
- * @component
+ * @returns {JSX.Element} - Filter component
+ * @constructor Filter
  */
 export default function Filter() {
   const [searchParams, setSearchParams] = useSearchParams();

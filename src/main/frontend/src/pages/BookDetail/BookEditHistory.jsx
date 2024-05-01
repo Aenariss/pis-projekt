@@ -10,7 +10,10 @@ import { api } from '../../api';
 
 /**
  * Component for showing changes made to product (book).
- * @props bookId Id of the book.
+ * @param props Component props.
+ * @param props.bookId Id of the book.
+ * @returns {JSX.Element} - BookEditHistory component
+ * @constructor BookEditHistory
  */
 export default function BookEditHistory({
   bookId

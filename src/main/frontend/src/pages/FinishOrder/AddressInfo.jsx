@@ -9,11 +9,13 @@ import { Button, Form, Stack } from 'react-bootstrap';
 
 /**
  * Component for filling address when creating new order.
+ * @param props Component props.
  * @param props.userAddress Address of the user.
  * @param props.deliveryAddress Delivery address of the user.
  * @param {Function} props.onSubmit Handler for submit of the address information,
  * will receive the userAddress and deliveryAddress.
- * @component
+ * @returns {JSX.Element} - AddressInfo component
+ * @constructor AddressInfo
  */
 export default function AddressInfo({
   userAddress : defaultUserAddress,

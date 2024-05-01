@@ -8,10 +8,12 @@ import { Col, Form } from "react-bootstrap";
 
 /**
  * Form component for filling phone number.
+ * @param props Component props.
  * @param {string} props.phone Phone number to show.
  * @param {Function} props.onChange Called with new value of phone number when
  * phone number changes.
- * @component
+ * @returns {JSX.Element} - Phone component
+ * @constructor Phone
  */
 export default function Phone({
   phone,

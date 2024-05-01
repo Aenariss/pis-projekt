@@ -9,6 +9,7 @@ import { useMemo } from "react";
 
 /**
  * Password form component.
+ * @param props Component props.
  * @param {string} props.password1 Password in the first field.
  * @param {string} props.password2 Password retyped by user in second field.
  * @param {Function} props.onPassword1Change Function called on password 1 change.
@@ -16,7 +17,8 @@ import { useMemo } from "react";
  * @param {Function} props.onInvalidPassword Function called for updating is passwords are invalid.
  * @param {String} props.passwordTitle Label for the first password field.
  * @param {String} props.repeatPasswordTitle Label for the second password field.
- * @component
+ * @returns {JSX.Element} - Password component
+ * @constructor Password
  */
 export default function Password({
   password1,

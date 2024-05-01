@@ -10,7 +10,10 @@ import { AuthContext } from '../../context/AuthContext';
 
 /**
  * Component for showing changes in order status.
+ * @param props Component props.
  * @param props.modifications List of changes done to order status.
+ * @returns {JSX.Element} - OrderStatusChanges component
+ * @constructor OrderStatusChanges
  */
 export default function OrderStatusChanges({
   modifications

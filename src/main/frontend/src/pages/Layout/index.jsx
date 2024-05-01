@@ -18,7 +18,8 @@ import CartInfo from './CartInfo';
 
 /**
  * Website layout.
- * @component
+ * @returns {JSX.Element} - Layout component
+ * @constructor Layout
  */
 export default function Layout() {
   const navigate = useNavigate();

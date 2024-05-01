@@ -7,8 +7,10 @@ import { Image, Table } from 'react-bootstrap';
 
 /**
  * Component for showing ordered items in order detail.
+ * @param props Component props.
  * @param props.items Ordered items.
- * @component
+ * @returns {JSX.Element} - OrderedItems component
+ * @constructor OrderedItems
  */
 export default function OrderedItems({items}) {
   return (

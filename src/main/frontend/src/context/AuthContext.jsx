@@ -10,8 +10,9 @@ export const AuthContext = createContext(null);
 
 /**
  * Component for providing AuthContext - info about logged in user.
- * @component
  * @param children Subelements.
+ * @returns {JSX.Element} - AuthProvider component
+ * @constructor AuthProvider
  */
 export default function AuthProvider({ children }) {
   const navigate = useNavigate();

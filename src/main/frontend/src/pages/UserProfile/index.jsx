@@ -11,7 +11,8 @@ import { MessageContext } from "../../context/MessageContext";
 
 /**
  * User profile page component.
- * @component
+ * @returns {JSX.Element} - UserProfilePage component
+ * @constructor UserProfilePage
  */
 export default function UserProfilePage() {
   const [userInfo, setUserInfo] = useState(null);

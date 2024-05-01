@@ -24,6 +24,8 @@ const OVERVIEW_KIND_INCOME = 3;
 
 /**
  * Page component for showing overviews about sells.
+ * @returns {JSX.Element} - Overview component
+ * @constructor Overview
  */
 export default function Overview() {
   // Period of time for which to show the overview

@@ -8,8 +8,11 @@ import { api } from '../../api';
 
 /**
  * Chart containing orders made in time.
+ * @param props Component props.
  * @param props.from From date.
  * @param props.to To date.
+ * @returns {JSX.Element} - SalesInTimeChart component
+ * @constructor SalesInTimeChart
  */
 export default function SalesInTimeChart({from, to}) {
     const [statistics, setStatistics] = useState(null);

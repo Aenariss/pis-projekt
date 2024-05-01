@@ -22,8 +22,10 @@ const SORT_BY_DISCOUNT_DES = 3;
 
 /**
  * Component for listing of books.
+ * @param props Component props.
  * @param {Object} props.products List of product descriptions.
- * @component
+ * @returns {JSX.Element} - BookListing component
+ * @constructor BookListing
  */
 export default function BookListing({products}) {
   const [currentPage, setCurrentPage] = useState(1);

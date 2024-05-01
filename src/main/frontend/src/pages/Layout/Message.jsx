@@ -12,7 +12,8 @@ const TIMEOUT = 3000;
 
 /**
  * Component for showing message to the user.
- * @component
+ * @returns {JSX.Element} - Message component
+ * @constructor Message
  */
 export default function Message() {
   const [show, setShow] = useState(null);

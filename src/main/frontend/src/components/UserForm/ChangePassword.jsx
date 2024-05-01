@@ -10,8 +10,10 @@ import { MessageContext } from '../../context/MessageContext';
 
 /**
  * Button with modal window for changing passwords.
+ * @param props Component props.
  * @param {String} props.userId If changing password of another user - id of the user.
- * @component
+ * @returns {JSX.Element} - ChangePassword component
+ * @constructor ChangePassword
  */
 export default function ChangePassword({userId}) {
   const [showModal, setShowModal] = useState(false);
@@ -54,12 +56,14 @@ export default function ChangePassword({userId}) {
 
 /**
  * Modal window for changing password.
+ * @param props Component props.
  * @param {boolean} props.show If the modal should be shown.
  * @param {Function} props.onClose User want to close the modal.
  * @param {Function} props.onSubmit User send the form, called with password.
  * @param {Function} props.requireOriginalPassword True to show field for filling the original password.
  * @param {Function} props.error Error message to show to the user.
- * @returns 
+ * @returns {JSX.Element} - ChangePasswordModal component
+ * @constructor ChangePasswordModal
  */
 function ChangePasswordModal({
   show,

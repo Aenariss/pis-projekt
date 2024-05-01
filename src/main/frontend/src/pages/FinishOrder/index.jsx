@@ -13,6 +13,11 @@ import { CartContext } from '../../context/CartContext';
 import { MessageContext } from '../../context/MessageContext';
 import { Link } from 'react-router-dom';
 
+/**
+ * Page for ordering items from cart.
+ * @returns {JSX.Element} - FinishOrder component
+ * @constructor FinishOrder
+ */
 export default function FinishOrder() {
   const {items, clearCart} = useContext(CartContext);
   const {setMessage} = useContext(MessageContext);

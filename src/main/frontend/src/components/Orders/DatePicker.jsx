@@ -6,9 +6,12 @@ import { Form } from 'react-bootstrap';
 
 /**
  * Component for selecting date.
+ * @param props Component props.
  * @param props.label Label of the picker.
  * @param props.date Date to show - null means no selected date.
  * @param props.onChange Callback function called on change with new date.
+ * @returns {JSX.Element} - DatePicker component
+ * @constructor DatePicker
  */
 export default function DatePicker({
   label,

@@ -8,6 +8,8 @@ import {createSearchParams, useNavigate, useSearchParams} from "react-router-dom
 
 /**
  * Component for searching for books.
+ * @returns {JSX.Element} - Search component
+ * @constructor Search
  */
 export default function Search() {
   const [searchParams] = useSearchParams();

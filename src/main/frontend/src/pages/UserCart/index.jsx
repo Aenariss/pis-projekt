@@ -13,7 +13,8 @@ import AmountChanger from "../../components/Cart/AmountChanger";
 
 /**
  * Cart page component.
- * @component
+ * @returns {JSX.Element} - UserCartPage component
+ * @constructor UserCartPage
  */
 export default function UserCartPage() {
   const navigate = useNavigate();

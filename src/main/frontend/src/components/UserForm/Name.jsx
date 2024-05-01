@@ -10,10 +10,13 @@ const REGEX_BASIC_NAME = /^[^\d\s]*$/;
 
 /**
  * Form component for filling name and surname.
+ * @param props Component props.
  * @param {string} props.firstname Firstname to show.
  * @param {string} props.surname Surname to show.
  * @param {Function} props.onFirstnameChange Called when firstname changges with the new value.
  * @param {Function} props.onSurnameChange Called when surname changges with the new value.
+ * @returns {JSX.Element} - Name component
+ * @constructor Name
  * @component
  */
 export default function Name({

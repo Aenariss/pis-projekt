@@ -8,8 +8,11 @@ import { api } from '../../api';
 
 /**
  * Chart containing income gain from orders in time.
+ * @param props Component props.
  * @param props.from From date.
  * @param props.to To date.
+ * @returns {JSX.Element} - IncomeInTimeChart component
+ * @constructor IncomeInTimeChart
  */
 export default function IncomeInTimeChart({from, to}) {
     const [statistics, setStatistics] = useState(null);

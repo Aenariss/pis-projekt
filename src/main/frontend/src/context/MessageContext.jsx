@@ -8,7 +8,8 @@ export const MessageContext = createContext();
 
 /**
  * Message provider component for setting messages which should be shown to user.
- * @component
+ * @returns {JSX.Element} - MessageProvider component
+ * @constructor MessageProvider
  */
 export default function MessageProvider({children}) {
   /**

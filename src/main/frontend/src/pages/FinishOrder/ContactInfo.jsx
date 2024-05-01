@@ -11,9 +11,12 @@ import Phone from '../../components/UserForm/Phone';
 
 /**
  * Component for filling contact information for order.
+ * @param props Component props.
  * @param props.userInfo Information about the user.
  * @param {Function} props.onSubmit Handler which will be called when user fills
  * the information, it will receive the user information.
+ * @returns {JSX.Element} - ContactInfo component
+ * @constructor ContactInfo
  */
 export default function ContactInfo({
   userInfo,

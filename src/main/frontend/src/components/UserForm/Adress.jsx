@@ -7,6 +7,7 @@ import { Col, Form, Row } from "react-bootstrap";
 
 /**
  * Form component for filling address.
+ * @param props Component props.
  * @param {String} props.state Name of state.
  * @param {String} props.town Name of town.
  * @param {String} props.postcode Post code number.
@@ -17,7 +18,8 @@ import { Col, Form, Row } from "react-bootstrap";
  * @param {Function} props.onPostcodeChange Handler for postcode change.
  * @param {Function} props.onStreetChange Handler for street change.
  * @param {Function} props.onStreetNumberChange Handler for street number change.
- * @component
+ * @returns {JSX.Element} - Address component
+ * @constructor Address
  */
 export default function Address({
   state,

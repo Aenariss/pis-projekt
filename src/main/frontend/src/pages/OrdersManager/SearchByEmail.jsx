@@ -8,6 +8,8 @@ import { useSearchParams } from 'react-router-dom';
 
 /**
  * Component for searching orders by email (uses search params).
+ * @returns {JSX.Element} - SearchByEmail component
+ * @constructor SearchByEmail
  */
 export default function SearchByEmail() {
   const [searchParams, setSearchParams] = useSearchParams();

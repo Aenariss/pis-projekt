@@ -11,7 +11,8 @@ import {Alert} from 'react-bootstrap';
 /**
  * Wrapper around sites which can be visited only by user with certain role.
  * @param role Role which can visit the website.
- * @component
+ * @returns {JSX.Element} - ProtectedRoute component
+ * @constructor ProtectedRoute
  */
 export default function ProtectedRoute({roles}) {
   const {user} = useContext(AuthContext);
