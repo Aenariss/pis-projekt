@@ -149,18 +149,19 @@ public class ProductDescriptionResource {
     @Path("/search")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public List<ProductDescription> searchProductDescriptions(SearchQuery searchQuery) {
+    public List<ProductDetailDTO> searchProductDescriptions(SearchQuery searchQuery) {
 
         // Empty array to be returned in case the request is not valid
-        List<ProductDescription> arr = new ArrayList<>();
+        List<ProductDetailDTO> arr = new ArrayList<>();
         // Request validation
         if (!searchQuery.valid()) {
             return arr;
         }
 
-        return productDescriptionManager.searchProductDescriptions(searchQuery.getQuery())
+        List<ProductDescription> results = productDescriptionManager.searchProductDescriptions(searchQuery.getQuery())
                 // filtering so it does not have to be done on frontend
                 .stream().distinct().toList();
+        return results.stream().map(r -> new ProductDetailDTO(r)).toList();
     }
 
     /**
@@ -174,10 +175,11 @@ public class ProductDescriptionResource {
     @Path("/filter")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public List<ProductDescription> filterProductDescriptions(FilterQuery filterQuery) {
-        return productDescriptionManager.filterProductDescriptions(filterQuery)
+    public List<ProductDetailDTO> filterProductDescriptions(FilterQuery filterQuery) {
+        List<ProductDescription> results = productDescriptionManager.filterProductDescriptions(filterQuery)
                 // filtering so it does not have to be done on frontend
                 .stream().distinct().toList();
+        return results.stream().map(r -> new ProductDetailDTO(r)).toList();
     }
 
     /**
@@ -352,7 +354,7 @@ public class ProductDescriptionResource {
         toUpdate.setImage(productDescription.getImage());
 
         productDescriptionManager.save(toUpdate);
-        return Response.ok().entity(toUpdate).build();
+        return Response.ok().build();
     }
 
     /**
@@ -435,7 +437,7 @@ public class ProductDescriptionResource {
         }
         productDescription.setDiscount(discountToAdd);
         productDescriptionManager.save(productDescription);
-        return Response.ok().entity(productDescription).build();
+        return Response.ok().build();
     }
 
     /**
