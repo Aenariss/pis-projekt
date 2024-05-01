@@ -64,7 +64,7 @@ export default function IncomeInTimeChart({from, to}) {
                   strokeWidth={3}
                   dot={{ strokeWidth: 3}}/>
           </LineChart>
-          <div style={{fontSize: '20px'}}>Totally earned: {statistics.total} $</div>
+          <div style={{fontSize: '20px'}}>Total earnings in given time range: {statistics.total} $</div>
       </div>
     );
   };

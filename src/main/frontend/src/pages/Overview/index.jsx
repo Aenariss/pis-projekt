@@ -73,7 +73,7 @@ export default function Overview() {
     <Container>
         <Navbar bg="light" variant="light">
           <Container>
-            <Navbar.Brand>Sells overview</Navbar.Brand>
+            <Navbar.Brand>Sales overview</Navbar.Brand>
             <div>From {from.toLocaleDateString()} to {to.toLocaleDateString()}</div>
             <ButtonGroup>
               <Button variant='outline-primary' active={period === THIS_DAY} onClick={() => setPeriod(THIS_DAY)}>
