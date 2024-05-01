@@ -19,6 +19,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "doc": "jsdoc -c .jsdoc-conf.json",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -51,6 +52,8 @@
     ]
   },
   "devDependencies": {
+    "better-docs": "^2.7.3",
+    "jsdoc": "^4.0.2",
     "sass": "^1.75.0"
   }
 }

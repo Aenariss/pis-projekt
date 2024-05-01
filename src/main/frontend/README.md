@@ -2,6 +2,8 @@
 
 - implemented using [React](https://react.dev/) framework
 - for appearance using bootstrap, the default setting can be changed in `./src/bootstrap.scss`.
+- you can generate documentation by running `npm run doc`, it will generate documentation
+  to `./doc` folder
 
 ## Used packages
 

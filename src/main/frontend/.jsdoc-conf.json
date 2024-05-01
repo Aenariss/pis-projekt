@@ -1,0 +1,23 @@
+{
+    "plugins": [
+        "plugins/markdown",
+        "plugins/summarize"
+    ],
+    "sourceType": "module",
+    "source": {
+        "include": ["./src"],
+        "includePattern": ".+\\.jsx?$"
+    },
+    "opts": {
+        "destination": "./doc",
+        "readme": "./README.md",
+        "recurse": true,
+        "template": "node_modules/better-docs"
+    },
+    "tags": {
+        "allowUnknownTags": ["component"]
+    },
+    "templates": {
+        "cleverLinks": true
+    }
+}
